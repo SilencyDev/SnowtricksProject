@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Cocur\Slugify\Slugify;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SnowtrickRepository")
@@ -56,6 +57,11 @@ class Snowtrick
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getSlug(): string 
+    {
+        return (new Slugify())->slugify($this->title);
     }
 
     public function getDescription(): ?string
