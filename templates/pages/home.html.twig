@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+{% block title 'Home'%}
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Snowtricks</h1>
+    </div>
+    <div class="container">
+       <h2>Last Tricks</h2>
+       <div class="row flex">
+        {% for snowtrick in snowtricks %}
+            <div class="col-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="#">{{ snowtrick.title }}</a>
+                        </h5>
+                        <p class="text-primary"> {{ snowtrick.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+       </div>
+    </div>
+{% endblock %}
