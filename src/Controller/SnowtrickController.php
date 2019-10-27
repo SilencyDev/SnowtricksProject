@@ -17,6 +17,11 @@ class SnowtrickController extends AbstractController
      */
     private $repository;
 
+    /**
+     * @var ObjectManager
+     */
+    private $em;
+
     public function __construct(SnowtrickRepository $repository, ObjectManager $em)
     {
         $this->repository = $repository;
@@ -25,16 +30,34 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @route("/Snowtricks", name="snowtricks")
+     * @route("/snowtricks", name="snowtricks")
      * @return Response
      */
     public function indexAction(): Response
     {
-        $snowtrick = $this->repository->findAllVisible();
-        $snowtrick[0]->setTitle('nouveau titre');
-        $this->em->flush();
+        $snowtricks = $this->repository->findAllVisible();
         return $this->render("snowtricks/index.html.twig", [
-            'current_menu' => 'snowtricks'
+            'current_menu' => 'snowtricks',
+            'snowtricks' => $snowtricks
+        ]);
+    }
+
+    /**
+     * @Route("/snowtricks/{slug}-{id}", name="snowtrick.show", requirements={"slug": "[a-z0-9\-]*"})
+     * @param Snowtrick
+     * @return Response
+     */
+    public function show(Snowtrick $snowtrick, string $slug): Response
+    {
+        if ($snowtrick->getSlug() !== $slug) {
+            return $this->redirectToRoute('snowtrick.show', [
+                'id' => $snowtrick->getId(),
+                'slug' => $snowtrick->getSlug()
+            ],301);
+        }
+        return $this->render('snowtricks/show.html.twig', [
+            'current_menu' => 'snowtricks',
+            'snowtrick' => $snowtrick
         ]);
     }
 }
