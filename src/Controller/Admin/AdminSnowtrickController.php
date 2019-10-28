@@ -65,6 +65,7 @@ class AdminSnowtrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isvalid()) {
             $this->em->flush();
+            $this->addFlash('success', 'Edited with success!');
             return $this->redirectToRoute("admin.snowtrick.index");
         }
         return $this->render('admin/snowtricks/edit.html.twig', [
@@ -82,6 +83,7 @@ class AdminSnowtrickController extends AbstractController
     public function deleteAction(Snowtrick $snowtrick, Request $request) {
         if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $request->get('_token'))) {
             $this->em->remove($snowtrick);
+            $this->addFlash('success', 'Deleted with success!');
             $this->em->flush();
         }
         return $this->redirectToRoute('admin.snowtrick.index');
