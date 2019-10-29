@@ -1,0 +1,13 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{{ path('snowtrick.show', {slug: snowtrick.slug, id:snowtrick.id}) }}">
+            {{ snowtrick.title }}
+            </a>
+        </h5>
+        <p class="card-text">by {{ snowtrick.author }}</p>
+        <div class="text-primary">
+        {{ snowtrick.description }}
+        </div>
+    </div>
+</div>
