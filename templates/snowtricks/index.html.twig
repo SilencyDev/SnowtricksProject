@@ -2,9 +2,13 @@
 {% block title 'All Snowtricks'%}
 {% block body %}
     <div class="container mt-4">
-        <h1>Lorem ipsum</h1>
-    </div>
-    <div class="container">
-       Test affichage snowtricks
+        <h1>All Snowtricks</h1>
+        <div class="row">
+            {% for snowtrick in snowtricks %}
+                <div class="col-md-4">
+                    {% include "snowtricks/_snowtricks.html.twig" %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
