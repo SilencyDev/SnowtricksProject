@@ -9,10 +9,10 @@
        <div class="row flex">
         {% for snowtrick in snowtricks %}
             <div class="col-3">
-                <div class="card">
+                <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <a href="{{ path('snowtrick.show', {slug: snowtrick.slug, id: snowtrick.id}) }}">{{ snowtrick.title }}</a>
+                            <a href="{{ path('snowtrick.show', {id: snowtrick.id}) }}">{{ snowtrick.title }}</a>
                         </h5>
                         <p class="text-primary"> {{ snowtrick.description }}</p>
                     </div>
