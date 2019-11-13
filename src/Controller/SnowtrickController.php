@@ -43,18 +43,12 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/snowtricks/{slug}-{id}", name="snowtrick.show", requirements={"slug": "[a-z0-9\-]*"})
+     * @Route("/snowtricks/{id}", name="snowtrick.show")
      * @param Snowtrick
      * @return Response
      */
-    public function show(Snowtrick $snowtrick, string $slug): Response
+    public function show(Snowtrick $snowtrick): Response
     {
-        if ($snowtrick->getSlug() !== $slug) {
-            return $this->redirectToRoute('snowtrick.show', [
-                'id' => $snowtrick->getId(),
-                'slug' => $snowtrick->getSlug()
-            ],301);
-        }
         return $this->render('snowtricks/show.html.twig', [
             'current_menu' => 'snowtricks',
             'snowtrick' => $snowtrick

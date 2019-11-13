@@ -1,7 +1,4 @@
 {
-    "cocur/slugify": {
-        "version": "v3.2"
-    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
