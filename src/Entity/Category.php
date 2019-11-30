@@ -24,7 +24,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\snowtrick", mappedBy="categories")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Snowtrick", mappedBy="categories")
      */
     private $snowtricks;
 

@@ -38,11 +38,6 @@ class Snowtrick
     private $author;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $groupe;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $validated;
