@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Collection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -76,6 +77,7 @@ class User implements UserInterface, \Serializable
     public function getRoles()
     {
         return ['ROLE_ADMIN'];
+    
     }
 
     public function getSalt()
