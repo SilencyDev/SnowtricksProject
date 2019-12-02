@@ -33,7 +33,8 @@ class Snowtrick
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\Column(type="string", length=255)
      */
     private $author;
 
