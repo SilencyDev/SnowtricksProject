@@ -18,7 +18,7 @@ class AdminCategoryController extends AbstractController
     /**
      * @Route("/", name="admin.category.index", methods={"GET"})
      */
-    public function index(CategoryRepository $categoryRepository): Response
+    public function indexAction(CategoryRepository $categoryRepository): Response
     {
         return $this->render('admin/category/index.html.twig', [
             'categories' => $categoryRepository->findAll(),
@@ -28,7 +28,7 @@ class AdminCategoryController extends AbstractController
     /**
      * @Route("/new", name="admin.category.new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function newAction(Request $request): Response
     {
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -38,6 +38,7 @@ class AdminCategoryController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
+            $this->addFlash('success', 'Added with success!');
 
             return $this->redirectToRoute('admin.category.index');
         }
@@ -51,13 +52,14 @@ class AdminCategoryController extends AbstractController
     /**
      * @Route("/{id}/edit", name="admin.category.edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Category $category): Response
+    public function editAction(Request $request, Category $category): Response
     {
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $this->addFlash('success', 'Edited with success!');
 
             return $this->redirectToRoute('admin.category.index');
         }
@@ -71,12 +73,13 @@ class AdminCategoryController extends AbstractController
     /**
      * @Route("/{id}", name="admin.category.delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Category $category): Response
+    public function deleteAction(Request $request, Category $category): Response
     {
         if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();
+            $this->addFlash('success', 'Deleted with success!');
         }
 
         return $this->redirectToRoute('admin.category.index');
