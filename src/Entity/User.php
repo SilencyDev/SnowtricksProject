@@ -77,7 +77,6 @@ class User implements UserInterface, \Serializable
     public function getRoles()
     {
         return ['ROLE_ADMIN'];
-    
     }
 
     public function getSalt()

@@ -44,6 +44,7 @@ class AdminSnowtrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isvalid()) {
             $this->em->persist($snowtrick);
+            $this->addFlash('success', 'Edited with success!');
             $this->em->flush();
             return $this->redirectToRoute("admin.snowtrick.index");
         }

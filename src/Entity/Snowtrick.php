@@ -94,18 +94,6 @@ class Snowtrick
         return $this;
     }
 
-    public function getGroupe(): ?string
-    {
-        return $this->groupe;
-    }
-
-    public function setGroupe(string $groupe): self
-    {
-        $this->groupe = $groupe;
-
-        return $this;
-    }
-
     public function getValidated(): ?bool
     {
         return $this->validated;
