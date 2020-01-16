@@ -96,6 +96,18 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getEmail(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->username = $email;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */

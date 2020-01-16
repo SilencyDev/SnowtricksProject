@@ -1,0 +1,8 @@
+{% extends "base.html.twig" %}
+{% block title 'New trick'%}
+{% block body %}
+    <div class="container mt-4">
+        <h1>Post a new trick</h1>
+        {{ include('admin/snowtricks/_form.html.twig', {form: form, button: 'New'}) }}
+    </div>
+{% endblock %}

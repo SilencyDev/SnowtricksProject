@@ -13,29 +13,6 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Waiting for validation</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for snowtrickToValidate in snowtricksToValidate %}
-            <tr>
-                <td>{{ snowtrickToValidate.title }}</td>
-                <td>
-                    <a href="{{ path('admin.snowtrick.edit', {id: snowtrickToValidate.id}) }}" class="btn btn-secondary">Edit/Validation</a>
-                    <form method="post" action="{{ path('admin.snowtrick.delete', {id: snowtrickToValidate.id}) }}" class="d-inline-block" onsubmit="return confirm('Confirm delete action ?')">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrickToValidate.id) }}">
-                    <button class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        <table class="table table-striped">
-            <thead>
-            <tr>
                 <th>Title</th>
                 <th>Action</th>
             </tr>
@@ -45,7 +22,7 @@
             <tr>
                 <td>{{ snowtrick.title }}</td>
                 <td>
-                    <a href="{{ path('admin.snowtrick.edit', {id: snowtrick.id}) }}" class="btn btn-secondary">Edit/Validation</a>
+                    <a href="{{ path('admin.snowtrick.edit', {id: snowtrick.id}) }}" class="btn btn-secondary">Edit</a>
                     <form method="post" action="{{ path('admin.snowtrick.delete', {id: snowtrick.id}) }}" class="d-inline-block" onsubmit="return confirm('Confirm delete action ?')">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">

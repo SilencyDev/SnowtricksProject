@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class SnowtrickType extends AbstractType
 {
@@ -25,16 +27,23 @@ class SnowtrickType extends AbstractType
         $builder
             ->add('title')
             ->add('description')
-            ->add('author', HiddenType::class, [
-                'data' => $this->security->getUser()->getUsername()
-            ])
             ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => true
             ])
-            ->add('validated')
-        ;
+            ->add('validated');
+            
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $trick = $event->getData();
+            $form = $event->getForm();
+
+            if(!$trick || null === $trick->getId()) {
+                $form->add('author', HiddenType::class, [
+                    'data' => $this->security->getUser()->getUsername()
+                ]);
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

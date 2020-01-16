@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller\Member;
 
 use App\Entity\Snowtrick;
 use App\Form\SnowtrickType;
@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin")
+ * @Route("/member")
  */
-class AdminSnowtrickController extends AbstractController
+class MemberSnowtrickController extends AbstractController
 {
     /**
      * @var SnowtrickRepository
@@ -28,18 +28,17 @@ class AdminSnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/", name="admin.snowtrick.index")
+     * @Route("/", name="member.snowtrick.index")
      * @return Response
      */
     public function indexAction()
     {
         $snowtricks = $this->repository->findAll();
-        $snowtricksToValidate = $this->repository->findAllInvisible();
-        return $this->render('admin/snowtricks/index.html.twig', compact("snowtricks","snowtricksToValidate"));
+        return $this->render('member/snowtricks/index.html.twig', compact("snowtricks"));
     }
 
     /**
-     * @Route("/snowtrick/create", name="admin.snowtrick.new")
+     * @Route("/snowtrick/create", name="member.snowtrick.new")
      */
     public function newAction(Request $request) {
         $snowtrick = new snowtrick();
@@ -50,15 +49,15 @@ class AdminSnowtrickController extends AbstractController
             $this->em->persist($snowtrick);
             $this->addFlash('success', 'Edited with success!');
             $this->em->flush();
-            return $this->redirectToRoute("admin.snowtrick.index");
+            return $this->redirectToRoute("member.snowtrick.index");
         }
-        return $this->render('admin/snowtricks/new.html.twig', [
+        return $this->render('member/snowtricks/new.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView()
         ]);
     }
     /**
-     * @Route("/snowtrick/{id}", name="admin.snowtrick.edit", methods={"GET","POST"})
+     * @Route("/snowtrick/{id}", name="member.snowtrick.edit", methods={"GET","POST"})
      * @param Snowtrick
      * @param Request
      * @return Response
@@ -71,16 +70,16 @@ class AdminSnowtrickController extends AbstractController
         if ($form->isSubmitted() && $form->isvalid()) {
             $this->em->flush();
             $this->addFlash('success', 'Edited with success!');
-            return $this->redirectToRoute("admin.snowtrick.index");
+            return $this->redirectToRoute("member.snowtrick.index");
         }
-        return $this->render('admin/snowtricks/edit.html.twig', [
+        return $this->render('member/snowtricks/edit.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/snowtrick/{id}", name="admin.snowtrick.delete", methods={"DELETE"})
+     * @Route("/snowtrick/{id}", name="member.snowtrick.delete", methods={"DELETE"})
      * @param Snowtrick
      * @param Request
      * @return Response
@@ -91,6 +90,6 @@ class AdminSnowtrickController extends AbstractController
             $this->addFlash('success', 'Deleted with success!');
             $this->em->flush();
         }
-        return $this->redirectToRoute('admin.snowtrick.index');
+        return $this->redirectToRoute('member.snowtrick.index');
     }
 }
