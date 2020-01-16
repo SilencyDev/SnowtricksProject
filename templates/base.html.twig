@@ -30,6 +30,11 @@
                     <a class="nav-link" href="{{ path('admin.category.index') }}">CategoryManager</a>
                 </li>  
             {% endif %}
+            {% if is_granted('ROLE_MEMBER') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('member.snowtrick.index') }}">TricksManager</a>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="#">Sign in</a>
             </li>

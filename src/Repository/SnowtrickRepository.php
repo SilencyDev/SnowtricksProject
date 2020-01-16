@@ -55,6 +55,7 @@ class SnowtrickRepository extends ServiceEntityRepository
     {
         return $this->findVisibleQuery()
             ->setMaxResults('15')
+            ->orderBy('s.id', 'DESC')
             ->getQuery()
             ->getResult();
     }
