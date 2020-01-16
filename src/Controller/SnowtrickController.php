@@ -9,9 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/snowtricks")
+ */
 class SnowtrickController extends AbstractController
 {
-
     /**
      * @var SnowtrickRepository
      */
@@ -30,7 +32,7 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @route("/snowtricks", name="snowtricks")
+     * @route("/", name="snowtricks")
      * @return Response
      */
     public function indexAction(): Response
@@ -43,7 +45,7 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/snowtricks/{id}", name="snowtrick.show")
+     * @Route("/{id}", name="snowtrick.show")
      * @param Snowtrick
      * @return Response
      */

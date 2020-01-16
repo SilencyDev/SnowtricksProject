@@ -15,8 +15,7 @@ class SnowtrickFixture extends Fixture
                 ->setAuthor("Silencydev")
                 ->setDescription("Description".$i)
                 ->setTitle("Title".$i)
-                ->setValidated(true)
-                ->setGroupe("Groupe".$i);
+                ->setValidated(true);
             $manager->persist($snowtrick);
         }
         $manager->flush();
