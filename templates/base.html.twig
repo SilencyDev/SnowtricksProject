@@ -15,34 +15,32 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <a class="nav-link {% if current_menu is defined and current_menu == 'snowtricks' %}active{% endif %}" href="{{ path('snowtricks') }}">Tricks</a>
-            </li>
-            {% if app.user == false %}
+                {% if app.user == false %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('login') }}">Log in</a>
+                    </li>  
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_menu is defined and current_menu == 'admin' %}active{% endif %}" href="{{ path('admin.snowtrick.index') }}">TricksManager</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('admin.category.index') }}">CategoryManager</a>
+                    </li>  
+                {% endif %}
+                {% if is_granted('ROLE_MEMBER') or is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('member.snowtrick.index') }}">MyTricks</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('login') }}">Log in</a>
-                </li>  
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('admin.snowtrick.index') }}">TricksManager</a>
+                    <a class="nav-link" href="#">Sign in</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('admin.category.index') }}">CategoryManager</a>
-                </li>  
-            {% endif %}
-            {% if is_granted('ROLE_MEMBER') %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('member.snowtrick.index') }}">MyTricks</a>
-                </li>
-            {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="#">Sign in</a>
-            </li>
-            {% if app.user %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('logout') }}">Logout</a>
-                </li>
-            {% endif %}
+                {% if app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+                    </li>
+                {% endif %}
             </ul>
             <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

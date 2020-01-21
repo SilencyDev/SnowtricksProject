@@ -32,8 +32,7 @@ class SnowtrickType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true
-            ])
-            ->add('validated');
+            ]);
             
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $trick = $event->getData();
