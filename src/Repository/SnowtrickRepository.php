@@ -56,6 +56,7 @@ class SnowtrickRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.author = :user')
+            ->orderBy('s.id', 'DESC')
             ->setParameter('user', $this->security->getUser()->getUsername())
             ->getQuery()
             ->getResult();
