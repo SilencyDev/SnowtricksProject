@@ -6,6 +6,7 @@ use App\Entity\Snowtrick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Snowtrick|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,9 +16,10 @@ use Doctrine\ORM\QueryBuilder;
  */
 class SnowtrickRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Snowtrick::class);
+        $this->security = $security;
     }
 
     private function findVisibleQuery(): QueryBuilder
@@ -47,6 +49,17 @@ class SnowtrickRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Snowtrick[]
+     */
+    public function findMyTricks(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.author = :user')
+            ->setParameter('user', $this->security->getUser()->getUsername())
+            ->getQuery()
+            ->getResult();
+    }
 
     /**
      * @return Snowtrick[]

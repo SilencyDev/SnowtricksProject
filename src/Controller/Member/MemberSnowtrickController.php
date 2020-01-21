@@ -3,7 +3,7 @@
 namespace App\Controller\Member;
 
 use App\Entity\Snowtrick;
-use App\Form\SnowtrickType;
+use App\Form\SnowtrickMemberType;
 use App\Repository\SnowtrickRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,7 +33,7 @@ class MemberSnowtrickController extends AbstractController
      */
     public function indexAction()
     {
-        $snowtricks = $this->repository->findAll();
+        $snowtricks = $this->repository->findMyTricks();
         return $this->render('member/snowtricks/index.html.twig', compact("snowtricks"));
     }
 
@@ -42,7 +42,7 @@ class MemberSnowtrickController extends AbstractController
      */
     public function newAction(Request $request) {
         $snowtrick = new snowtrick();
-        $form = $this->createForm(SnowtrickType::class, $snowtrick);
+        $form = $this->createForm(SnowtrickMemberType::class, $snowtrick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isvalid()) {
@@ -64,7 +64,7 @@ class MemberSnowtrickController extends AbstractController
      */
     public function editAction(Snowtrick $snowtrick, Request $request)
     {
-        $form = $this->createForm(SnowtrickType::class, $snowtrick);
+        $form = $this->createForm(SnowtrickMemberType::class, $snowtrick);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isvalid()) {
