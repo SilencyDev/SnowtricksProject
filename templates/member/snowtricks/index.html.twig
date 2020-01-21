@@ -15,6 +15,7 @@
             <tr>
                 <th>Title</th>
                 <th>Action</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -28,6 +29,13 @@
                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">
                     <button class="btn btn-danger">Delete</button>
                     </form>
+                </td>
+                <td>
+                    {% if snowtrick.validated %}
+                        Validated
+                    {% else %}
+                        Pending
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
