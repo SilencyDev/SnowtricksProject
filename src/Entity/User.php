@@ -18,7 +18,8 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=100, unique=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
      */
     private $username;
 

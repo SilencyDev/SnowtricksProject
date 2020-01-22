@@ -18,6 +18,7 @@ class Snowtrick
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="snowtrick")
      */
     private $id;
 

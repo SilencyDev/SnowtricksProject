@@ -1,23 +1,35 @@
 {% extends "base.html.twig" %}
 {% block title snowtrick.title %}
 {% block body %}
-<div class="jumbotron">
+    <div class="jumbotron">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-8">
+                </div>
+                <div class="col-md-4">
+                    <h1>{{ snowtrick.title }}</h1>
+                    <h2>by {{ snowtrick.author }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-8">
-            </div>
             <div class="col-md-4">
-                <h1>{{ snowtrick.title }}</h1>
-                <h2>by {{ snowtrick.author }}</h2>
+                <p>{{ snowtrick.description }}</p>
             </div>
         </div>
     </div>
-</div>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-4">
-            <p>{{ snowtrick.description }}</p>
-        </div>
-    </div>
-</div>
+    {% for comment in comments %}
+        <div class="col-xs-12 col-md-8 col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <p>{{ comment.author }}</p>
+                        </h5>
+                        <p class="text-primary"> {{ comment.content }}</p>
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
 {% endblock %}

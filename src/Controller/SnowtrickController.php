@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Snowtrick;
+use App\Entity\Comment;
 use App\Form\SnowtrickType;
 use App\Repository\SnowtrickRepository;
+use App\Repository\CommentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,9 +21,15 @@ class SnowtrickController extends AbstractController
      */
     private $repository;
 
-    public function __construct(SnowtrickRepository $repository, ObjectManager $em)
+    /**
+     * @var CommentRepository
+     */
+    private $commentRepository;
+
+    public function __construct(SnowtrickRepository $repository, CommentRepository $commentRepository, ObjectManager $em)
     {
         $this->repository = $repository;
+        $this->commentRepository = $commentRepository;
         $this->em = $em;
     }
 
@@ -39,7 +47,7 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/member", name="member.snowtrick.index")
+     * @Route("/member/snowtrick", name="member.snowtrick.index")
      * @return Response
      */
     public function indexMemberAction()
@@ -49,12 +57,12 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/admin", name="admin.snowtrick.index")
+     * @Route("/admin/snowtrick", name="admin.snowtrick.index")
      * @return Response
      */
     public function indexAdminAction()
     {
-        $snowtricks = $this->repository->findAllVisible();
+        $snowtricks = $this->repository->findAllVisibleDesc();
         $snowtricksToValidate = $this->repository->findAllInvisible();
         return $this->render('admin/snowtricks/index.html.twig', compact("snowtricks","snowtricksToValidate"));
     }
@@ -66,9 +74,11 @@ class SnowtrickController extends AbstractController
      */
     public function show(Snowtrick $snowtrick): Response
     {
+        $comments = $this->commentRepository->findAllVisibleFromTrick($snowtrick->getId());
         return $this->render('snowtricks/show.html.twig', [
             'current_menu' => 'snowtricks',
-            'snowtrick' => $snowtrick
+            'snowtrick' => $snowtrick,
+            'comments' => $comments
         ]);
     }
 
@@ -94,7 +104,7 @@ class SnowtrickController extends AbstractController
             $this->em->persist($snowtrick);
             $this->addFlash('success', 'Created with success!');
             $this->em->flush();
-            return $this->redirectToRoute("admin.snowtrick.index");
+            return $this->redirectToRoute("member.snowtrick.index");
         }
         return $this->render('member/snowtricks/new.html.twig', [
             'snowtrick' => $snowtrick,
@@ -108,7 +118,7 @@ class SnowtrickController extends AbstractController
      * @param Request
      * @return Response
      */
-    public function editAction(Security $security,Snowtrick $snowtrick, Request $request)
+    public function editAction(Security $security, Snowtrick $snowtrick, Request $request)
     {
         $roles = $security->getUser()->getRoles();
 
@@ -124,7 +134,11 @@ class SnowtrickController extends AbstractController
         if ($form->isSubmitted() && $form->isvalid()) {
             $this->em->flush();
             $this->addFlash('success', 'Edited with success!');
-            return $this->redirectToRoute("member.snowtrick.index");
+            if(in_array("ROLE_ADMIN", $roles)) {
+                return $this->redirectToRoute("admin.snowtrick.index");
+            } else {
+                return $this->redirectToRoute("member.snowtrick.index");
+            }
         }
 
         return $this->render('member/snowtricks/edit.html.twig', [
@@ -139,12 +153,21 @@ class SnowtrickController extends AbstractController
      * @param Request
      * @return Response
      */
-    public function deleteAction(Snowtrick $snowtrick, Request $request) {
-        if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $request->get('_token'))) {
-            $this->em->remove($snowtrick);
-            $this->addFlash('success', 'Deleted with success!');
-            $this->em->flush();
+    public function deleteAction(Snowtrick $snowtrick, Request $request, Security $security) {
+
+        $roles = $security->getUser()->getRoles();
+        $username = $security->getUser()->getUsername();
+
+        if(in_array("ROLE_ADMIN", $roles) || in_array("ROLE_MEMBER", $roles) && $snowtrick->getAuthor() == $username ) {
+            if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $request->get('_token'))) {
+                $this->em->remove($snowtrick);
+                $this->addFlash('success', 'Deleted with success!');
+                $this->em->flush();
+                return $this->redirectToRoute('admin.snowtrick.index');
+            }
+        } else {
+            $this->addFlash('warning', 'You do not have the previlege to remove this post');
+            return $this->redirectToRoute('member.snowtrick.index');
         }
-        return $this->redirectToRoute('member.snowtrick.index');
     }
 }
