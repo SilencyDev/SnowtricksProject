@@ -52,6 +52,17 @@ class SnowtrickRepository extends ServiceEntityRepository
     /**
      * @return Snowtrick[]
      */
+    public function findAllVisibleDesc(): array
+    {
+        return $this->findVisibleQuery()
+            ->orderBy('s.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Snowtrick[]
+     */
     public function findMyTricks(): array
     {
         return $this->createQueryBuilder('s')

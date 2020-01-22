@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,11 +16,63 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, Security $security)
     {
         parent::__construct($registry, Comment::class);
+        $this->security = $security;
     }
 
+    private function findVisibleQuery(): QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.validated = 1');
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function findAllInvisible(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.validated = false')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function findAllVisible(): array
+    {
+        return $this->findVisibleQuery()
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function findAllVisibleFromTrick(int $snowtrickId): array
+    {
+        return $this->findVisibleQuery()
+            ->andWhere('c.snowtrick =  :snowtrick')
+            ->setParameter('snowtrick', $snowtrickId)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function findMyComments(): array
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.author = :user')
+            ->orderBy('c.id', 'DESC')
+            ->setParameter('user', $this->security->getUser()->getUsername())
+            ->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */

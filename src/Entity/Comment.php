@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -19,16 +20,23 @@ class Comment
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Content;
+    private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\user")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="username")
+     * @ORM\Column(type="string", length=100)
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\snowtrick")
+     * @ORM\Column(type="boolean")
+     */
+    private $validated;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="id")
+     * @ORM\Column(type="integer")
      * @ORM\JoinColumn(nullable=false)
      */
     private $snowtrick;
@@ -40,34 +48,46 @@ class Comment
 
     public function getContent(): ?string
     {
-        return $this->Content;
+        return $this->content;
     }
 
-    public function setContent(string $Content): self
+    public function setContent(string $content): self
     {
-        $this->Content = $Content;
+        $this->Content = $content;
 
         return $this;
     }
 
-    public function getAuthor(): ?user
+    public function getAuthor(): ?string
     {
         return $this->author;
     }
 
-    public function setAuthor(?user $author): self
+    public function setAuthor(string $author): self
     {
         $this->author = $author;
 
         return $this;
     }
 
-    public function getSnowtrick(): ?snowtrick
+    public function getValidated(): ?Bool
+    {
+        return $this->validated;
+    }
+
+    public function setValidated($validated): self
+    {
+        $this->validated = $validated;
+
+        return $this;
+    }
+
+    public function getSnowtrick(): ?int
     {
         return $this->snowtrick;
     }
 
-    public function setSnowtrick(?snowtrick $snowtrick): self
+    public function setSnowtrick(int $snowtrick): self
     {
         $this->snowtrick = $snowtrick;
 
