@@ -23,9 +23,7 @@ class Comment
     private $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="username")
-     * @ORM\Column(type="string", length=100)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      */
     private $author;
 
@@ -35,9 +33,7 @@ class Comment
     private $validated;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="id")
-     * @ORM\Column(type="integer")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="comments")
      */
     private $snowtrick;
 
@@ -53,17 +49,17 @@ class Comment
 
     public function setContent(string $content): self
     {
-        $this->Content = $content;
+        $this->content = $content;
 
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
 
-    public function setAuthor(string $author): self
+    public function setAuthor(User $author): self
     {
         $this->author = $author;
 
@@ -82,12 +78,12 @@ class Comment
         return $this;
     }
 
-    public function getSnowtrick(): ?int
+    public function getSnowtrick(): ?Snowtrick
     {
         return $this->snowtrick;
     }
 
-    public function setSnowtrick(int $snowtrick): self
+    public function setSnowtrick(Snowtrick $snowtrick): self
     {
         $this->snowtrick = $snowtrick;
 

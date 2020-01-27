@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Snowtrick;
 use App\Entity\Comment;
+use App\Entity\Snowtrick;
 use App\Form\SnowtrickType;
+use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,16 +20,16 @@ class SnowtrickController extends AbstractController
     /**
      * @var SnowtrickRepository
      */
-    private $repository;
+    private $snowtrickRepository;
 
     /**
      * @var CommentRepository
      */
     private $commentRepository;
 
-    public function __construct(SnowtrickRepository $repository, CommentRepository $commentRepository, ObjectManager $em)
+    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, ObjectManager $em)
     {
-        $this->repository = $repository;
+        $this->snowtrickRepository = $snowtrickRepository;
         $this->commentRepository = $commentRepository;
         $this->em = $em;
     }
@@ -39,7 +40,7 @@ class SnowtrickController extends AbstractController
      */
     public function indexAction(): Response
     {
-        $snowtricks = $this->repository->findAllVisible();
+        $snowtricks = $this->snowtrickRepository->findAllVisible();
         return $this->render("snowtricks/index.html.twig", [
             'current_menu' => 'snowtricks',
             'snowtricks' => $snowtricks
@@ -52,7 +53,7 @@ class SnowtrickController extends AbstractController
      */
     public function indexMemberAction()
     {
-        $snowtricks = $this->repository->findMyTricks();
+        $snowtricks = $this->snowtrickRepository->findMyTricks();
         return $this->render('member/snowtricks/index.html.twig', compact("snowtricks"));
     }
 
@@ -62,8 +63,8 @@ class SnowtrickController extends AbstractController
      */
     public function indexAdminAction()
     {
-        $snowtricks = $this->repository->findAllVisibleDesc();
-        $snowtricksToValidate = $this->repository->findAllInvisible();
+        $snowtricks = $this->snowtrickRepository->findAllVisibleDesc();
+        $snowtricksToValidate = $this->snowtrickRepository->findAllInvisible();
         return $this->render('admin/snowtricks/index.html.twig', compact("snowtricks","snowtricksToValidate"));
     }
 
@@ -73,21 +74,30 @@ class SnowtrickController extends AbstractController
      * @return Response
      */
     public function show(Snowtrick $snowtrick): Response
-    {
-        $comments = $this->commentRepository->findAllVisibleFromTrick($snowtrick->getId());
+    {   
+        $newComment = new Comment();
+
+        $form = $this->createForm(CommentType::class, $newComment, [
+            'action' => $this->generateUrl('member.comment.new', [
+                'id' => $snowtrick->getId()
+            ])
+        ]);
+
+        $comments = $snowtrick->getComments();
         return $this->render('snowtricks/show.html.twig', [
-            'current_menu' => 'snowtricks',
             'snowtrick' => $snowtrick,
-            'comments' => $comments
+            'comments' => $comments,
+            'form' => $form->createView(),
+            'newComment' => $newComment
         ]);
     }
 
     /**
-     * @Route("/member/snowtrick/create", name="member.snowtrick.new")
+     * @Route("/member/snowtrick/new", name="member.snowtrick.new")
      */
     public function newAction(Security $security, Request $request) 
     {
-        $snowtrick = new snowtrick();
+        $snowtrick = new Snowtrick();
 
         $roles = $security->getUser()->getRoles();
 
@@ -101,6 +111,7 @@ class SnowtrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isvalid()) {
+            $snowtrick->setAuthor($security->getUser());
             $this->em->persist($snowtrick);
             $this->addFlash('success', 'Created with success!');
             $this->em->flush();
