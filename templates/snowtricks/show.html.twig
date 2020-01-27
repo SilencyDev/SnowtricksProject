@@ -8,24 +8,37 @@
                 </div>
                 <div class="col-md-4">
                     <h1>{{ snowtrick.title }}</h1>
-                    <h2>by {{ snowtrick.author }}</h2>
+                    <h2>by {{ snowtrick.author.username }}</h2>
                 </div>
             </div>
         </div>
     </div>
     <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-4">
+        <div class="text-justify">
+            <div class="md-4">
                 <p>{{ snowtrick.description }}</p>
             </div>
         </div>
+    </div>
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <div class="container mb-4">
+        {{ include('snowtricks/_form.html.twig') }}
     </div>
     {% for comment in comments %}
         <div class="col-xs-12 col-md-8 col-lg-6">
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">
-                            <p>{{ comment.author }}</p>
+                            <p>{{ comment.author.username }}</p>
                         </h5>
                         <p class="text-primary"> {{ comment.content }}</p>
                     </div>

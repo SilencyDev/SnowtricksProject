@@ -15,13 +15,6 @@ use Symfony\Component\Form\FormEvents;
 
 class SnowtrickType extends AbstractType
 {
-    private $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -33,17 +26,6 @@ class SnowtrickType extends AbstractType
                 'multiple' => true,
                 'expanded' => true
             ]);
-            
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $trick = $event->getData();
-            $form = $event->getForm();
-
-            if(!$trick || null === $trick->getId()) {
-                $form->add('author', HiddenType::class, [
-                    'data' => $this->security->getUser()->getUsername()
-                ]);
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -19,7 +20,6 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
      */
     private $username;
 
@@ -38,6 +38,22 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
+     */
+    private $comments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Snowtrick", mappedBy="author")
+     */
+    private $snowtricks;
+
+    public function __construct() 
+    {
+        $this->comments = new ArrayCollection();
+        $this->snowtricks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -143,5 +159,45 @@ class User implements UserInterface, \Serializable
             $this->password,
             $this->email
             ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * Get the value of comments
+     */ 
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set the value of comments
+     *
+     * @return  self
+     */ 
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of snowtricks
+     */ 
+    public function getSnowtricks()
+    {
+        return $this->snowtricks;
+    }
+
+    /**
+     * Set the value of snowtricks
+     *
+     * @return  self
+     */ 
+    public function setSnowtricks($snowtricks)
+    {
+        $this->snowtricks = $snowtricks;
+
+        return $this;
     }
 }
