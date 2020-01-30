@@ -53,6 +53,11 @@ class Snowtrick
      */
     private $comments;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $file;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -113,6 +118,26 @@ class Snowtrick
     }
 
     /**
+     * Get the value of file
+     */ 
+    public function getFile(): string
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set the value of file
+     *
+     * @return  self
+     */ 
+    public function setFile(string $file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Category[]
      */
     public function getCategories(): Collection
@@ -141,19 +166,14 @@ class Snowtrick
     }
 
     /**
-     * Get the value of comments
+     * @return Collection|Comment[]
      */ 
-    public function getComments()
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
 
-    /**
-     * Set the value of comments
-     *
-     * @return  self
-     */ 
-    public function setComments($comments)
+    public function setComments(Comment $comments) :self
     {
         $this->comments = $comments;
 
