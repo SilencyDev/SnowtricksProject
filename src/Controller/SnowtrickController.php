@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Media;
 use App\Entity\Snowtrick;
 use App\Form\SnowtrickType;
 use App\Form\CommentType;
@@ -51,9 +52,9 @@ class SnowtrickController extends AbstractController
      * @Route("/member/snowtrick", name="member.snowtrick.index")
      * @return Response
      */
-    public function indexMemberAction()
+    public function indexMemberAction(Security $security)
     {
-        $snowtricks = $this->snowtrickRepository->findMyTricks();
+        $snowtricks = $security->getUser()->getSnowtricks();
         return $this->render('member/snowtricks/index.html.twig', compact("snowtricks"));
     }
 
@@ -111,7 +112,21 @@ class SnowtrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isvalid()) {
+
+            $files = $request->files->get('snowtrick')['uploads'];
+
+            foreach($files as $file) {
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+    
+                $file->move(
+                    $uploads_directory,
+                    $filename
+                );
+            }
+            $snowtrick->setFile($filename);
             $snowtrick->setAuthor($security->getUser());
+
             $this->em->persist($snowtrick);
             $this->addFlash('success', 'Created with success!');
             $this->em->flush();
@@ -143,6 +158,20 @@ class SnowtrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isvalid()) {
+            $files = $request->files->get('snowtrick')['uploads'];
+
+            foreach($files as $file) {
+                $uploads_directory = $this->getParameter('uploads_directory');
+                $filename = md5(uniqid()) . '.' . $file->guessExtension();
+    
+                $file->move(
+                    $uploads_directory,
+                    $filename
+                );
+
+                $snowtrick->setFile($filename);
+            }
+
             $this->em->flush();
             $this->addFlash('success', 'Edited with success!');
             if(in_array("ROLE_ADMIN", $roles)) {

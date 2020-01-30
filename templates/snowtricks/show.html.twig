@@ -3,6 +3,7 @@
 {% block body %}
     <div class="jumbotron">
         <div class="container mt-4">
+                <img src="{{ asset('uploads/') ~ snowtrick.file }}">
             <div class="row">
                 <div class="col-md-8">
                 </div>
@@ -20,17 +21,17 @@
             </div>
         </div>
     </div>
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for message in app.flashes('warning') %}
-        <div class="alert alert-danger">
-            {{ message }}
-        </div>
-    {% endfor %}
     <div class="container mb-4">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
         {{ include('snowtricks/_form.html.twig') }}
     </div>
     {% for comment in comments %}

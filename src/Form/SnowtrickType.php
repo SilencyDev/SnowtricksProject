@@ -3,15 +3,14 @@
 namespace App\Form;
 
 use App\Entity\Category;
+use App\Entity\Media;
 use App\Entity\Snowtrick;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\File;
 
 class SnowtrickType extends AbstractType
 {
@@ -25,6 +24,11 @@ class SnowtrickType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => true
+            ])
+            ->add('uploads', FileType::class, [
+                'mapped' => false,
+                'label' => 'Upload image/video',
+                'multiple' => true
             ]);
     }
 
