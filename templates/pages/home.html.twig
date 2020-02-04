@@ -9,7 +9,9 @@
        <div class="row flex">
         {% for snowtrick in snowtricks %}
             <div class="col-xs-12 col-md-8 col-lg-6">
-                <img class="card-img-top" alt="Card image cap" src="{{ asset('uploads/') ~ snowtrick.file }}">
+            {% if snowtrick.files.count > 0 %}
+                <img class="card-img-top" alt="Card image cap" src="{{ asset(snowtrick.files[0].path) }}">
+            {% endif %}    
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">

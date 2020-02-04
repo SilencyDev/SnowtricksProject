@@ -3,14 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\File;
 use App\Entity\Media;
 use App\Entity\Snowtrick;
+use App\Entity\User;
 use App\Form\SnowtrickType;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,7 +57,10 @@ class SnowtrickController extends AbstractController
      */
     public function indexMemberAction(Security $security)
     {
-        $snowtricks = $security->getUser()->getSnowtricks();
+        /** @var User $currentUser */
+        $currentUser = $security->getUser();
+        $snowtricks = $currentUser->getSnowtricks();
+
         return $this->render('member/snowtricks/index.html.twig', compact("snowtricks"));
     }
 
@@ -113,18 +119,27 @@ class SnowtrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isvalid()) {
 
-            $files = $request->files->get('snowtrick')['uploads'];
+            $files = $form->get('uploads')->getData();
 
+            /** @var UploadedFile $file */
             foreach($files as $file) {
-                $uploads_directory = $this->getParameter('uploads_directory');
-                $filename = md5(uniqid()) . '.' . $file->guessExtension();
-    
-                $file->move(
-                    $uploads_directory,
-                    $filename
+                $upload = new File;
+
+                $upload->setName($file->getClientOriginalName());
+
+                $file = $file->move(
+                    $this->getParameter('uploads_directory'),
+                    $upload->getId() . '.' . $file->guessExtension()
                 );
+
+                $upload->setPath('uploads/' . $upload->getId() . '.' . $file->guessExtension());
+
+                $snowtrick->addFile($upload);
+                $this->em->persist($upload);
             }
-            $snowtrick->setFile($filename);
+
+
+
             $snowtrick->setAuthor($security->getUser());
 
             $this->em->persist($snowtrick);

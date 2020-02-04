@@ -54,14 +54,15 @@ class Snowtrick
     private $comments;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="snowtrick")
      */
-    private $file;
+    private $files;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,25 +118,6 @@ class Snowtrick
         return $this;
     }
 
-    /**
-     * Get the value of file
-     */ 
-    public function getFile(): string
-    {
-        return $this->file;
-    }
-
-    /**
-     * Set the value of file
-     *
-     * @return  self
-     */ 
-    public function setFile(string $file): self
-    {
-        $this->file = $file;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Category[]
@@ -176,6 +158,24 @@ class Snowtrick
     public function setComments(Comment $comments) :self
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of files
+     */ 
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    public function addFile(File $file): self
+    {
+        if (!$this->files->contains($file)) {
+            $this->files->add($file);
+            $file->setSnowtrick($this);
+        }
 
         return $this;
     }
