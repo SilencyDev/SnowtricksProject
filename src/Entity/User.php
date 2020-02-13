@@ -146,7 +146,7 @@ class User implements UserInterface, \Serializable
     /**
      * @return Collection|Snowtrick[]
      */
-    public function getSnowtricks(): ?Collection
+    public function getSnowtricks(): Collection
     {
         return $this->snowtricks;
     }
@@ -161,7 +161,7 @@ class User implements UserInterface, \Serializable
     /**
      * @return Collection|Comment[]
      */
-    public function getComments(): ?Collection
+    public function getComments(): Collection
     {
         return $this->comments;
     }

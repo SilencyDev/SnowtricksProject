@@ -24,8 +24,7 @@
                 <td>{{ snowtrick.title }}</td>
                 <td>
                     <a href="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}" class="btn btn-secondary">Edit</a>
-                    <form method="post" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}" class="d-inline-block" onsubmit="return confirm('Confirm delete action ?')">
-                    <input type="hidden" name="_method" value="DELETE">
+                    <form method="post" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}" class="d-inline-block" onsubmit="return confirm('Confirm delete action ?')"><input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">
                     <button class="btn btn-danger">Delete</button>
                     </form>

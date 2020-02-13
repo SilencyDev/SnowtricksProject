@@ -23,6 +23,11 @@ class File
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $realPath;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $name;
 
     /**
@@ -80,6 +85,26 @@ class File
     public function setSnowtrick($snowtrick)
     {
         $this->snowtrick = $snowtrick;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of realPath
+     */ 
+    public function getRealPath()
+    {
+        return $this->realPath;
+    }
+
+    /**
+     * Set the value of realPath
+     *
+     * @return  self
+     */ 
+    public function setRealPath($realPath)
+    {
+        $this->realPath = $realPath;
 
         return $this;
     }

@@ -42,7 +42,7 @@ class Comment
         return $this->id;
     }
 
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -66,7 +66,7 @@ class Comment
         return $this;
     }
 
-    public function getValidated(): ?Bool
+    public function getValidated(): Bool
     {
         return $this->validated;
     }
@@ -78,7 +78,7 @@ class Comment
         return $this;
     }
 
-    public function getSnowtrick(): ?Snowtrick
+    public function getSnowtrick(): Snowtrick
     {
         return $this->snowtrick;
     }

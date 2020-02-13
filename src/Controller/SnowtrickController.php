@@ -173,22 +173,31 @@ class SnowtrickController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isvalid()) {
-            $files = $request->files->get('snowtrick')['uploads'];
 
+            $files = $form->get('files')->getData();
+
+            /** @var UploadedFile $file */
             foreach($files as $file) {
-                $uploads_directory = $this->getParameter('uploads_directory');
-                $filename = md5(uniqid()) . '.' . $file->guessExtension();
-    
-                $file->move(
-                    $uploads_directory,
-                    $filename
+                $upload = new File;
+
+                $upload->setName($file->getClientOriginalName());
+
+                $file = $file->move(
+                    $this->getParameter('uploads_directory'),
+                    $upload->getId() . '.' . $file->guessExtension()
                 );
 
-                $snowtrick->setFile($filename);
+                $upload->setPath('uploads/' . $upload->getId() . '.' . $file->guessExtension());
+                $upload->setRealPath($file->getRealPath());
+
+                $snowtrick->addFile($upload);
+                $this->em->persist($upload);
             }
 
-            $this->em->flush();
+            $this->em->persist($snowtrick);
             $this->addFlash('success', 'Edited with success!');
+            $this->em->flush();
+            
             if(in_array("ROLE_ADMIN", $roles)) {
                 return $this->redirectToRoute("admin.snowtrick.index");
             } else {
