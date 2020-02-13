@@ -49,12 +49,12 @@ class Snowtrick
     private $categories;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="snowtrick")
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="snowtrick", cascade={"remove"})
      */
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="snowtrick")
+     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="snowtrick", cascade={"remove"})
      */
     private $files;
 
@@ -65,7 +65,7 @@ class Snowtrick
         $this->files = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -94,7 +94,7 @@ class Snowtrick
         return $this;
     }
 
-    public function getAuthor(): ?User
+    public function getAuthor(): User
     {
         return $this->author;
     }
@@ -106,7 +106,7 @@ class Snowtrick
         return $this;
     }
 
-    public function getValidated(): ?bool
+    public function getValidated(): bool
     {
         return $this->validated;
     }
@@ -150,7 +150,7 @@ class Snowtrick
     /**
      * @return Collection|Comment[]
      */ 
-    public function getComments(): ?Collection
+    public function getComments(): Collection
     {
         return $this->comments;
     }
