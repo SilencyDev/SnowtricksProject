@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\File;
-use App\Entity\Media;
 use App\Entity\Snowtrick;
 use App\Entity\User;
 use App\Form\SnowtrickType;
@@ -119,7 +118,7 @@ class SnowtrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isvalid()) {
 
-            $files = $form->get('uploads')->getData();
+            $files = $form->get('files')->getData();
 
             /** @var UploadedFile $file */
             foreach($files as $file) {
@@ -133,12 +132,11 @@ class SnowtrickController extends AbstractController
                 );
 
                 $upload->setPath('uploads/' . $upload->getId() . '.' . $file->guessExtension());
+                $upload->setRealPath($file->getRealPath());
 
                 $snowtrick->addFile($upload);
                 $this->em->persist($upload);
             }
-
-
 
             $snowtrick->setAuthor($security->getUser());
 

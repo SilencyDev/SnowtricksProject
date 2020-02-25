@@ -2,7 +2,7 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        from_database:
+        users:
             entity:
                 class: App\Entity\User
                 property: email
@@ -14,6 +14,7 @@ security:
             anonymous: true
             form_login:
                 check_path: login
+                username_parameter: _email
             logout:
                 path: /logout
                 target: /
