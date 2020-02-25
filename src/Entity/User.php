@@ -25,7 +25,7 @@ class User implements UserInterface, \Serializable
     private $username;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="json")
      */
     private $roles = [];
 
@@ -41,6 +41,11 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $resetToken;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
      */
     private $comments;
@@ -54,6 +59,7 @@ class User implements UserInterface, \Serializable
     {
         $this->comments = new ArrayCollection();
         $this->snowtricks = new ArrayCollection();
+        $this->roles = ['ROLE_MEMBER'];
     }
 
     public function getId(): ?int
@@ -83,13 +89,7 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return array($roles);
+        return $this->roles;
     }
 
     public function setRoles(array $roles): self
@@ -121,7 +121,7 @@ class User implements UserInterface, \Serializable
 
     public function setEmail(string $email): self
     {
-        $this->username = $email;
+        $this->email = $email;
 
         return $this;
     }
@@ -190,5 +190,25 @@ class User implements UserInterface, \Serializable
             $this->password,
             $this->email
             ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * Get the value of resetToken
+     */ 
+    public function getResetToken()
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * Set the value of resetToken
+     *
+     * @return  self
+     */ 
+    public function setResetToken($resetToken)
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
     }
 }
