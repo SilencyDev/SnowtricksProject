@@ -141,8 +141,10 @@ class SnowtrickController extends AbstractController
             $snowtrick->setAuthor($security->getUser());
 
             $this->em->persist($snowtrick);
-            $this->addFlash('success', 'Created with success!');
             $this->em->flush();
+
+            $this->addFlash('success', 'Created with success!');
+
             return $this->redirectToRoute("member.snowtrick.index");
         }
         return $this->render('member/snowtricks/new.html.twig', [
@@ -193,8 +195,9 @@ class SnowtrickController extends AbstractController
             }
 
             $this->em->persist($snowtrick);
-            $this->addFlash('success', 'Edited with success!');
             $this->em->flush();
+
+            $this->addFlash('success', 'Edited with success!');
             
             if(in_array("ROLE_ADMIN", $roles)) {
                 return $this->redirectToRoute("admin.snowtrick.index");
@@ -223,8 +226,10 @@ class SnowtrickController extends AbstractController
         if(in_array("ROLE_ADMIN", $roles) || in_array("ROLE_MEMBER", $roles) && $snowtrick->getAuthor() == $username ) {
             if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $request->get('_token'))) {
                 $this->em->remove($snowtrick);
-                $this->addFlash('success', 'Deleted with success!');
                 $this->em->flush();
+
+                $this->addFlash('success', 'Deleted with success!');
+                
                 return $this->redirectToRoute('admin.snowtrick.index');
             }
         } else {

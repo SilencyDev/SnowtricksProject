@@ -22,16 +22,6 @@
         </div>
     </div>
     <div class="container mb-4">
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
-        {% for message in app.flashes('warning') %}
-            <div class="alert alert-danger">
-                {{ message }}
-            </div>
-        {% endfor %}
         {{ include('snowtricks/_form.html.twig') }}
     </div>
     {% for comment in comments %}
