@@ -41,11 +41,6 @@ class User implements UserInterface, \Serializable
     private $email;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $resetToken;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
      */
     private $comments;
@@ -55,11 +50,17 @@ class User implements UserInterface, \Serializable
      */
     private $snowtricks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Token", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $tokens;
+
     public function __construct() 
     {
         $this->comments = new ArrayCollection();
         $this->snowtricks = new ArrayCollection();
         $this->roles = ['ROLE_MEMBER'];
+        $this->tokens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,21 +194,32 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Get the value of resetToken
-     */ 
-    public function getResetToken()
+     * @return Collection|Token[]
+     */
+    public function getTokens(): Collection
     {
-        return $this->resetToken;
+        return $this->tokens;
     }
 
-    /**
-     * Set the value of resetToken
-     *
-     * @return  self
-     */ 
-    public function setResetToken($resetToken)
+    public function addToken(Token $token): self
     {
-        $this->resetToken = $resetToken;
+        if (!$this->tokens->contains($token)) {
+            $this->tokens[] = $token;
+            $token->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeToken(Token $token): self
+    {
+        if ($this->tokens->contains($token)) {
+            $this->tokens->removeElement($token);
+            // set the owning side to null (unless already changed)
+            if ($token->getUser() === $this) {
+                $token->setUser(null);
+            }
+        }
 
         return $this;
     }
