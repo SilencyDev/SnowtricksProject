@@ -3,7 +3,9 @@
 {% block body %}
     <div class="jumbotron">
         <div class="container mt-4">
+            {% if snowtrick.files is defined %}
                 <img src="{{ asset(snowtrick.files[0].path) }}">
+            {% endif %}
             <div class="row">
                 <div class="col-md-8">
                 </div>
