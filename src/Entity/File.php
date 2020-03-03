@@ -31,7 +31,7 @@ class File
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="files")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="files", cascade={"persist"})
      */
     private $snowtrick;
 

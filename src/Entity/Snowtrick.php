@@ -54,7 +54,7 @@ class Snowtrick
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="snowtrick", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="snowtrick", cascade={"persist","remove"})
      */
     private $files;
 
