@@ -10,6 +10,7 @@ use App\Form\SnowtrickType;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
+use App\Repository\FileRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -159,7 +160,7 @@ class SnowtrickController extends AbstractController
      * @param Request
      * @return Response
      */
-    public function editAction(Security $security, Snowtrick $snowtrick, Request $request)
+    public function editAction(Security $security, Snowtrick $snowtrick, Request $request, FileRepository $fileRepository)
     {
         $roles = $security->getUser()->getRoles();
 
@@ -175,6 +176,14 @@ class SnowtrickController extends AbstractController
         if ($form->isSubmitted() && $form->isvalid()) {
 
             $files = $form->get('files')->getData();
+
+            foreach ($snowtrick->getFiles() as $fileToDelete) {
+                unlink($fileToDelete->getRealPath());
+
+                $this->em->remove($fileRepository->findOneById($fileToDelete->getId()));
+            }
+
+            $this->em->flush();
 
             /** @var UploadedFile $file */
             foreach($files as $file) {
