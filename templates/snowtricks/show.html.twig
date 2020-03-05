@@ -4,7 +4,7 @@
     <div class="jumbotron">
         <div class="container mt-4">
             {% if snowtrick.files is defined %}
-                <img src="{{ asset(snowtrick.files[0].path) }}">
+                <img src="{{ asset(snowtrick.files[0].path) }}" class="rounded" style="max-width: 100%;">
             {% endif %}
             <div class="row">
                 <div class="col-md-8">
@@ -23,7 +23,20 @@
             </div>
         </div>
     </div>
-    <div class="container mb-4">
+    <div class="container mt-4">
+        <div class="text-center">
+            <button href="#collapseShow" data-toggle="collapse" class="btn btn-secondary">
+                Show/hide medias
+            </button>
+        </div>
+        <div class="collapse mt-4" id="collapseShow" style="overflow-x: scroll; white-space: nowrap;">
+            {% for key in snowtrick.files|keys|slice(1) %}
+                    <img src="{{ asset(snowtrick.files[key].path) }}" class="rounded" style="max-width: 100%;">
+                    {# <video src="{{ asset(snowtrick.files[key].path) }}" controls> #}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="container mb-4 mt-4">
         {{ include('snowtricks/_form.html.twig') }}
     </div>
     {% for comment in comments %}
