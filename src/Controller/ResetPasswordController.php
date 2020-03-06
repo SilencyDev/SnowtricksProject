@@ -56,11 +56,9 @@ class ResetPasswordController extends AbstractController
                             'text/html'
                         );
                     $mailer->send($message);
-
-                    $this->addFlash('success', 'email sent !');
             }
+            $this->addFlash('success', 'email sent !');
         }
-
         return $this->render('security/forgotpassword.html.twig', [
             'form' => $form->createView()
         ]);
@@ -74,49 +72,50 @@ class ResetPasswordController extends AbstractController
      * @param TokenRepository $tokenRepository
      * @return Response
      */
-    public function resetPassword(Request $request, Token $token, TokenRepository $tokenRepository, UserPasswordEncoderInterface $userPasswordEncoderInterface)
+    public function resetPassword(Request $request, ?Token $token = null, TokenRepository $tokenRepository, UserPasswordEncoderInterface $userPasswordEncoderInterface)
     {
-        if ($token->isValid()) {
-            $user = $token->getUser();
-
-            $form = $this->createForm(ResetPasswordType::class, $user);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                if ($token->isValid()) {
-                    $user->setPassword(
-                        $userPasswordEncoderInterface->encodePassword(
-                            $user,
-                            $form->get('password')->getData()
-                        )
-                    );
-                    $tokens = $tokenRepository->findBy([
-                        'user' => $user
-                    ]);
-
-                    foreach ($tokens as $atoken) {
-                        $this->em->remove($atoken);
-                    }
-
-                    $this->em->flush();
-
-                    $this->addFlash('success', 'Password have been changed successfully');
-
-                    return $this->redirectToRoute('login');
-
-                } else {
-                    $this->addFlash('warning', "your link is no longer valid");
-
-                    $this->em->remove($atoken);
-                    $this->em->flush();
-                }
-            }
-            return $this->render('security/resetpassword.html.twig', [
-                'form' => $form->createView()
-            ]);
-        } else {
+        if ($token === null) {
             $this->addFlash('warning', 'Token invalid');
-            return $this->redirectToRoute('Home');
+            return $this->redirectToRoute('home');
         }
+
+        if (!$token->isValid()) {
+            $this->em->remove($token);
+            $this->em->flush();
+
+            $this->addFlash('warning', 'Token invalid');
+            return $this->redirectToRoute('home');
+        }
+
+        $user = $token->getUser();
+
+        $form = $this->createForm(ResetPasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $userPasswordEncoderInterface->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+            $tokens = $tokenRepository->findBy([
+                'user' => $user
+            ]);
+
+            foreach ($tokens as $atoken) {
+                $this->em->remove($atoken);
+            }
+
+            $this->em->flush();
+
+            $this->addFlash('success', 'Password have been changed successfully');
+
+            return $this->redirectToRoute('login');
+
+            }
+        return $this->render('security/resetpassword.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

@@ -33,6 +33,21 @@ class SnowtrickType extends AbstractType
 
             if($trick || null === $trick->getFiles()) {
                 $form->add('files', FileType::class, [
+                   /* 'constraints' => [
+                        new File([
+                            'mimeTypes' => [
+                                'image/gif',
+                                'image/png',
+                                'image/jpeg',
+                                'image/bmp',
+                                'image/webp',
+                                'video/webm', 
+                                'video/ogg',
+                                'video/mp4',
+                            ],
+                            'mimeTypesMessage' => 'please upload a valid format',
+                        ])
+                    ], */
                     'mapped' => false,
                     'label' => 'Upload image/video',
                     'multiple' => true,

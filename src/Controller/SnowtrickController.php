@@ -134,6 +134,7 @@ class SnowtrickController extends AbstractController
 
                 $upload->setPath('uploads/' . $upload->getId() . '.' . $file->guessExtension());
                 $upload->setRealPath($file->getRealPath());
+                $upload->setType($file->getMimeType());
 
                 $snowtrick->addFile($upload);
                 $this->em->persist($upload);
@@ -198,6 +199,7 @@ class SnowtrickController extends AbstractController
 
                 $upload->setPath('uploads/' . $upload->getId() . '.' . $file->guessExtension());
                 $upload->setRealPath($file->getRealPath());
+                $upload->setType(explode("/",$file->getMimeType())[0]);
 
                 $snowtrick->addFile($upload);
                 $this->em->persist($upload);

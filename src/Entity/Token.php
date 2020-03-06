@@ -83,6 +83,6 @@ class Token
     {
         $interval = new \DateInterval('PT15M');
 
-        return $this->creationdate->add($interval) >= new \DateTime();
+        return $this->getCreationdate()->add($interval) >= new \DateTime();
     }
 }
