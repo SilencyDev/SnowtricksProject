@@ -7,8 +7,8 @@
             <h2>by {{ snowtrick.author.username }}</h2>
         </div>
         <div class="container mt-4">
-            {% if snowtrick.files is defined %}
-                <img src="{{ asset(snowtrick.files[0].path) }}" class="rounded" style="max-width: 100%;">
+            {% if snowtrick.mainpicture != NULL %}
+                <img src="{{ asset(snowtrick.mainpicture.path) }}" class="rounded" style="max-width: 100%;">
             {% endif %}
         </div>
     </div>
@@ -26,12 +26,8 @@
             </button>
         </div>
         <div class="collapse mt-4" id="collapseShow" style="overflow-x: scroll; white-space: nowrap;">
-            {% for file in snowtrick.files|slice(1) %}
-                {% if file.type == 'image' %}
-                    <img src="{{ asset(file.path) }}" class="rounded" style="max-width: 100%;">
-                {% else %}
-                    <video src="{{ asset(file.path) }}" controls>
-                {% endif %}
+            {% for picture in snowtrick.pictures %}
+                    <img src="{{ asset(picture.path) }}" class="rounded" style="max-width: 100%;">
             {% endfor %}
         </div>
     </div>

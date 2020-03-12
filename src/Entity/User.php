@@ -55,7 +55,7 @@ class User implements UserInterface, \Serializable
      */
     private $tokens;
 
-    public function __construct() 
+    public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->snowtricks = new ArrayCollection();

@@ -3,17 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\File;
+use App\Entity\Mainpicture;
+use App\Entity\picture;
 use App\Entity\Snowtrick;
 use App\Entity\User;
 use App\Form\SnowtrickType;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
-use App\Repository\FileRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use App\Repository\PictureRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\picture\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +32,7 @@ class SnowtrickController extends AbstractController
      */
     private $commentRepository;
 
-    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, ObjectManager $em)
+    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, EntityManagerInterface $em)
     {
         $this->snowtrickRepository = $snowtrickRepository;
         $this->commentRepository = $commentRepository;
@@ -119,24 +120,39 @@ class SnowtrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isvalid()) {
 
-            $files = $form->get('files')->getData();
+            $pictures = $form->get('pictures')->getData();
+            $mainpicture = $form->get('mainpicture')->getData();
 
-            /** @var UploadedFile $file */
-            foreach($files as $file) {
-                $upload = new File;
+            $mainUpload = new Mainpicture;
 
-                $upload->setName($file->getClientOriginalName());
+            $mainUpload->setName($mainpicture->getClientOriginalName());
 
-                $file = $file->move(
+            $mainpicture = $mainpicture->move(
+                $this->getParameter('uploads_directory'),
+                $mainUpload->getId() . '.' . $mainpicture->guessExtension()
+            );
+
+            $mainUpload->setPath('uploads/' . $mainUpload->getId() . '.' . $mainpicture->guessExtension());
+            $mainUpload->setRealPath($mainpicture->getRealPath());
+
+            $snowtrick->addMainpicture($mainUpload);
+            $this->em->persist($mainUpload);
+
+            /** @var UploadedFile $picture */
+            foreach($pictures as $picture) {
+                $upload = new Picture;
+
+                $upload->setName($picture->getClientOriginalName());
+
+                $picture = $picture->move(
                     $this->getParameter('uploads_directory'),
-                    $upload->getId() . '.' . $file->guessExtension()
+                    $upload->getId() . '.' . $picture->guessExtension()
                 );
 
-                $upload->setPath('uploads/' . $upload->getId() . '.' . $file->guessExtension());
-                $upload->setRealPath($file->getRealPath());
-                $upload->setType($file->getMimeType());
+                $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
+                $upload->setRealPath($picture->getRealPath());
 
-                $snowtrick->addFile($upload);
+                $snowtrick->addpicture($upload);
                 $this->em->persist($upload);
             }
 
@@ -161,7 +177,7 @@ class SnowtrickController extends AbstractController
      * @param Request
      * @return Response
      */
-    public function editAction(Security $security, Snowtrick $snowtrick, Request $request, FileRepository $fileRepository)
+    public function editAction(Security $security, Snowtrick $snowtrick, Request $request, PictureRepository $pictureRepository)
     {
         $roles = $security->getUser()->getRoles();
 
@@ -176,32 +192,32 @@ class SnowtrickController extends AbstractController
 
         if ($form->isSubmitted() && $form->isvalid()) {
 
-            $files = $form->get('files')->getData();
+            $pictures = $form->get('pictures')->getData();
+            $mainpicture = $form->get('mainpicture')->getData();
 
-            foreach ($snowtrick->getFiles() as $fileToDelete) {
-                unlink($fileToDelete->getRealPath());
+            foreach ($snowtrick->getpictures() as $pictureToDelete) {
+                unlink($pictureToDelete->getRealPath());
 
-                $this->em->remove($fileRepository->findOneById($fileToDelete->getId()));
+                $this->em->remove($pictureRepository->findOneById($pictureToDelete->getId()));
             }
 
             $this->em->flush();
 
-            /** @var UploadedFile $file */
-            foreach($files as $file) {
-                $upload = new File;
+            /** @var UploadedFile $picture */
+            foreach($pictures as $picture) {
+                $upload = new Picture;
 
-                $upload->setName($file->getClientOriginalName());
+                $upload->setName($picture->getClientOriginalName());
 
-                $file = $file->move(
+                $picture = $picture->move(
                     $this->getParameter('uploads_directory'),
-                    $upload->getId() . '.' . $file->guessExtension()
+                    $upload->getId() . '.' . $picture->guessExtension()
                 );
 
-                $upload->setPath('uploads/' . $upload->getId() . '.' . $file->guessExtension());
-                $upload->setRealPath($file->getRealPath());
-                $upload->setType(explode("/",$file->getMimeType())[0]);
+                $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
+                $upload->setRealPath($picture->getRealPath());
 
-                $snowtrick->addFile($upload);
+                $snowtrick->addpicture($upload);
                 $this->em->persist($upload);
             }
 

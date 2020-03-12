@@ -6,7 +6,10 @@ use App\Entity\Category;
 use App\Entity\Snowtrick;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -24,15 +27,26 @@ class SnowtrickType extends AbstractType
                 'class' => Category::class,
                 'choice_label' => 'name',
                 'multiple' => true,
-                'expanded' => true
+                'expanded' => true,
+            ])
+           ->add('videos', CollectionType::class, [
+               'entry_type' => TextType::class,
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $trick = $event->getData();
             $form = $event->getForm();
 
-            if($trick || null === $trick->getFiles()) {
-                $form->add('files', FileType::class, [
+            if ($trick || null === $trick->getMainpicture()) {
+                $form->add('mainpicture', FileType::class, [
+                    'mapped' => false,
+                    'label' => 'Upload a main picture',
+                    'required' => false
+                ]);
+            }
+
+            if ($trick || null === $trick->getPictures()) {
+                $form->add('pictures', FileType::class, [
                    /* 'constraints' => [
                         new File([
                             'mimeTypes' => [
@@ -41,7 +55,7 @@ class SnowtrickType extends AbstractType
                                 'image/jpeg',
                                 'image/bmp',
                                 'image/webp',
-                                'video/webm', 
+                                'video/webm',
                                 'video/ogg',
                                 'video/mp4',
                             ],
@@ -49,11 +63,11 @@ class SnowtrickType extends AbstractType
                         ])
                     ], */
                     'mapped' => false,
-                    'label' => 'Upload image/video',
+                    'label' => 'Upload a picture',
                     'multiple' => true,
                     'required' => false
                 ]);
-            } 
+            }
         });
     }
 

@@ -7,7 +7,7 @@ use App\Form\ForgotPasswordType;
 use App\Form\ResetPasswordType;
 use App\Repository\TokenRepository;
 use App\Repository\UserRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class ResetPasswordController extends AbstractController
 {
     private $em;
 
-    public function __construct(ObjectManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -31,13 +31,11 @@ class ResetPasswordController extends AbstractController
         $form = $this->createForm(ForgotPasswordType::class);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $user = $userRepository->findOneByEmail($data["email"]);
 
-            if($user !== null) {
-
+            if ($user !== null) {
                 $token = new Token($user);
                 $user->addToken($token);
 
@@ -49,13 +47,14 @@ class ResetPasswordController extends AbstractController
                     ->setTo($data["email"])
                     ->setBody(
                         $this->render(
-                            'mail/resetpassword.html.twig', [
+                            'mail/resetpassword.html.twig',
+                            [
                                 'token' => $token->getValue()
                             ]
-                            ),
-                            'text/html'
-                        );
-                    $mailer->send($message);
+                        ),
+                        'text/html'
+                    );
+                $mailer->send($message);
             }
             $this->addFlash('success', 'email sent !');
         }
@@ -112,8 +111,7 @@ class ResetPasswordController extends AbstractController
             $this->addFlash('success', 'Password have been changed successfully');
 
             return $this->redirectToRoute('login');
-
-            }
+        }
         return $this->render('security/resetpassword.html.twig', [
             'form' => $form->createView()
         ]);

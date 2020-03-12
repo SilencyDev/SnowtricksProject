@@ -16,14 +16,16 @@ class UploadSubscriber implements EventSubscriber
         ];
     }
 
-    public function preRemove(LifecycleEventArgs $args) 
+    public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getObject();
         if (!$entity instanceof Snowtrick) {
             return;
         }
-        foreach ($entity->getFiles() as $file) {
-            unlink($file->getRealPath());
+
+        foreach ($entity->getPictures() as $picture) {
+            unlink($picture->getRealPath());
         };
+        unlink($entity->getMainpicture()->getRealPath());
     }
 }
