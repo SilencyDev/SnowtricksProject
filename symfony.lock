@@ -41,9 +41,6 @@
             "./src/Repository/.gitignore"
         ]
     },
-    "doctrine/doctrine-cache-bundle": {
-        "version": "1.3.5"
-    },
     "doctrine/doctrine-fixtures-bundle": {
         "version": "3.0",
         "recipe": {
@@ -108,9 +105,6 @@
     "egulias/email-validator": {
         "version": "2.1.11"
     },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -125,6 +119,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.3"
+    },
+    "php": {
+        "version": "7.3"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.0.0"
@@ -518,6 +515,9 @@
     },
     "symfony/yaml": {
         "version": "v4.3.5"
+    },
+    "twbs/bootstrap": {
+        "version": "v4.4.1"
     },
     "twig/twig": {
         "version": "v2.12.1"

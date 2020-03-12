@@ -7,14 +7,14 @@ use App\Entity\Snowtrick;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-Class CommentController extends AbstractController
+class CommentController extends AbstractController
 {
     /**
      * @var SnowtrickRepository
@@ -26,7 +26,7 @@ Class CommentController extends AbstractController
      */
     private $commentRepository;
 
-    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, ObjectManager $em)
+    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, EntityManagerInterface $em)
     {
         $this->snowtrickRepository = $snowtrickRepository;
         $this->commentRepository = $commentRepository;
@@ -38,13 +38,13 @@ Class CommentController extends AbstractController
      * @param Snowtrick
      * @param Comment
      */
-    public function newAction(Security $security, Request $request, Snowtrick $snowtrick) 
+    public function newAction(Security $security, Request $request, Snowtrick $snowtrick)
     {
         $newComment = new Comment;
 
         $roles = $security->getUser()->getRoles();
 
-        if(in_array("ROLE_ADMIN", $roles)) {
+        if (in_array("ROLE_ADMIN", $roles)) {
             $newComment->setValidated(true);
         } else {
             $newComment->setValidated(false);

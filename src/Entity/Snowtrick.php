@@ -5,7 +5,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -24,7 +23,7 @@ class Snowtrick
 
     /**
      * @ORM\Column(type="string", length=255)
-     * 
+     *
      */
     private $title;
 
@@ -54,15 +53,26 @@ class Snowtrick
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\File", mappedBy="snowtrick", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="snowtrick", cascade={"persist","remove"})
      */
-    private $files;
+    private $videos;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="snowtrick", cascade={"persist","remove"})
+     */
+    private $pictures;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Mainpicture", mappedBy="snowtrick", cascade={"persist","remove"})
+     */
+    private $mainpicture;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     public function getId(): int
@@ -149,7 +159,7 @@ class Snowtrick
 
     /**
      * @return Collection|Comment[]
-     */ 
+     */
     public function getComments(): Collection
     {
         return $this->comments;
@@ -163,19 +173,66 @@ class Snowtrick
     }
 
     /**
-     * Get the value of files
-     */ 
-    public function getFiles()
+     * @return Collection|Video[]
+     */
+    public function getVideos()
     {
-        return $this->files;
+        return $this->videos;
     }
 
-    public function addFile(File $file): self
+    public function addVideo(Video $video): self
     {
-        if (!$this->files->contains($file)) {
-            $this->files->add($file);
-            $file->setSnowtrick($this);
+        if (!$this->videos->contains($video)) {
+            $this->videos->add($video);
+            $video->setSnowtrick($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
+    }
+
+    public function addPicture(Picture $picture): self
+    {
+        if (!$this->pictures->contains($picture)) {
+            $this->pictures->add($picture);
+            $picture->setSnowtrick($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of mainpicture
+     */
+    public function getMainpicture()
+    {
+        return $this->mainpicture;
+    }
+
+    /**
+     * Set the value of mainpicture
+     *
+     * @return  self
+     */
+    public function setMainpicture($mainpicture)
+    {
+        $this->mainpicture = $mainpicture;
+
+        return $this;
+    }
+
+    public function addMainpicture(Mainpicture $mainpicture): self
+    {
+        
+        $this->mainpicture = $mainpicture;;
+        $mainpicture->setSnowtrick($this);
 
         return $this;
     }

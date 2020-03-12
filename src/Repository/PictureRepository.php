@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\File;
+use App\Entity\Picture;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method File|null find($id, $lockMode = null, $lockVersion = null)
- * @method File|null findOneBy(array $criteria, array $orderBy = null)
- * @method File[]    findAll()
- * @method File[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Picture|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Picture|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Picture[]    findAll()
+ * @method Picture[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class FileRepository extends ServiceEntityRepository
+class PictureRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, File::class);
+        parent::__construct($registry, Picture::class);
     }
 
     /**
-     * @return File[]
+     * @return Picture[]
      */
-    public function findOneById($value): ?File
+    public function findOneById($value): ?Picture
     {
         return $this->createQueryBuilder('f')
             ->andWhere('f.id = :val')
@@ -33,7 +33,7 @@ class FileRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return File[] Returns an array of File objects
+    //  * @return Picture[] Returns an array of Picture objects
     //  */
     /*
     public function findByExampleField($value)
@@ -50,7 +50,7 @@ class FileRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?File
+    public function findOneBySomeField($value): ?Picture
     {
         return $this->createQueryBuilder('f')
             ->andWhere('f.exampleField = :val')

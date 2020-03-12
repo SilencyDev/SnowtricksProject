@@ -9,7 +9,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 class SnowtrickFixture extends Fixture
 {
     public function load(ObjectManager $manager)
-    {   for($i = 0; $i < 10; $i++) {
+    {
+        for ($i = 0; $i < 10; $i++) {
             $snowtrick = new Snowtrick();
             $snowtrick
                 ->setAuthor("Silencydev")

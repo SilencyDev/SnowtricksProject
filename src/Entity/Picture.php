@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\FileRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PictureRepository")
  */
-class File
+class Picture
 {
     /**
      * @ORM\Id()
@@ -31,14 +33,9 @@ class File
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="files", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="pictures")
      */
     private $snowtrick;
-    
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $type;
 
     public function __construct()
     {
@@ -76,7 +73,7 @@ class File
 
     /**
      * Get the value of snowtrick
-     */ 
+     */
     public function getSnowtrick()
     {
         return $this->snowtrick;
@@ -86,7 +83,7 @@ class File
      * Set the value of snowtrick
      *
      * @return  self
-     */ 
+     */
     public function setSnowtrick($snowtrick)
     {
         $this->snowtrick = $snowtrick;
@@ -96,7 +93,7 @@ class File
 
     /**
      * Get the value of realPath
-     */ 
+     */
     public function getRealPath()
     {
         return $this->realPath;
@@ -106,22 +103,10 @@ class File
      * Set the value of realPath
      *
      * @return  self
-     */ 
+     */
     public function setRealPath($realPath)
     {
         $this->realPath = $realPath;
-
-        return $this;
-    }
-
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }
