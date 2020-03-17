@@ -11,6 +11,7 @@ use App\Form\SnowtrickType;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
+use App\Repository\MainpictureRepository;
 use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -123,37 +124,41 @@ class SnowtrickController extends AbstractController
             $pictures = $form->get('pictures')->getData();
             $mainpicture = $form->get('mainpicture')->getData();
 
-            $mainUpload = new Mainpicture;
+            if ($mainpicture !== null) {
+                $mainUpload = new Mainpicture;
 
-            $mainUpload->setName($mainpicture->getClientOriginalName());
+                $mainUpload->setName($mainpicture->getClientOriginalName());
 
-            $mainpicture = $mainpicture->move(
+                $mainpicture = $mainpicture->move(
                 $this->getParameter('uploads_directory'),
                 $mainUpload->getId() . '.' . $mainpicture->guessExtension()
-            );
-
-            $mainUpload->setPath('uploads/' . $mainUpload->getId() . '.' . $mainpicture->guessExtension());
-            $mainUpload->setRealPath($mainpicture->getRealPath());
-
-            $snowtrick->addMainpicture($mainUpload);
-            $this->em->persist($mainUpload);
-
-            /** @var UploadedFile $picture */
-            foreach($pictures as $picture) {
-                $upload = new Picture;
-
-                $upload->setName($picture->getClientOriginalName());
-
-                $picture = $picture->move(
-                    $this->getParameter('uploads_directory'),
-                    $upload->getId() . '.' . $picture->guessExtension()
                 );
 
-                $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
-                $upload->setRealPath($picture->getRealPath());
+                $mainUpload->setPath('uploads/' . $mainUpload->getId() . '.' . $mainpicture->guessExtension());
+                $mainUpload->setRealPath($mainpicture->getRealPath());
 
-                $snowtrick->addpicture($upload);
-                $this->em->persist($upload);
+                $snowtrick->addMainpicture($mainUpload);
+                $this->em->persist($mainUpload);
+            }
+
+            if ($pictures !== null) {
+                /** @var UploadedFile $picture */
+                foreach ($pictures as $picture) {
+                    $upload = new Picture;
+
+                    $upload->setName($picture->getClientOriginalName());
+
+                    $picture = $picture->move(
+                    $this->getParameter('uploads_directory'),
+                    $upload->getId() . '.' . $picture->guessExtension()
+                    );
+
+                    $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
+                    $upload->setRealPath($picture->getRealPath());
+
+                    $snowtrick->addpicture($upload);
+                    $this->em->persist($upload);
+                }
             }
 
             $snowtrick->setAuthor($security->getUser());
@@ -177,7 +182,7 @@ class SnowtrickController extends AbstractController
      * @param Request
      * @return Response
      */
-    public function editAction(Security $security, Snowtrick $snowtrick, Request $request, PictureRepository $pictureRepository)
+    public function editAction(Security $security, Snowtrick $snowtrick, Request $request, PictureRepository $pictureRepository, MainpictureRepository $mainpictureRepository)
     {
         $roles = $security->getUser()->getRoles();
 
@@ -195,30 +200,53 @@ class SnowtrickController extends AbstractController
             $pictures = $form->get('pictures')->getData();
             $mainpicture = $form->get('mainpicture')->getData();
 
-            foreach ($snowtrick->getpictures() as $pictureToDelete) {
-                unlink($pictureToDelete->getRealPath());
-
-                $this->em->remove($pictureRepository->findOneById($pictureToDelete->getId()));
+            if ($snowtrick->getPictures() || $pictures === NULL) {
+                foreach ($snowtrick->getpictures() as $pictureToDelete) {
+                    unlink($pictureToDelete->getRealPath());
+                    $this->em->remove($pictureToDelete);
+                }
             }
 
-            $this->em->flush();
+            if ($snowtrick->getMainpicture() || $mainpicture === NULL ) {
+                unlink($snowtrick->getMainpicture()->getRealPath());
+                $this->em->remove($snowtrick->getMainpicture());
+            }
 
-            /** @var UploadedFile $picture */
-            foreach($pictures as $picture) {
-                $upload = new Picture;
+            if ($mainpicture !== NULL) {
+                $mainUpload = new Mainpicture;
 
-                $upload->setName($picture->getClientOriginalName());
+                $mainUpload->setName($mainpicture->getClientOriginalName());
+    
+                $mainpicture = $mainpicture->move(
+                    $this->getParameter('uploads_directory'),
+                    $mainUpload->getId() . '.' . $mainpicture->guessExtension()
+                );
+    
+                $mainUpload->setPath('uploads/' . $mainUpload->getId() . '.' . $mainpicture->guessExtension());
+                $mainUpload->setRealPath($mainpicture->getRealPath());
+    
+                $snowtrick->addMainpicture($mainUpload);
+                $this->em->persist($mainUpload);
+            }
 
-                $picture = $picture->move(
+            if ($pictures !== null) {
+                /** @var UploadedFile $picture */
+                foreach ($pictures as $picture) {
+                    $upload = new Picture;
+
+                    $upload->setName($picture->getClientOriginalName());
+
+                    $picture = $picture->move(
                     $this->getParameter('uploads_directory'),
                     $upload->getId() . '.' . $picture->guessExtension()
                 );
 
-                $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
-                $upload->setRealPath($picture->getRealPath());
+                    $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
+                    $upload->setRealPath($picture->getRealPath());
 
-                $snowtrick->addpicture($upload);
-                $this->em->persist($upload);
+                    $snowtrick->addpicture($upload);
+                    $this->em->persist($upload);
+                }
             }
 
             $this->em->persist($snowtrick);

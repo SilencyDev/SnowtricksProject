@@ -28,7 +28,7 @@ class Video
     private $url;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="videos", cascade={"persist"})
      */
     private $snowtrick;
 
