@@ -53,17 +53,17 @@ class Snowtrick
     private $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="snowtrick", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="snowtrick", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $pictures;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Mainpicture", mappedBy="snowtrick", cascade={"persist","remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Mainpicture", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $mainpicture;
 

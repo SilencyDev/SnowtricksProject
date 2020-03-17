@@ -24,8 +24,8 @@ class MainpictureRepository extends ServiceEntityRepository
      */
     public function findOneById($value): ?Mainpicture
     {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.id = :val')
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

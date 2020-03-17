@@ -23,9 +23,15 @@ class UploadSubscriber implements EventSubscriber
             return;
         }
 
-        foreach ($entity->getPictures() as $picture) {
-            unlink($picture->getRealPath());
-        };
-        unlink($entity->getMainpicture()->getRealPath());
+        if ($entity->getPictures() !== NULL) {
+            foreach ($entity->getPictures() as $picture) {
+                unlink($picture->getRealPath());
+            }
+        }
+
+        if ($entity->getMainpicture() !== NULL) {
+            unlink($entity->getMainpicture()->getRealPath());
+        }
+        return;
     }
 }
