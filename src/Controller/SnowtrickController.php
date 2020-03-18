@@ -4,9 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Mainpicture;
-use App\Entity\picture;
+use App\Entity\Picture;
 use App\Entity\Snowtrick;
 use App\Entity\User;
+use App\Entity\Video;
 use App\Form\SnowtrickType;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
@@ -123,6 +124,7 @@ class SnowtrickController extends AbstractController
 
             $pictures = $form->get('pictures')->getData();
             $mainpicture = $form->get('mainpicture')->getData();
+            $videos = $form->get('videos')->getData();
 
             if ($mainpicture !== null) {
                 $mainUpload = new Mainpicture;
@@ -141,6 +143,17 @@ class SnowtrickController extends AbstractController
                 $this->em->persist($mainUpload);
             }
 
+            if ($videos !== null) {
+                foreach ($videos as $video) {
+                    $videoUpload = new Video;
+
+                    $videoUpload->setUrl($video);
+
+                    $snowtrick->addVideo($videoUpload);
+                    $this->em->persist($videoUpload);
+                }
+            }
+
             if ($pictures !== null) {
                 /** @var UploadedFile $picture */
                 foreach ($pictures as $picture) {
@@ -156,7 +169,7 @@ class SnowtrickController extends AbstractController
                     $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
                     $upload->setRealPath($picture->getRealPath());
 
-                    $snowtrick->addpicture($upload);
+                    $snowtrick->addPicture($upload);
                     $this->em->persist($upload);
                 }
             }
@@ -182,7 +195,7 @@ class SnowtrickController extends AbstractController
      * @param Request
      * @return Response
      */
-    public function editAction(Security $security, Snowtrick $snowtrick, Request $request, PictureRepository $pictureRepository, MainpictureRepository $mainpictureRepository)
+    public function editAction(Security $security, Snowtrick $snowtrick, Request $request)
     {
         $roles = $security->getUser()->getRoles();
 
@@ -199,17 +212,24 @@ class SnowtrickController extends AbstractController
 
             $pictures = $form->get('pictures')->getData();
             $mainpicture = $form->get('mainpicture')->getData();
+            $videos = $form->get('videos')->getData();
 
-            if ($snowtrick->getPictures() || $pictures === NULL) {
+            if ($snowtrick->getPictures()[0] !== NULL && file_exists($snowtrick->getPictures()[0]->getRealPath())) {
                 foreach ($snowtrick->getpictures() as $pictureToDelete) {
                     unlink($pictureToDelete->getRealPath());
                     $this->em->remove($pictureToDelete);
                 }
             }
 
-            if ($snowtrick->getMainpicture() || $mainpicture === NULL ) {
+            if ($snowtrick->getMainpicture() !== NULL && file_exists($snowtrick->getMainpicture()->getRealPath())) {
                 unlink($snowtrick->getMainpicture()->getRealPath());
                 $this->em->remove($snowtrick->getMainpicture());
+            }
+
+            if ($snowtrick->getVideos()[0] !== NULL) {
+                foreach ($snowtrick->getVideos() as $videoToDelete) {
+                    $this->em->remove($videoToDelete);
+                }
             }
 
             if ($mainpicture !== NULL) {
@@ -244,8 +264,19 @@ class SnowtrickController extends AbstractController
                     $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
                     $upload->setRealPath($picture->getRealPath());
 
-                    $snowtrick->addpicture($upload);
+                    $snowtrick->addPicture($upload);
                     $this->em->persist($upload);
+                }
+            }
+
+            if ($videos !== null) {
+                foreach ($videos as $video) {
+                    $videoUpload = new Video;
+
+                    $videoUpload->setUrl($video);
+
+                    $snowtrick->addVideo($videoUpload);
+                    $this->em->persist($videoUpload);
                 }
             }
 
@@ -278,7 +309,7 @@ class SnowtrickController extends AbstractController
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
 
-        if(in_array("ROLE_ADMIN", $roles) || in_array("ROLE_MEMBER", $roles) && $snowtrick->getAuthor() == $username ) {
+        if(in_array("ROLE_ADMIN", $roles) || ($snowtrick->getAuthor() == $username) ) {
             if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $request->get('_token'))) {
                 $this->em->remove($snowtrick);
                 $this->em->flush();

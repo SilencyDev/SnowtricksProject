@@ -31,6 +31,12 @@ class SnowtrickType extends AbstractType
             ])
            ->add('videos', CollectionType::class, [
                'entry_type' => TextType::class,
+               'label' => false,
+               'allow_add' => true,
+               'prototype' => true,
+               'delete_empty' => true,
+               'required' => false,
+               'mapped' => false,
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

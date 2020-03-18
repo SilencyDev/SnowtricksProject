@@ -1,5 +1,26 @@
 {{ form_start(form) }}
-{{ form_rest(form) }}
-{{ form_row(form.videos) }}
-<button class="btn btn-primary">{{ button|default('Save') }}</button>
+{{ form_row(form.title) }}
+{{ form_row(form.description) }}
+{{ form_row(form.categories) }}
+    <p>Videos</p>
+    <ul id="videos-fields-list"
+        data-prototype="{{ form_widget(form.videos.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.videos|length }}">
+    {% for textField in form.videos %}
+        <li>
+            {{ form_errors(textField) }}
+            {{ form_widget(textField) }}
+        </li>
+    {% endfor %}
+    </ul>
+
+    <button type="button"
+        class="add-another-collection-widget btn btn-secondary mb-4"
+        data-list-selector="#videos-fields-list">Add a embed Youtube Url</button>
+{{ form_row(form.mainpicture) }}
+{{ form_row(form.pictures) }}
+    <button class="btn btn-primary">{{ button|default('Save') }}</button>
 {{ form_end(form) }}
+
+<script src="{{ asset('js/add-collection-widget.js') }}"></script>
