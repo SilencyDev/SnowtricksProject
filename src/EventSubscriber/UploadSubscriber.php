@@ -23,13 +23,13 @@ class UploadSubscriber implements EventSubscriber
             return;
         }
 
-        if ($entity->getPictures() !== NULL) {
+        if ($entity->getPictures()[0] !== NULL && file_exists($entity->getPictures()[0]->getRealPath())) {
             foreach ($entity->getPictures() as $picture) {
                 unlink($picture->getRealPath());
             }
         }
 
-        if ($entity->getMainpicture() !== NULL) {
+        if ($entity->getMainpicture() !== NULL && file_exists($entity->getMainpicture()->getRealPath())) {
             unlink($entity->getMainpicture()->getRealPath());
         }
         return;

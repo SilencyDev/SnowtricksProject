@@ -29,6 +29,9 @@
             {% for picture in snowtrick.pictures %}
                     <img src="{{ asset(picture.path) }}" class="rounded" style="max-width: 100%;">
             {% endfor %}
+            {% for video in snowtrick.videos %}
+                    <iframe width="560" height="315" src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {% endfor %}
         </div>
     </div>
     <div class="container mb-4 mt-4">
