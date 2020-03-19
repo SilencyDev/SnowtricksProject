@@ -190,6 +190,15 @@ class Snowtrick
         return $this;
     }
 
+    public function removeVideo(Video $video): self
+    {
+        if ($this->videos->contains($video)) {
+            $this->videos->removeElement($video);
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|Picture[]
      */
@@ -208,6 +217,15 @@ class Snowtrick
         return $this;
     }
 
+    public function removePicture(Picture $picture): self
+    {
+        if ($this->pictures->contains($picture)) {
+            $this->pictures->removeElement($picture);
+        }
+
+        return $this;
+    }
+
     /**
      * Get the value of mainpicture
      */
@@ -221,17 +239,9 @@ class Snowtrick
      *
      * @return  self
      */
-    public function setMainpicture($mainpicture)
+    public function setMainpicture(Mainpicture $mainpicture)
     {
         $this->mainpicture = $mainpicture;
-
-        return $this;
-    }
-
-    public function addMainpicture(Mainpicture $mainpicture): self
-    {
-        
-        $this->mainpicture = $mainpicture;;
         $mainpicture->setSnowtrick($this);
 
         return $this;

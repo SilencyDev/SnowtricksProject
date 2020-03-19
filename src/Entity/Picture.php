@@ -33,7 +33,7 @@ class Picture
     private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="pictures", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="pictures")
      */
     private $snowtrick;
 

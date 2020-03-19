@@ -31,7 +31,7 @@ class Mainpicture
     private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Snowtrick", inversedBy="mainpicture", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Snowtrick", inversedBy="mainpicture")
      */
     private $snowtrick;
 
