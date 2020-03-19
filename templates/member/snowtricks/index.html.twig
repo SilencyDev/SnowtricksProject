@@ -18,7 +18,7 @@
             <tr>
                 <td>{{ snowtrick.title }}</td>
                 <td>
-                    <a href="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}" class="btn btn-secondary">Edit</a>
+                    <a href="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}" class="btn btn-secondary js-delete-mainpicture">Edit</a>
                     <form method="post" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}" class="d-inline-block" onsubmit="return confirm('Confirm delete action ?')"><input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">
                     <button class="btn btn-danger">Delete</button>
@@ -39,4 +39,24 @@
         <a href="{{ path('member.snowtrick.new') }}" class="btn btn-primary">Post a new trick</a>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        function deleteMainpicture(event) {
+            event.preventDefault();
+
+            const url = this.href;
+
+            axios.post(url).then(function(response) {
+                console.log(response);
+            })
+        }
+
+        document.querySelectorAll('a.js-delete').forEach(function(link){
+            link.addEventListener('click', deleteMainpicture);
+        })
+
+    </script>
 {% endblock %}

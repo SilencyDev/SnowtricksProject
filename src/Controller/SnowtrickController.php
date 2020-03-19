@@ -139,7 +139,7 @@ class SnowtrickController extends AbstractController
                 $mainUpload->setPath('uploads/' . $mainUpload->getId() . '.' . $mainpicture->guessExtension());
                 $mainUpload->setRealPath($mainpicture->getRealPath());
 
-                $snowtrick->addMainpicture($mainUpload);
+                $snowtrick->setMainpicture($mainUpload);
                 $this->em->persist($mainUpload);
             }
 
@@ -214,22 +214,21 @@ class SnowtrickController extends AbstractController
             $mainpicture = $form->get('mainpicture')->getData();
             $videos = $form->get('videos')->getData();
 
-            if ($snowtrick->getPictures()[0] !== NULL && file_exists($snowtrick->getPictures()[0]->getRealPath())) {
-                foreach ($snowtrick->getpictures() as $pictureToDelete) {
-                    unlink($pictureToDelete->getRealPath());
-                    $this->em->remove($pictureToDelete);
-                }
-            }
 
-            if ($snowtrick->getMainpicture() !== NULL && file_exists($snowtrick->getMainpicture()->getRealPath())) {
-                unlink($snowtrick->getMainpicture()->getRealPath());
+            foreach ($snowtrick->getpictures() as $pictureToDelete) {
+                //unlink($pictureToDelete->getRealPath());
+                $snowtrick->removePicture($pictureToDelete);
+            }
+            
+
+            if ($snowtrick->getMainpicture() !== NULL) {
+                //unlink($snowtrick->getMainpicture()->getRealPath());
                 $this->em->remove($snowtrick->getMainpicture());
+                $this->em->flush($snowtrick->getMainpicture());
             }
 
-            if ($snowtrick->getVideos()[0] !== NULL) {
-                foreach ($snowtrick->getVideos() as $videoToDelete) {
-                    $this->em->remove($videoToDelete);
-                }
+            foreach ($snowtrick->getVideos() as $videoToDelete) {
+                $snowtrick->removeVideo($videoToDelete);
             }
 
             if ($mainpicture !== NULL) {
@@ -245,7 +244,7 @@ class SnowtrickController extends AbstractController
                 $mainUpload->setPath('uploads/' . $mainUpload->getId() . '.' . $mainpicture->guessExtension());
                 $mainUpload->setRealPath($mainpicture->getRealPath());
     
-                $snowtrick->addMainpicture($mainUpload);
+                $snowtrick->setMainpicture($mainUpload);
                 $this->em->persist($mainUpload);
             }
 
