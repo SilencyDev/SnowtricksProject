@@ -16,13 +16,22 @@ class HomeController extends AbstractController
      */
     public function indexAction(SnowtrickRepository $snowtrickRepository, Request $request): Response
     {
-        $page = (int) $request->get('page', 1);
-        if ($page === 0) {
-            $page = 1;
-        }
         return $this->render('pages/home.html.twig', [
-            'snowtricks' => $snowtrickRepository->findBy([], ['id' => 'DESC'], $page * 3, 0),
-            'page' => $page,
+            'snowtricks' => $snowtrickRepository->findBy([], ['id' => 'DESC'], 3, 0)
+        ]);
+    }
+
+    /**
+     * @Route("/{snowtrick<\d+>?3}", name="loadmore")
+     *
+     * @param SnowtrickRepository $snowtrickRepository
+     * @param integer $trick
+     * @return Response
+     */
+    public function loadMoreAction(SnowtrickRepository $snowtrickRepository, $snowtrick = 3): Response
+    {
+        return $this->render('pages/loadmore.html.twig', [
+            'snowtricks' => $snowtrickRepository->findBy([], ['id' => 'DESC'], 3, $snowtrick),
         ]);
     }
 }

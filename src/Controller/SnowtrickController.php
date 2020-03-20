@@ -190,7 +190,7 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/member/snowtrick/{id}", name="member.snowtrick.edit", methods={"GET","POST"})
+     * @Route("/member/snowtrick/edit/{id}", name="member.snowtrick.edit", methods={"GET","POST"})
      * @param Snowtrick
      * @param Request
      * @return Response
@@ -298,12 +298,12 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/member/snowtrick/{id}", name="member.snowtrick.delete", methods={"DELETE"})
-     * @param Snowtrick
+     * @Route("/member/snowtrick/delete/{id}", name="member.snowtrick.delete", methods={"DELETE"})
+     * @param Snowtrick 
      * @param Request
      * @return Response
      */
-    public function deleteAction(Snowtrick $snowtrick, Request $request, Security $security) {
+    public function deleteSnowtrickAction(Snowtrick $snowtrick, Request $request, Security $security) {
 
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
@@ -314,11 +314,65 @@ class SnowtrickController extends AbstractController
                 $this->em->flush();
 
                 $this->addFlash('success', 'Deleted with success!');
-                
+
                 return $this->redirectToRoute('admin.snowtrick.index');
             }
         } else {
             $this->addFlash('warning', 'You do not have the previlege to remove this post');
+            return $this->redirectToRoute('member.snowtrick.index');
+        }
+    }
+
+    /**
+     * @Route("/member/picture/delete/{id}", name="member.picture.delete", methods={"DELETE"})
+     * @param Picture
+     * @param Request
+     * @return Response
+     */
+    public function deletePictureAction(Picture $picture, Request $request, Security $security)
+    {
+
+        $roles = $security->getUser()->getRoles();
+        $username = $security->getUser()->getUsername();
+
+        if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick->getAuthor() == $username)) {
+            if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->get('_token'))) {
+                $this->em->remove($picture);
+                $this->em->flush();
+
+                $this->addFlash('success', 'Deleted with success!');
+
+                return $this->redirectToRoute('admin.snowtrick.index');
+            }
+        } else {
+            $this->addFlash('warning', 'You do not have the previlege to remove this picture');
+            return $this->redirectToRoute('member.snowtrick.index');
+        }
+    }
+
+    /**
+     * @Route("/member/video/delete/{id}", name="member.video.delete")
+     * @param Video
+     * @param Request
+     * @return Response
+     */
+    public function deleteVideoAction(Video $video, Request $request, Security $security)
+    {
+
+        $roles = $security->getUser()->getRoles();
+        $username = $security->getUser()->getUsername();
+
+        if (in_array("ROLE_ADMIN", $roles) || ($video->getSnowtrick->getAuthor() == $username)) {
+            if ($this->isCsrfTokenValid('delete' . $video->getId(), $request->get('_token'))) {
+                $this->em->remove($video);
+                $this->em->flush();
+
+                $this->addFlash('success', 'Deleted with success!');
+
+                return $this->redirectToRoute('admin.snowtrick.index');
+            }
+        } else {
+            $this->addFlash('warning', 'You do not have the previlege to remove this video');
             return $this->redirectToRoute('member.snowtrick.index');
         }
     }
