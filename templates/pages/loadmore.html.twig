@@ -1,0 +1,17 @@
+{% for snowtrick in snowtricks %}
+    <div class="col-xs-12 col-md-6 col-lg-4">
+        {% if snowtrick.mainpicture != NULL %}
+                <img src="{{ asset(snowtrick.mainpicture.path) }}" class="card-img-top" style="max-width: 100%;">
+        {% endif %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{{ path('snowtrick.show', {id: snowtrick.id}) }}">
+                        {{ snowtrick.title }}
+                    </a>
+                </h5>
+                <p class="text-primary"> {{ snowtrick.description }}</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}

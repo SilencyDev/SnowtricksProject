@@ -31,6 +31,11 @@
             {% endfor %}
             {% for video in snowtrick.videos %}
                     <iframe width="560" height="315" src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <form method="post" action="{{ path('member.video.delete', {id: video.id} ) }}" class="d-inline-block" onsubmit="return confirm('confirm delete action ?')">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ video.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
             {% endfor %}
         </div>
     </div>
@@ -51,4 +56,9 @@
                 </div>
         {% endfor %}
     </div>
+{% endblock %}
+{% block javascripts %}
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+    </script>
 {% endblock %}
