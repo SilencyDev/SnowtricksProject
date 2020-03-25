@@ -38,15 +38,19 @@
 {% block javascripts %}
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-    click = 0;
+    click = 1;
     $("#up").hide();
         function loadMore(event) {
             event.preventDefault();
             click++;
-            let snowtrick = 3 * click;
-            const url = "{{ path('loadmore') }}" + snowtrick;
+            const url = "{{ path('loadmore') }}";
 
-            axios.post(url).then(function (response) {
+            axios.get(url, {
+                params: {
+                    page:click
+                }
+            }
+            ).then(function (response) {
                 $("#snowtricks").append(response.data);
                 if (snowtrick === 3) {
                     $("#up").show();
