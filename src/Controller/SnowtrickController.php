@@ -16,6 +16,7 @@ use App\Repository\MainpictureRepository;
 use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\picture\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -361,19 +362,16 @@ class SnowtrickController extends AbstractController
 
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
-
+        $token = json_decode($request->getContent(), true)['token']??null;
         if (in_array("ROLE_ADMIN", $roles) || ($video->getSnowtrick->getAuthor() == $username)) {
-            if ($this->isCsrfTokenValid('delete' . $video->getId(), $request->get('_token'))) {
+            if ($this->isCsrfTokenValid('delete' . $video->getId(), $token)) {
                 $this->em->remove($video);
                 $this->em->flush();
 
-                $this->addFlash('success', 'Deleted with success!');
-
-                return $this->redirectToRoute('admin.snowtrick.index');
+                return new JsonResponse(null, 204); // 200 data //
             }
-        } else {
-            $this->addFlash('warning', 'You do not have the previlege to remove this video');
-            return $this->redirectToRoute('member.snowtrick.index');
         }
+
+        return new JsonResponse(null, 400);
     }
 }
