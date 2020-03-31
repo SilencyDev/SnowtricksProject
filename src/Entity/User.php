@@ -47,6 +47,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Snowtrick", mappedBy="author")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $snowtricks;
 

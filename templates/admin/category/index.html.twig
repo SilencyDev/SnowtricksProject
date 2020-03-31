@@ -10,7 +10,6 @@
         <table class="table table-striped" style="table-layout:fixed">
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Name</th>
                     <th>actions</th>
                 </tr>
@@ -18,7 +17,6 @@
             <tbody>
             {% for category in categories %}
                 <tr>
-                    <td>{{ category.id }}</td>
                     <td>{{ category.name }}</td>
                     <td>
                         <a class="btn btn-secondary" href="{{ path('admin.category.edit', {'id': category.id}) }}">Edit</a>
@@ -37,8 +35,12 @@
             {% endfor %}
             </tbody>
         </table>
-
-        <a class="btn btn-primary" href="{{ path('admin.category.new') }}">Create new</a>
+        <div class="text-right">
+            <button type="button" class="btn btn-primary modal-trigger" data-toggle="modal" data-target="{{ path('admin.category.new') }}">Create a new Category</button>
         </div>
     </div>
+    {{ include('modal/newcategory.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/trigger-modal.js') }}"></script>
 {% endblock %}
