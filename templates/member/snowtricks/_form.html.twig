@@ -1,4 +1,4 @@
-{{ form_start(form) }}
+{{ form_start(form, {'action': path('member.snowtrick.new')}) }}
 {{ form_row(form.title) }}
 {{ form_row(form.description) }}
 {{ form_row(form.categories) }}
@@ -22,4 +22,7 @@
 {{ form_row(form.pictures) }}
     <button class="btn btn-primary">{{ button|default('Save') }}</button>
 {{ form_end(form) }}
-<script src="{{ asset('js/add-collection-widget.js') }}"></script>
+
+{% block javascripts %}
+    <script src="{{ asset('js/add-collection-widget.js') }}"></script>
+{% endblock %}

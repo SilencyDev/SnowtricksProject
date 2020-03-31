@@ -184,7 +184,7 @@ class SnowtrickController extends AbstractController
 
             return $this->redirectToRoute("member.snowtrick.index");
         }
-        return $this->render('member/snowtricks/new.html.twig', [
+        return $this->render('member/snowtricks/_form.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView()
         ]);
@@ -214,23 +214,6 @@ class SnowtrickController extends AbstractController
             $pictures = $form->get('pictures')->getData();
             $mainpicture = $form->get('mainpicture')->getData();
             $videos = $form->get('videos')->getData();
-
-
-            foreach ($snowtrick->getpictures() as $pictureToDelete) {
-                //unlink($pictureToDelete->getRealPath());
-                $snowtrick->removePicture($pictureToDelete);
-            }
-            
-
-            if ($snowtrick->getMainpicture() !== NULL) {
-                //unlink($snowtrick->getMainpicture()->getRealPath());
-                $this->em->remove($snowtrick->getMainpicture());
-                $this->em->flush($snowtrick->getMainpicture());
-            }
-
-            foreach ($snowtrick->getVideos() as $videoToDelete) {
-                $snowtrick->removeVideo($videoToDelete);
-            }
 
             if ($mainpicture !== NULL) {
                 $mainUpload = new Mainpicture;
@@ -299,7 +282,7 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/member/snowtrick/delete/{id}", name="member.snowtrick.delete", methods={"DELETE"})
+     * @Route("/member/snowtrick/delete/{id}", name="member.snowtrick.delete")
      * @param Snowtrick 
      * @param Request
      * @return Response
@@ -308,24 +291,22 @@ class SnowtrickController extends AbstractController
 
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
-
+        $token = json_decode($request->getContent(), true)['token']??null;
         if(in_array("ROLE_ADMIN", $roles) || ($snowtrick->getAuthor() == $username) ) {
-            if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $request->get('_token'))) {
+            if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $token)) {
                 $this->em->remove($snowtrick);
                 $this->em->flush();
 
                 $this->addFlash('success', 'Deleted with success!');
 
-                return $this->redirectToRoute('admin.snowtrick.index');
+                return new JsonResponse(null, 204); // 200 data //
             }
-        } else {
-            $this->addFlash('warning', 'You do not have the previlege to remove this post');
-            return $this->redirectToRoute('member.snowtrick.index');
         }
+        return new JsonResponse(null, 400);
     }
 
     /**
-     * @Route("/member/picture/delete/{id}", name="member.picture.delete", methods={"DELETE"})
+     * @Route("/member/video/picture/{id}", name="member.picture.delete")
      * @param Picture
      * @param Request
      * @return Response
@@ -335,20 +316,16 @@ class SnowtrickController extends AbstractController
 
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
-
+        $token = json_decode($request->getContent(), true)['token']??null;
         if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick->getAuthor() == $username)) {
-            if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->get('_token'))) {
+            if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
                 $this->em->remove($picture);
                 $this->em->flush();
 
-                $this->addFlash('success', 'Deleted with success!');
-
-                return $this->redirectToRoute('admin.snowtrick.index');
+                return new JsonResponse(null, 204); // 200 data //
             }
-        } else {
-            $this->addFlash('warning', 'You do not have the previlege to remove this picture');
-            return $this->redirectToRoute('member.snowtrick.index');
         }
+        return new JsonResponse(null, 400);
     }
 
     /**
@@ -371,7 +348,6 @@ class SnowtrickController extends AbstractController
                 return new JsonResponse(null, 204); // 200 data //
             }
         }
-
         return new JsonResponse(null, 400);
     }
 }

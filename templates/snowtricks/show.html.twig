@@ -27,15 +27,21 @@
         </div>
         <div class="collapse mt-4" id="collapseShow" style="overflow-x: scroll; white-space: nowrap;">
             {% for picture in snowtrick.pictures %}
+                <div class="ib">
+                    <form class="picture" action="{{ path('member.picture.delete', {id: picture.id} ) }}" class="d-inline-block">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ picture.id) }}">
+                        <button type="submit" class="btn btn-danger deletemedia">Delete</button>
+                    </form>
                     <img src="{{ asset(picture.path) }}" class="rounded" style="max-width: 100%;">
+                </div>
             {% endfor %}
             {% for video in snowtrick.videos %}
-                <div>
-                    <iframe width="560" height="315" src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="ib">
                     <form class="video" action="{{ path('member.video.delete', {id: video.id} ) }}" class="d-inline-block">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete'~ video.id) }}">
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <button type="submit" class="btn btn-danger deletemedia">Delete</button>
                     </form>
+                    <iframe width="560" height="315" src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             {% endfor %}
         </div>
@@ -59,32 +65,6 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-
-    function deleteVideo(event) {
-        event.preventDefault();
-        const that = this;
-        const url = this.action;
-        let token = this.querySelector('input[name="_token"]');
-        if (confirm('confirm delete action ?')) {
-            axios.post(url, {
-                token: token.value
-            }).then( function (response) {
-                console.log(response);
-                if (response.status === 204) {
-                    that.parentNode.remove();
-
-                } else {
-
-                }
-            });
-
-        };
-    }
-
-    document.querySelectorAll('form.video').forEach( function(form) {
-        form.addEventListener('submit', deleteVideo);
-    })
-    </script>
+    <script src="{{ asset('js/delete-picture.js') }}"></script>
+    <script src="{{ asset('js/delete-video.js') }}"></script>
 {% endblock %}

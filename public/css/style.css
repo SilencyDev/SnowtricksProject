@@ -16,3 +16,19 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
+
+.deletemedia {
+    position: absolute;
+    padding: 1em;
+    z-index: 1100;
+  }
+
+  .ib {
+      display: inline-block;
+      position: sticky;
+  }
+
+  p {
+    white-space: pre-line;
+    white-space: pre-wrap;
+  }
