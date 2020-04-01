@@ -8,7 +8,7 @@
         </div>
         <div class="container mt-4">
             {% if snowtrick.mainpicture != NULL %}
-                <img src="{{ asset(snowtrick.mainpicture.path) }}" class="rounded" style="max-width: 100%;">
+                <img src="{{ asset(snowtrick.mainpicture.path) }}" class="rounded mx-auto d-block" style="max-width: 100%;">
             {% endif %}
         </div>
     </div>
@@ -28,19 +28,37 @@
         <div class="collapse mt-4" id="collapseShow" style="overflow-x: scroll; white-space: nowrap;">
             {% for picture in snowtrick.pictures %}
                 <div class="ib">
-                    <form class="picture" action="{{ path('member.picture.delete', {id: picture.id} ) }}" class="d-inline-block">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ picture.id) }}">
-                        <button type="submit" class="btn btn-danger deletemedia">Delete</button>
-                    </form>
+                    {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
+                        <div class="dropdown dropleft float-right">
+                            <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <form class="picture" action="{{ path('member.picture.delete', {id: picture.id} ) }}" class="d-inline-block">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete'~ picture.id) }}">
+                                    <button type="submit" class="dropdown-item">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
                     <img src="{{ asset(picture.path) }}" class="rounded" style="max-width: 100%;">
                 </div>
             {% endfor %}
             {% for video in snowtrick.videos %}
                 <div class="ib">
-                    <form class="video" action="{{ path('member.video.delete', {id: video.id} ) }}" class="d-inline-block">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ video.id) }}">
-                        <button type="submit" class="btn btn-danger deletemedia">Delete</button>
-                    </form>
+                    {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
+                        <div class="dropdown dropleft float-right fixed">
+                            <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <form class="video" action="{{ path('member.video.delete', {id: video.id} ) }}" class="d-inline-block">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete'~ video.id) }}">
+                                    <button type="submit" class="dropdown-item">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
                     <iframe width="560" height="315" src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             {% endfor %}
@@ -51,9 +69,22 @@
     </div>
     <div class="container mb-4 mt-4">
         {% for comment in comments %}
-            <div class="col-xs-12 col-md-8 col-lg-6">
+                <div class="col-xs-12 col-md-8 col-lg-6">
                     <div class="card mb-4">
                         <div class="card-body">
+                            {% if is_granted('ROLE_ADMIN') or comment.author.username is same as (app.user.username) %}
+                                <div class="dropdown dropleft float-right mr-4">
+                                    <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <form class="comment" action="{{ path('member.comment.delete', {id: comment.id} ) }}" class="d-inline-block">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete'~ comment.id) }}">
+                                                <button type="submit" class="dropdown-item">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endif %}
                             <h5 class="card-title">
                                 <p>{{ comment.author.username }}</p>
                             </h5>
@@ -67,4 +98,5 @@
 {% block javascripts %}
     <script src="{{ asset('js/delete-picture.js') }}"></script>
     <script src="{{ asset('js/delete-video.js') }}"></script>
+    <script src="{{ asset('js/delete-comment.js') }}"></script>
 {% endblock %}

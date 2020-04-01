@@ -7,11 +7,10 @@ function deleteSnowtrick(event) {
         axios.post(url, {
             token: token.value
         }).then( function (response) {
-            if (response.status === 204) {
+            if (response.status === 201) {
                 that.parentNode.parentNode.remove();
-
             } else {
-
+                alert("an error occured");
             }
         });
 
