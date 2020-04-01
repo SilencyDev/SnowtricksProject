@@ -1,4 +1,4 @@
-function deletePicture(event) {
+function deleteComment(event) {
     event.preventDefault();
     const that = this;
     const url = this.action;
@@ -7,8 +7,9 @@ function deletePicture(event) {
         axios.post(url, {
             token: token.value
         }).then( function (response) {
+            console.log(response);
             if (response.status === 204) {
-                that.parentNode.parentNode.parentNode.remove();
+                that.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
             } else {
                 alert("an error occured");
             }
@@ -16,7 +17,6 @@ function deletePicture(event) {
 
     };
 }
-
-document.querySelectorAll('form.picture').forEach( function(form) {
-    form.addEventListener('submit', deletePicture);
+document.querySelectorAll('form.comment').forEach( function(form) {
+    form.addEventListener('submit', deleteComment);
 })

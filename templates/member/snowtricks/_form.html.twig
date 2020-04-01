@@ -1,4 +1,8 @@
-{{ form_start(form, {'action': path('member.snowtrick.new')}) }}
+{% if snowtrick is not defined %}
+    {{ form_start(form, {'action': path(path)}) }}
+{% else %}
+    {{ form_start(form, {'action': path(path, {id: snowtrick.id})}) }}
+{% endif %}
 {{ form_row(form.title) }}
 {{ form_row(form.description) }}
 {{ form_row(form.categories) }}
@@ -22,7 +26,6 @@
 {{ form_row(form.pictures) }}
     <button class="btn btn-primary">{{ button|default('Save') }}</button>
 {{ form_end(form) }}
-
 {% block javascripts %}
     <script src="{{ asset('js/add-collection-widget.js') }}"></script>
 {% endblock %}

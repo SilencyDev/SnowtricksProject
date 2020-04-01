@@ -11,9 +11,6 @@ use App\Entity\Video;
 use App\Form\SnowtrickType;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
-use App\Repository\CommentRepository;
-use App\Repository\MainpictureRepository;
-use App\Repository\PictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,15 +27,10 @@ class SnowtrickController extends AbstractController
      */
     private $snowtrickRepository;
 
-    /**
-     * @var CommentRepository
-     */
-    private $commentRepository;
 
-    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, EntityManagerInterface $em)
+    public function __construct(SnowtrickRepository $snowtrickRepository, EntityManagerInterface $em)
     {
         $this->snowtrickRepository = $snowtrickRepository;
-        $this->commentRepository = $commentRepository;
         $this->em = $em;
     }
 
@@ -160,6 +152,7 @@ class SnowtrickController extends AbstractController
                 foreach ($pictures as $picture) {
                     $upload = new Picture;
 
+                    $upload->setIsMainPicture(false);
                     $upload->setName($picture->getClientOriginalName());
 
                     $picture = $picture->move(
@@ -185,8 +178,8 @@ class SnowtrickController extends AbstractController
             return $this->redirectToRoute("member.snowtrick.index");
         }
         return $this->render('member/snowtricks/_form.html.twig', [
-            'snowtrick' => $snowtrick,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'path' => 'member.snowtrick.new'
         ]);
     }
 
@@ -277,7 +270,8 @@ class SnowtrickController extends AbstractController
 
         return $this->render('member/snowtricks/edit.html.twig', [
             'snowtrick' => $snowtrick,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'path' => 'member.snowtrick.edit'
         ]);
     }
 
@@ -297,9 +291,7 @@ class SnowtrickController extends AbstractController
                 $this->em->remove($snowtrick);
                 $this->em->flush();
 
-                $this->addFlash('success', 'Deleted with success!');
-
-                return new JsonResponse(null, 204); // 200 data //
+                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
             }
         }
         return new JsonResponse(null, 400);
@@ -322,7 +314,7 @@ class SnowtrickController extends AbstractController
                 $this->em->remove($picture);
                 $this->em->flush();
 
-                return new JsonResponse(null, 204); // 200 data //
+                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
             }
         }
         return new JsonResponse(null, 400);
@@ -345,7 +337,7 @@ class SnowtrickController extends AbstractController
                 $this->em->remove($video);
                 $this->em->flush();
 
-                return new JsonResponse(null, 204); // 200 data //
+                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data // 204 null
             }
         }
         return new JsonResponse(null, 400);

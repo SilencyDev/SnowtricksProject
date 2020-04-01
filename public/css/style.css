@@ -28,6 +28,11 @@ body {
       position: sticky;
   }
 
+  .dropdown {
+    position: absolute;
+    right: 0;
+  }
+
   p {
     white-space: pre-line;
     white-space: pre-wrap;

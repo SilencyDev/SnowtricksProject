@@ -7,12 +7,10 @@ function deleteVideo(event) {
         axios.post(url, {
             token: token.value
         }).then( function (response) {
-            console.log(response);
             if (response.status === 204) {
-                that.parentNode.remove();
-
+                that.parentNode.parentNode.parentNode.remove();
             } else {
-
+                alert("an error occured");
             }
         });
 

@@ -9,6 +9,7 @@ use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -68,5 +69,28 @@ class CommentController extends AbstractController
             return $this->redirectToRoute("snowtrick.show", [
                 'id' => $snowtrick->getId()]);
         }
+    }
+
+    /**
+     * @Route("/member/comment/delete/{id}", name="member.comment.delete")
+     * @param Comment
+     * @param Request
+     * @return Response
+     */
+    public function deleteCommentAction(Comment $comment, Request $request, Security $security)
+    {
+
+        $roles = $security->getUser()->getRoles();
+        $username = $security->getUser()->getUsername();
+        $token = json_decode($request->getContent(), true)['token']??null;
+        if (in_array("ROLE_ADMIN", $roles) || ($comment->getSnowtrick->getAuthor() == $username)) {
+            if ($this->isCsrfTokenValid('delete' . $comment->getId(), $token)) {
+                $this->em->remove($comment);
+                $this->em->flush();
+
+                return new JsonResponse(null, 201); // 200 data //
+            }
+        }
+        return new JsonResponse(null, 400);
     }
 }
