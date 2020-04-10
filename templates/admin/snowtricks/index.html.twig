@@ -17,8 +17,8 @@
             <tr>
                 <td>{{ snowtrickToValidate.title }}</td>
                 <td>
-                    <button type="button" id="test" class="btn btn-secondary modal-trigger-edit" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrickToValidate.id}) }}">Edit/Validation</button>
-                    <form method="post" action="{{ path('member.snowtrick.delete', {id: snowtrickToValidate.id}) }}" class="d-inline-block">
+                    <button type="button" id="test" class="btn btn-secondary modal-trigger-edit m-1" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrickToValidate.id}) }}">Edit/Validation</button>
+                    <form method="post" action="{{ path('member.snowtrick.delete', {id: snowtrickToValidate.id}) }}" class="d-inline-block m-1">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrickToValidate.id) }}">
                     <button class="btn btn-danger">Delete</button>
@@ -40,8 +40,8 @@
             <tr>
                 <td>{{ snowtrick.title }}</td>
                 <td>
-                    <button type="button" id="test" class="btn btn-secondary modal-trigger-editS" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}">Edit/Validation</button>
-                    <form class="d-inline-block snowtrick" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}">
+                    <button type="button" id="test" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}">Edit/Validation</button>
+                    <form class="d-inline-block snowtrick m-1" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">
                         <button class="btn btn-danger">Delete</button>
