@@ -16,9 +16,9 @@
             <tbody>
             {% for snowtrick in snowtricks %}
             <tr>
-                <td>{{ snowtrick.title }}</td>
+                <td id="stitle">{{ snowtrick.title }}</td>
                 <td>
-                    <a href="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}" class="btn btn-secondary">Edit</a>
+                    <button type="button" id="test" class="btn btn-secondary modal-trigger-editS" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}">Edit</button>
                     <form class="d-inline-block snowtrick" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">
@@ -37,11 +37,12 @@
             </tbody>
         </table>
         <div class="text-right">
-            <button type="button" class="btn btn-primary modal-trigger" data-toggle="modal" data-target="{{ path('member.snowtrick.new') }}">Post a new trick</button>
+            <button type="button" id="test" class="btn btn-primary modal-trigger-newS" data-toggle="modal" data-target="{{ path('member.snowtrick.new') }}">Post a new trick</button>
         </div>
     </div>
 
     {{ include('modal/newsnowtrick.html.twig') }}
+    {{ include('modal/editsnowtrick.html.twig') }}
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('js/trigger-modal.js') }}"></script>

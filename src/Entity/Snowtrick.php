@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="App\Repository\SnowtrickRepository")
  * @UniqueEntity("title")
  */
-class Snowtrick
+class Snowtrick implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -245,5 +245,23 @@ class Snowtrick
         $mainpicture->setSnowtrick($this);
 
         return $this;
+    }
+
+    /**
+     * 
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'description' => $this->description,
+            'author' => $this->author,
+            'validated' => $this->validated,
+            'categories' => $this->categories,
+            'comments' => $this->comments,
+            'videos' => $this->videos,
+            'mainpicture' => $this->mainpicture
+            ];
     }
 }

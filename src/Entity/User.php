@@ -184,6 +184,7 @@ class User implements UserInterface, \Serializable
             $this->email
             ]);
     }
+    
     public function unserialize($serialized)
     {
         list(

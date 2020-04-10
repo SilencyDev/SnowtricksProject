@@ -6,15 +6,14 @@ use App\Entity\Category;
 use App\Entity\Snowtrick;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\File;
 
 class SnowtrickType extends AbstractType
 {
@@ -47,34 +46,25 @@ class SnowtrickType extends AbstractType
                 $form->add('mainpicture', FileType::class, [
                     'mapped' => false,
                     'label' => 'Upload a main picture',
-                    'required' => false
+                    'required' => false,
                 ]);
             }
 
             if ($trick || null === $trick->getPictures()) {
                 $form->add('pictures', FileType::class, [
-                   /* 'constraints' => [
-                        new File([
-                            'mimeTypes' => [
-                                'image/gif',
-                                'image/png',
-                                'image/jpeg',
-                                'image/bmp',
-                                'image/webp',
-                                'video/webm',
-                                'video/ogg',
-                                'video/mp4',
-                            ],
-                            'mimeTypesMessage' => 'please upload a valid format',
-                        ])
-                    ], */
                     'mapped' => false,
                     'label' => 'Upload a picture',
                     'multiple' => true,
-                    'required' => false
+                    'required' => false,
                 ]);
             }
         });
+
+        $builder
+            ->add('validated', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
