@@ -177,6 +177,7 @@ class SnowtrickController extends AbstractController
 
             return $this->redirectToRoute("member.snowtrick.index");
         }
+
         return $this->render('member/snowtricks/_form.html.twig', [
             'form' => $form->createView(),
             'path' => 'member.snowtrick.new'
@@ -193,14 +194,14 @@ class SnowtrickController extends AbstractController
     {
         $roles = $security->getUser()->getRoles();
 
-        if(in_array("ROLE_ADMIN", $roles)) {
+        $form = $this->createForm(SnowtrickType::class, $snowtrick);
+        $form->handleRequest($request);
+
+        if(in_array("ROLE_ADMIN", $roles) && $form->get('validated')->getData()) {
             $snowtrick->setValidated(true);
         } else {
             $snowtrick->setValidated(false);
         }
-
-        $form = $this->createForm(SnowtrickType::class, $snowtrick);
-        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isvalid()) {
 
@@ -268,7 +269,7 @@ class SnowtrickController extends AbstractController
             }
         }
 
-        return $this->render('member/snowtricks/edit.html.twig', [
+        return $this->render('member/snowtricks/_form.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView(),
             'path' => 'member.snowtrick.edit'
