@@ -34,11 +34,6 @@ class Picture
      */
     private $name;
 
-    /** 
-     * @ORM\Column(type="boolean")
-     */
-    private $isMainPicture;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="pictures")
      */
@@ -114,26 +109,6 @@ class Picture
     public function setRealPath($realPath)
     {
         $this->realPath = $realPath;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of isMainPicture
-     */ 
-    public function getIsMainPicture()
-    {
-        return $this->isMainPicture;
-    }
-
-    /**
-     * Set the value of isMainPicture
-     *
-     * @return  self
-     */ 
-    public function setIsMainPicture($isMainPicture)
-    {
-        $this->isMainPicture = $isMainPicture;
 
         return $this;
     }

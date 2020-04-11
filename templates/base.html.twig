@@ -12,8 +12,8 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="{{ path('home') }}"><img src="{{ asset('icons/snow.svg') }}" class="icon-menu"></a>
+        <nav class="navbar navbar-expand-md navbar-light bg-light inline-block">
+            <a class="navbar-brand icon-line" href="{{ path('home') }}"><img src="{{ asset('icons/snow.svg') }}" class="icon-menu">Snowtricks</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,29 +24,29 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('login') }}">Log in</a>
                         </li>
-                        <span class="nav-link">|</span>
+                        <span class="nav-link d-none d-md-block">|</span>
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
-                            <a class="nav-link{% if current_menu is defined and current_menu == 'admin' %}active{% endif %}" href="{{ path('admin.snowtrick.index') }}">TricksManager</a>
+                            <a class="nav-link{% if current_menu is defined and current_menu == 'TrickManager' %}active{% endif %}" href="{{ path('admin.snowtrick.index') }}">TricksManager</a>
                         </li>
-                        <span class="nav-link">|</span>
+                        <span class="nav-link d-none d-md-block">|</span>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('admin.category.index') }}">CategoryManager</a>
                         </li>
-                        <span class="nav-link">|</span>  
+                        <span class="nav-link d-none d-md-block">|</span>  
                     {% endif %}
                     {% if is_granted('ROLE_MEMBER') or is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('member.snowtrick.index') }}">MyTricks</a>
                         </li>
-                        <span class="nav-link">|</span>
+                        <span class="nav-link d-none d-md-block">|</span>
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('signup') }}">Sign up</a>
                     </li>
                     {% if app.user %}
-                        <span class="nav-link">|</span>
+                        <span class="nav-link d-none d-md-block">|</span>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('logout') }}">Logout</a>
                         </li>

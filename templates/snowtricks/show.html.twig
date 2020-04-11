@@ -3,13 +3,15 @@
 {% block body %}
     <div class="jumbotron">
         <div class="text-center">
-            <h1>{{ snowtrick.title }}</h1>
-            <h2>by {{ snowtrick.author.username }}</h2>
+            <h1 class="title">{{ snowtrick.title }}</h1>
         </div>
         <div class="container mt-4">
             {% if snowtrick.mainpicture != NULL %}
-                <img src="{{ asset(snowtrick.mainpicture.path) }}" class="rounded mx-auto d-block" style="max-width: 100%;">
+                <img src="{{ asset(snowtrick.mainpicture.path) }}" class="rounded mx-auto d-block main" style="max-width: 100%;">
             {% endif %}
+        </div>
+        <div class="signature">
+            <h3 class="float-right">by {{ snowtrick.author.username }}</h3>
         </div>
     </div>
     <div class="container mt-4">

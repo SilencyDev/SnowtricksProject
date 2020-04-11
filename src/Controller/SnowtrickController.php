@@ -152,7 +152,6 @@ class SnowtrickController extends AbstractController
                 foreach ($pictures as $picture) {
                     $upload = new Picture;
 
-                    $upload->setIsMainPicture(false);
                     $upload->setName($picture->getClientOriginalName());
 
                     $picture = $picture->move(
