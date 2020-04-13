@@ -61,13 +61,20 @@ class CommentController extends AbstractController
 
             $this->em->persist($newComment);
             $this->em->flush();
+
             $this->addFlash('success', 'Created with success!');
-            return $this->redirectToRoute("snowtrick.show", [
-                'id' => $snowtrick->getId()]);
+
+            return $this->render('row/addcomment.html.twig', [
+                'acomment' => $newComment,
+                'form' => $form->createView(),
+            ]);
         } else {
             $this->addFlash('warning', 'Error');
-            return $this->redirectToRoute("snowtrick.show", [
-                'id' => $snowtrick->getId()]);
+
+            return $this->render('snowtricks/_form.html.twig', [
+                'form' => $form->createView(),
+                'path' => 'member.comment.new'
+            ]);
         }
     }
 

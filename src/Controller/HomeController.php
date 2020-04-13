@@ -17,7 +17,7 @@ class HomeController extends AbstractController
     public function indexAction(SnowtrickRepository $snowtrickRepository, Request $request): Response
     {
         return $this->render('pages/home.html.twig', [
-            'snowtricks' => $snowtrickRepository->findBy([], ['id' => 'DESC'], 3, 0)
+            'snowtricks' => $snowtrickRepository->findBy(['validated' => true], ['id' => 'DESC'], 3, 0)
         ]);
     }
 
@@ -36,7 +36,7 @@ class HomeController extends AbstractController
         }
 
         return $this->render('pages/loadmore.html.twig', [
-            'snowtricks' => $snowtrickRepository->findBy([], ['id' => 'DESC'], 3, ($page-1) * 3),
+            'snowtricks' => $snowtrickRepository->findBy(['validated' => true], ['id' => 'DESC'], 3, ($page-1) * 3),
         ]);
     }
 }

@@ -1,4 +1,14 @@
-{{ form_start(form) }}
-{{ form_rest(form) }}
-<button class="btn btn-primary">{{ button|default('Leave a comment') }}</button>
+{{ form_start(form, {
+        'attr':{
+            'action': path(path, {id: snowtrick.id}),
+            'id' : 'form-data'
+        }
+        }) }}
+{{ form_row(form._token) }}
+{{ form_row(form.content, {
+    'attr':{
+        'class':"comment-content"
+    }
+}) }}
+<button class="btn btn-primary" action="{{ path(path, {id: snowtrick.id}) }} id="addComment">{{ button|default('Leave a comment') }}</button>
 {{ form_end(form) }}

@@ -4,6 +4,9 @@ body {
    clear: both!important;
 }
 
+a {
+  color: #73C0E6;
+}
 #up {
     z-index: 1500;
 }
@@ -43,9 +46,26 @@ flex-direction: column;
   right: 0;
 }
 
+.dropdown-menu {
+  min-width: 10px;
+  text-align: center;
+  
+}
+
+.dropdown-item {
+  color: white!important;
+  background-color:#e9383f!important;
+}
+
+#dropdownMenuButton {
+  border-radius: 5px 5px 5px 5px;
+  background-color: #4b9bc4;
+}
+
 p {
   white-space: pre-line;
   white-space: pre-wrap;
+  color: #343a40;
 }
 
 .mt-n {
@@ -56,6 +76,12 @@ p {
   border-radius: 50px;
   padding: 4px;
   height: 4.5vh;
+}
+
+.icon-line {
+  position: relative;
+  top: 1px;
+  color: #343a40;
 }
 
 .icon-top {
@@ -77,6 +103,14 @@ h1 {
   font-size: 7vh;
 }
 
+h1,h2,h3,h4,h5,h6,td,th {
+  color: #343a40;
+}
+
+h1.title {
+  margin-bottom: 2vh;
+}
+
 footer {
   height: 50px;
   background-color: white;
@@ -85,9 +119,26 @@ footer {
 .jumbotron {
   background-color: #73C0E6;
   color: white;
+  box-shadow: 0px 0px 20px 0px #000;
 }
 
 .btn-primary {
-  background-color: rgb(87, 151, 184);
-  border-color: #73C0E6;
+  background-color: #4b9bc4;
+  border-color: #fff;
+}
+
+.btn-danger {
+  background-color: #e9383f;
+}
+
+.btn-secondary {
+  background-color: #888888;
+}
+
+img.main {
+  box-shadow: 0px 0px 40px #fff;
+}
+
+.signature {
+  margin: 10px;
 }

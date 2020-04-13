@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Video;
 use App\Form\SnowtrickType;
 use App\Form\CommentType;
+use App\Repository\CommentRepository;
 use App\Repository\SnowtrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -76,7 +77,7 @@ class SnowtrickController extends AbstractController
      * @param Snowtrick
      * @return Response
      */
-    public function show(Snowtrick $snowtrick): Response
+    public function show(Snowtrick $snowtrick, CommentRepository $commentRepository): Response
     {   
         $newComment = new Comment();
 
@@ -86,12 +87,13 @@ class SnowtrickController extends AbstractController
             ])
         ]);
 
-        $comments = $snowtrick->getComments();
+        $comments = $commentRepository->findBy([], ['id' => 'DESC']);
         return $this->render('snowtricks/show.html.twig', [
             'snowtrick' => $snowtrick,
             'comments' => $comments,
             'form' => $form->createView(),
-            'newComment' => $newComment
+            'newComment' => $newComment,
+            'path' => 'member.comment.new',
         ]);
     }
 
@@ -152,7 +154,6 @@ class SnowtrickController extends AbstractController
                 foreach ($pictures as $picture) {
                     $upload = new Picture;
 
-                    $upload->setIsMainPicture(false);
                     $upload->setName($picture->getClientOriginalName());
 
                     $picture = $picture->move(

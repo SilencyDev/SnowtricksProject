@@ -1,5 +1,6 @@
-function deleteComment(event) {
+$("#comments").on("submit", "form.comment", function(event) {
     event.preventDefault();
+    console.log("test");
     const that = this;
     const url = this.action;
     let token = this.querySelector('input[name="_token"]');
@@ -8,15 +9,11 @@ function deleteComment(event) {
             token: token.value
         }).then( function (response) {
             console.log(response);
-            if (response.status === 204) {
+            if (response.status === 201) {
                 that.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
             } else {
                 alert("an error occured");
             }
         });
-
     };
-}
-document.querySelectorAll('form.comment').forEach( function(form) {
-    form.addEventListener('submit', deleteComment);
-})
+});
