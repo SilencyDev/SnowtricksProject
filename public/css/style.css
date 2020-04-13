@@ -46,6 +46,22 @@ flex-direction: column;
   right: 0;
 }
 
+.dropdown-menu {
+  min-width: 10px;
+  text-align: center;
+  
+}
+
+.dropdown-item {
+  color: white!important;
+  background-color:#e9383f!important;
+}
+
+#dropdownMenuButton {
+  border-radius: 5px 5px 5px 5px;
+  background-color: #4b9bc4;
+}
+
 p {
   white-space: pre-line;
   white-space: pre-wrap;

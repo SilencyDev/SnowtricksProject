@@ -69,7 +69,8 @@
     <div class="container mb-4 mt-4">
         {{ include('snowtricks/_form.html.twig') }}
     </div>
-    <div class="container mb-4 mt-4">
+    <div class="container mb-4 mt-4" id="comments">
+        <div class="add-comment"></div>
         {% for comment in comments %}
                 <div class="col-xs-12 col-md-8 col-lg-6">
                     <div class="card mb-4">
@@ -79,7 +80,7 @@
                                     <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
                                     </button>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenuButton">
                                         <form class="comment" action="{{ path('member.comment.delete', {id: comment.id} ) }}" class="d-inline-block">
                                                 <input type="hidden" name="_token" value="{{ csrf_token('delete'~ comment.id) }}">
                                                 <button type="submit" class="dropdown-item">Delete</button>
@@ -90,7 +91,7 @@
                             <h5 class="card-title">
                                 <p>{{ comment.author.username }}</p>
                             </h5>
-                            <p class="text-primary"> {{ comment.content }}</p>
+                            <p> {{ comment.content }}</p>
                         </div>
                     </div>
                 </div>
@@ -101,4 +102,5 @@
     <script src="{{ asset('js/delete-picture.js') }}"></script>
     <script src="{{ asset('js/delete-video.js') }}"></script>
     <script src="{{ asset('js/delete-comment.js') }}"></script>
+    <script src="{{ asset('js/add-comment.js') }}"></script>
 {% endblock %}
