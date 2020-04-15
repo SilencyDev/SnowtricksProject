@@ -10,9 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/admin/category")
+ * @Route("/category")
  */
 class CategoryController extends AbstractController
 {
@@ -22,7 +23,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/", name="admin.category.index")
+     * @Route("/", name="category.index")
+     * @IsGranted ({"ROLE_ADMIN"})
      */
     public function indexAction(CategoryRepository $categoryRepository): Response
     {
@@ -32,7 +34,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="admin.category.new")
+     * @Route("/new", name="category.new")
+     * @IsGranted ({"ROLE_ADMIN"})
      */
     public function newAction(Request $request)
     {
@@ -47,7 +50,7 @@ class CategoryController extends AbstractController
             
             $this->addFlash('success', 'Added with success!');
 
-            return $this->redirectToRoute('admin.category.index');
+            return $this->redirectToRoute('category.index');
         }
 
         return $this->render('admin/category/_form.html.twig', [
@@ -57,7 +60,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="admin.category.edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="category.edit", methods={"GET","POST"})
+     * @IsGranted ({"ROLE_ADMIN"})
      * @param Category
      * @param Request
      * @return Response
@@ -74,7 +78,7 @@ class CategoryController extends AbstractController
 
             $this->addFlash('success', 'Edited with success!');
 
-            return $this->redirectToRoute('admin.category.index');
+            return $this->redirectToRoute('category.index');
         }
 
         return $this->render('admin/category/_form.html.twig', [
@@ -84,7 +88,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="admin.category.delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="category.delete", methods={"DELETE"})
+     * @IsGranted ({"ROLE_ADMIN"})
      */
     public function deleteAction(Request $request, Category $category): Response
     {
@@ -95,6 +100,6 @@ class CategoryController extends AbstractController
             $this->addFlash('success', 'Deleted with success!');
         }
 
-        return $this->redirectToRoute('admin.category.index');
+        return $this->redirectToRoute('category.index');
     }
 }

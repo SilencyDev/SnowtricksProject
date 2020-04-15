@@ -6,8 +6,8 @@
                     <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <form class="comment" action="{{ path('member.comment.delete', {id: acomment.id} ) }}" class="d-inline-block">
+                    <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenuButton">
+                        <form class="comment" action="{{ path('comment.delete', {id: acomment.id} ) }}" class="d-inline-block">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete'~ acomment.id) }}">
                                 <button type="submit" class="dropdown-item">Delete</button>
                         </form>

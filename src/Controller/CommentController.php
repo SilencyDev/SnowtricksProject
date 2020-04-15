@@ -14,7 +14,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * @Route("/comment")
+ */
 class CommentController extends AbstractController
 {
     /**
@@ -35,7 +39,8 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/member/comment{id}/new", name="member.comment.new"), methods={"GET","POST"})
+     * @Route("/new/{id}", name="comment.new"), methods={"GET","POST"})
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Snowtrick
      * @param Comment
      */
@@ -62,8 +67,6 @@ class CommentController extends AbstractController
             $this->em->persist($newComment);
             $this->em->flush();
 
-            $this->addFlash('success', 'Created with success!');
-
             return $this->render('row/addcomment.html.twig', [
                 'acomment' => $newComment,
                 'form' => $form->createView(),
@@ -79,7 +82,8 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/member/comment/delete/{id}", name="member.comment.delete")
+     * @Route("/delete/{id}", name="comment.delete")
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Comment
      * @param Request
      * @return Response
@@ -90,7 +94,7 @@ class CommentController extends AbstractController
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
         $token = json_decode($request->getContent(), true)['token']??null;
-        if (in_array("ROLE_ADMIN", $roles) || ($comment->getSnowtrick->getAuthor() == $username)) {
+        if (in_array("ROLE_ADMIN", $roles) || ($comment->getAuthor()->getUsername() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $comment->getId(), $token)) {
                 $this->em->remove($comment);
                 $this->em->flush();

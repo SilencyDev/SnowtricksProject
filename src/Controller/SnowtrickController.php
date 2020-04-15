@@ -20,7 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
+/**
+ * @Route("/snowtrick")
+ */
 class SnowtrickController extends AbstractController
 {
     /**
@@ -36,20 +40,8 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @route("/", name="snowtricks")
-     * @return Response
-     */
-    public function indexAction(): Response
-    {
-        $snowtricks = $this->snowtrickRepository->findAllVisible();
-        return $this->render("snowtricks/index.html.twig", [
-            'current_menu' => 'snowtricks',
-            'snowtricks' => $snowtricks
-        ]);
-    }
-
-    /**
-     * @Route("/member/snowtrick", name="member.snowtrick.index")
+     * @Route("/mytricks", name="snowtrick.mytrick")
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @return Response
      */
     public function indexMemberAction(Security $security)
@@ -62,7 +54,8 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/admin/snowtrick", name="admin.snowtrick.index")
+     * @Route("/trickmanager", name="snowtrick.manager")
+     * @IsGranted ({"ROLE_ADMIN"})
      * @return Response
      */
     public function indexAdminAction()
@@ -73,7 +66,7 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/snowtrick/{id}", name="snowtrick.show")
+     * @Route("/show/{id}", name="snowtrick.show")
      * @param Snowtrick
      * @return Response
      */
@@ -82,7 +75,7 @@ class SnowtrickController extends AbstractController
         $newComment = new Comment();
 
         $form = $this->createForm(CommentType::class, $newComment, [
-            'action' => $this->generateUrl('member.comment.new', [
+            'action' => $this->generateUrl('comment.new', [
                 'id' => $snowtrick->getId()
             ])
         ]);
@@ -93,12 +86,13 @@ class SnowtrickController extends AbstractController
             'comments' => $comments,
             'form' => $form->createView(),
             'newComment' => $newComment,
-            'path' => 'member.comment.new',
+            'path' => 'comment.new',
         ]);
     }
 
     /**
-     * @Route("/member/snowtrick/new", name="member.snowtrick.new")
+     * @Route("/new", name="snowtrick.new", methods={"POST","GET"})
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      */
     public function newAction(Security $security, Request $request) 
     {
@@ -176,17 +170,18 @@ class SnowtrickController extends AbstractController
 
             $this->addFlash('success', 'Created with success!');
 
-            return $this->redirectToRoute("member.snowtrick.index");
+            return $this->redirectToRoute("snowtrick.mytrick");
         }
 
         return $this->render('member/snowtricks/_form.html.twig', [
             'form' => $form->createView(),
-            'path' => 'member.snowtrick.new'
+            'path' => 'snowtrick.new',
         ]);
     }
 
     /**
-     * @Route("/member/snowtrick/edit/{id}", name="member.snowtrick.edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="snowtrick.edit", methods={"GET","POST"})
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Snowtrick
      * @param Request
      * @return Response
@@ -264,9 +259,9 @@ class SnowtrickController extends AbstractController
             $this->addFlash('success', 'Edited with success!');
             
             if(in_array("ROLE_ADMIN", $roles)) {
-                return $this->redirectToRoute("admin.snowtrick.index");
+                return $this->redirectToRoute("snowtrick.manager");
             } else {
-                return $this->redirectToRoute("member.snowtrick.index");
+                return $this->redirectToRoute("snowtrick.mytrick");
             }
         }
 
@@ -278,7 +273,8 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/member/snowtrick/delete/{id}", name="member.snowtrick.delete")
+     * @Route("/delete/{id}", name="snowtrick.delete")
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Snowtrick 
      * @param Request
      * @return Response
@@ -300,7 +296,8 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/member/video/picture/{id}", name="member.picture.delete")
+     * @Route("/picture/{id}", name="picture.delete")
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Picture
      * @param Request
      * @return Response
@@ -311,7 +308,7 @@ class SnowtrickController extends AbstractController
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
         $token = json_decode($request->getContent(), true)['token']??null;
-        if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick->getAuthor() == $username)) {
+        if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick()->getAuthor() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
                 $this->em->remove($picture);
                 $this->em->flush();
@@ -323,7 +320,8 @@ class SnowtrickController extends AbstractController
     }
 
     /**
-     * @Route("/member/video/delete/{id}", name="member.video.delete")
+     * @Route("/video/delete/{id}", name="video.delete")
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Video
      * @param Request
      * @return Response
@@ -334,7 +332,7 @@ class SnowtrickController extends AbstractController
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
         $token = json_decode($request->getContent(), true)['token']??null;
-        if (in_array("ROLE_ADMIN", $roles) || ($video->getSnowtrick->getAuthor() == $username)) {
+        if (in_array("ROLE_ADMIN", $roles) || ($video->getSnowtrick()->getAuthor() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $video->getId(), $token)) {
                 $this->em->remove($video);
                 $this->em->flush();

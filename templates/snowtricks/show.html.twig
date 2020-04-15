@@ -36,7 +36,7 @@
                                 <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <form class="picture" action="{{ path('member.picture.delete', {id: picture.id} ) }}" class="d-inline-block">
+                                <form class="picture" action="{{ path('picture.delete', {id: picture.id} ) }}" class="d-inline-block">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~ picture.id) }}">
                                     <button type="submit" class="dropdown-item">Delete</button>
                                 </form>
@@ -54,7 +54,7 @@
                                 <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <form class="video" action="{{ path('member.video.delete', {id: video.id} ) }}" class="d-inline-block">
+                                <form class="video" action="{{ path('video.delete', {id: video.id} ) }}" class="d-inline-block">
                                     <input type="hidden" name="_token" value="{{ csrf_token('delete'~ video.id) }}">
                                     <button type="submit" class="dropdown-item">Delete</button>
                                 </form>
@@ -81,7 +81,7 @@
                                         <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
                                     </button>
                                     <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenuButton">
-                                        <form class="comment" action="{{ path('member.comment.delete', {id: comment.id} ) }}" class="d-inline-block">
+                                        <form class="comment" action="{{ path('comment.delete', {id: comment.id} ) }}" class="d-inline-block">
                                                 <input type="hidden" name="_token" value="{{ csrf_token('delete'~ comment.id) }}">
                                                 <button type="submit" class="dropdown-item">Delete</button>
                                         </form>
