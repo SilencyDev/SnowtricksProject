@@ -1,5 +1,5 @@
 {% extends "base.html.twig" %}
-{% block title 'AdminTricks'%}
+{% block title 'Tricks manager'%}
 {% block body %}
     <div class="jumbotron text-center">
         <h1>Tricks manager</h1>
@@ -17,8 +17,8 @@
             <tr>
                 <td>{{ snowtrickToValidate.title }}</td>
                 <td>
-                    <button type="button" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrickToValidate.id}) }}">Edit/Validation</button>
-                    <form method="post" action="{{ path('member.snowtrick.delete', {id: snowtrickToValidate.id}) }}" class="d-inline-block m-1">
+                    <button type="button" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('snowtrick.edit', {id: snowtrickToValidate.id}) }}">Edit/Validation</button>
+                    <form method="post" action="{{ path('snowtrick.delete', {id: snowtrickToValidate.id}) }}" class="d-inline-block m-1">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrickToValidate.id) }}">
                         <button class="btn btn-danger">Delete</button>
@@ -40,8 +40,8 @@
             <tr>
                 <td>{{ snowtrick.title }}</td>
                 <td>
-                    <button type="button" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}">Edit/Validation</button>
-                    <form class="d-inline-block snowtrick m-1" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}">
+                    <button type="button" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('snowtrick.edit', {id: snowtrick.id}) }}">Edit/Validation</button>
+                    <form class="d-inline-block snowtrick m-1" action="{{ path('snowtrick.delete', {id: snowtrick.id}) }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">
                         <button class="btn btn-danger">Delete</button>
@@ -52,7 +52,7 @@
             </tbody>
         </table>
       <div class="text-right">
-            <button type="button" class="btn btn-primary modal-trigger-newS" data-toggle="modal" data-target="{{ path('member.snowtrick.new') }}">Post a new trick</button>
+            <button type="button" class="btn btn-primary modal-trigger-newS" data-toggle="modal" data-target="{{ path('snowtrick.new') }}">Post a new trick</button>
         </div>
     </div>
 

@@ -1,5 +1,5 @@
 {% extends "base.html.twig" %}
-{% block title 'AdminTricks'%}
+{% block title 'My tricks'%}
 {% block body %}
     <div class="jumbotron text-center">
         <h1>My tricks</h1>
@@ -18,8 +18,8 @@
             <tr>
                 <td id="stitle">{{ snowtrick.title }}</td>
                 <td>
-                    <button type="button" id="test" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('member.snowtrick.edit', {id: snowtrick.id}) }}">Edit</button>
-                    <form class="d-inline-block snowtrick m-1" action="{{ path('member.snowtrick.delete', {id: snowtrick.id}) }}">
+                    <button type="button" id="test" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('snowtrick.edit', {id: snowtrick.id}) }}">Edit</button>
+                    <form class="d-inline-block snowtrick m-1" action="{{ path('snowtrick.delete', {id: snowtrick.id}) }}">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.id) }}">
                         <button class="btn btn-danger">Delete</button>
@@ -37,7 +37,7 @@
             </tbody>
         </table>
         <div class="text-right">
-            <button type="button" id="test" class="btn btn-primary modal-trigger-newS" data-toggle="modal" data-target="{{ path('member.snowtrick.new') }}">Post a new trick</button>
+            <button type="button" id="test" class="btn btn-primary modal-trigger-newS" data-toggle="modal" data-target="{{ path('snowtrick.new') }}">Post a new trick</button>
         </div>
     </div>
 

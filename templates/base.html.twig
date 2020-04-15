@@ -28,17 +28,17 @@
                     {% endif %}
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
-                            <a class="nav-link{% if current_menu is defined and current_menu == 'TrickManager' %}active{% endif %}" href="{{ path('admin.snowtrick.index') }}">TricksManager</a>
+                            <a class="nav-link{% if current_menu is defined and current_menu == 'TrickManager' %}active{% endif %}" href="{{ path('snowtrick.manager') }}">TricksManager</a>
                         </li>
                         <span class="nav-link d-none d-md-block">|</span>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('admin.category.index') }}">CategoryManager</a>
+                            <a class="nav-link" href="{{ path('category.index') }}">CategoryManager</a>
                         </li>
                         <span class="nav-link d-none d-md-block">|</span>  
                     {% endif %}
                     {% if is_granted('ROLE_MEMBER') or is_granted('ROLE_ADMIN') %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('member.snowtrick.index') }}">MyTricks</a>
+                            <a class="nav-link" href="{{ path('snowtrick.mytrick') }}">MyTricks</a>
                         </li>
                         <span class="nav-link d-none d-md-block">|</span>
                     {% endif %}
