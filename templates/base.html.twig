@@ -12,6 +12,7 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+        {% if not app.request.XmlhttpRequest %}
         <nav class="navbar navbar-expand-md navbar-light bg-light inline-block">
             <a class="navbar-brand icon-line" href="{{ path('home') }}"><img src="{{ asset('icons/snow.svg') }}" class="icon-menu">Snowtricks</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +55,7 @@
                 </ul>
             </div>
         </nav>
+        {% endif %}
         {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}

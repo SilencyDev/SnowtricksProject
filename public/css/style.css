@@ -124,11 +124,29 @@ footer {
 
 .btn-primary {
   background-color: #4b9bc4;
-  border-color: #fff;
+  border-color: #4b9bc4;
 }
 
 .btn-danger {
   background-color: #e9383f;
+}
+
+.btn-warning {
+  background-color: #0F7890 !important;
+  border-color: #0F7890 !important;
+  color: #fff !important;
+}
+
+.btn-warning:focus, .btn-warning:active {
+  background-color: #136A7E !important;
+  border-color: #136A7E !important;
+  box-shadow: 0 0 0 0.2rem #1F90AA !important;
+}
+
+.btn-warning:hover {
+  background-color: #136A7E;
+  border-color: #136A7E;
+  color: #fff;
 }
 
 .btn-secondary {
@@ -147,4 +165,12 @@ img.main {
   margin-bottom:  -10px;
   text-align: right;
   font-size: 0.9em;
+}
+
+.not-connected-comment {
+  text-decoration: underline;
+  border: solid 2px;
+  box-sizing: initial;
+  border-radius: 5px 5px 5px 5px;
+  margin-left: 40vw!important;
 }
