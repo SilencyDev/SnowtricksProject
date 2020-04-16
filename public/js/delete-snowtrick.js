@@ -1,4 +1,4 @@
-function deleteSnowtrick(event) {
+$("#snowtricks").on("submit", "form.snowtrick", function(event) {
     event.preventDefault();
     const that = this;
     const url = this.action;
@@ -15,8 +15,4 @@ function deleteSnowtrick(event) {
         });
 
     };
-}
-
-document.querySelectorAll('form.snowtrick').forEach( function(form) {
-    form.addEventListener('submit', deleteSnowtrick);
 })

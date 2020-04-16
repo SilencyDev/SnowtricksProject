@@ -4,7 +4,7 @@
     <div class="jumbotron text-center">
         <h1>Log In</h1>
     </div>
-    <div class="container mt-4">
+    <div class="container mt-4 d-flex justify-content-center">
         {% if error %}
             <div class="alert alert-danger">
             {{ error.messageKey }}
@@ -21,6 +21,14 @@
             </div>
             <button type="submit" class="btn btn-primary mt-3">Log in</button>
         </form>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        </br>
+        <a href="{{ url('forgotpassword') }}">Register</a></br>
+    </div>
+    <div class="d-flex justify-content-center">
+        </br>
         <a href="{{ url('forgotpassword') }}">Forgot password ?</a>
     </div>
+
 {% endblock %}

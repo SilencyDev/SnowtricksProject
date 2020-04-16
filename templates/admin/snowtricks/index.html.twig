@@ -4,7 +4,7 @@
     <div class="jumbotron text-center">
         <h1>Tricks manager</h1>
     </div>
-    <div class="container mt-4">
+    <div class="container mt-4" id="snowtricks">
         <table class="table table-striped" style="table-layout:fixed">
             <thead>
             <tr>
@@ -18,7 +18,7 @@
                 <td>{{ snowtrickToValidate.title }}</td>
                 <td>
                     <button type="button" class="btn btn-secondary modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('snowtrick.edit', {id: snowtrickToValidate.id}) }}">Edit/Validation</button>
-                    <form method="post" action="{{ path('snowtrick.delete', {id: snowtrickToValidate.id}) }}" class="d-inline-block m-1">
+                    <form class="d-inline-block snowtrick m-1" method="post" action="{{ path('snowtrick.delete', {id: snowtrickToValidate.id}) }}" class="d-inline-block m-1">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrickToValidate.id) }}">
                         <button class="btn btn-danger">Delete</button>
