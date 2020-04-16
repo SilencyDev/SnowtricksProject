@@ -19,9 +19,32 @@
             <div class="md-4">
                 <p>{{ snowtrick.description }}</p>
             </div>
-            <div class="d-flex">
-                <p class="ml-auto p-2">Posted: {{ snowtrick.createdAt|date("d/m/Y \\a\\t h:i:s", false) }}</p>
-                <p class="mr-auto p-2">{{ snowtrick.updatedAt is empty ? "" : snowtrick.updatedAt|date(" \\U\\p\\d\\a\\t\\e\\d: d/m/Y \\a\\t h:i:s", false) }}</p>
+            {% for category in snowtrick.categories %}
+                {% if category.name == ("Grab") %}
+                    <div class="badge badge-primary">
+                            {{ category.name }}
+                    </div>
+                {% elseif category.name == ("Rotate") %}
+                    <div class="badge badge-info">
+                            {{ category.name }}
+                    </div>
+                {% elseif category.name == ("Slide") %}
+                    <div class="badge badge-danger">
+                            {{ category.name }}
+                    </div>
+                {% elseif category.name == ("Flip") %}
+                    <div class="badge badge-secondary">
+                            {{ category.name }}
+                    </div>
+                {% else %}
+                    <div class="badge badge-warning">
+                            {{ category.name }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="text-right">
+                Posted: {{ snowtrick.createdAt|date("d/m/Y \\a\\t H:i:s", false) }}</br>
+                {{ snowtrick.updatedAt is empty ? "" : snowtrick.updatedAt|date(" \\U\\p\\d\\a\\t\\e\\d: d/m/Y \\a\\t H:i:s", false) }}
             </div>
         </div>
     </div>
@@ -34,69 +57,87 @@
         <div class="collapse mt-4" id="collapseShow" style="overflow-x: scroll; white-space: nowrap;">
             {% for picture in snowtrick.pictures %}
                 <div class="ib">
-                    {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
-                        <div class="dropdown dropleft float-right">
-                            <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <form class="picture" action="{{ path('picture.delete', {id: picture.id} ) }}" class="d-inline-block">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete'~ picture.id) }}">
-                                    <button type="submit" class="dropdown-item">Delete</button>
-                                </form>
+                    {% if app.user.username is defined %}
+                        {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
+                            <div class="dropdown dropleft float-right">
+                                <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <form class="picture" action="{{ path('picture.delete', {id: picture.id} ) }}" class="d-inline-block">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ picture.id) }}">
+                                        <button type="submit" class="dropdown-item">Delete</button>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        {% endif %}
                     {% endif %}
                     <img src="{{ asset(picture.path) }}" class="rounded" style="max-width: 100%;">
                 </div>
             {% endfor %}
             {% for video in snowtrick.videos %}
                 <div class="ib">
-                    {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
-                        <div class="dropdown dropleft float-right fixed">
-                            <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <form class="video" action="{{ path('video.delete', {id: video.id} ) }}" class="d-inline-block">
-                                    <input type="hidden" name="_token" value="{{ csrf_token('delete'~ video.id) }}">
-                                    <button type="submit" class="dropdown-item">Delete</button>
-                                </form>
-                            </div>
-                        </div>
+                    {% if not app.request.XmlhttpRequest %}
+                        {% if app.user.username is defined %}
+                            {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
+                                <div class="dropdown dropleft float-right fixed">
+                                    <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <form class="video" action="{{ path('video.delete', {id: video.id} ) }}" class="d-inline-block">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~ video.id) }}">
+                                            <button type="submit" class="dropdown-item">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
                     <iframe width="560" height="315" src="{{ video.url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             {% endfor %}
         </div>
     </div>
-    <div class="container mb-4 mt-4">
-        {{ include('snowtricks/_form.html.twig') }}
-    </div>
+    {% if not app.request.XmlhttpRequest %}
+        {% if app.user.username is defined %}
+        <div class="container mb-4 mt-4">
+            {{ include('snowtricks/_form.html.twig') }}
+        </div>
+        {% else %}
+        <div class="badge mb-4 mt-4 not-connected-comment mx-auto">
+           <a href={{ path("login") }}>Log in</a> or <a href={{ path("signup") }}>Sign up</a> to leave a comment !
+        </div>
+        {% endif %}
+    {% endif %}
     <div class="container mb-4 mt-4" id="comments">
         <div class="add-comment"></div>
         {% for comment in comments %}
                 <div class="col-xs-12 col-md-8 col-lg-6">
                     <div class="card mb-4">
                         <div class="card-body">
-                            {% if is_granted('ROLE_ADMIN') or comment.author.username is same as (app.user.username) %}
-                                <div class="dropdown dropleft float-right mr-4">
-                                    <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
-                                    </button>
-                                    <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenuButton">
-                                        <form class="comment" action="{{ path('comment.delete', {id: comment.id} ) }}" class="d-inline-block">
-                                                <input type="hidden" name="_token" value="{{ csrf_token('delete'~ comment.id) }}">
-                                                <button type="submit" class="dropdown-item">Delete</button>
-                                        </form>
-                                    </div>
-                                </div>
+                            {% if not app.request.XmlhttpRequest %}
+                                {% if app.user.username is defined %}
+                                    {% if is_granted('ROLE_ADMIN') or comment.author.username is same as (app.user.username) %}
+                                        <div class="dropdown dropleft float-right mr-4">
+                                            <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                                            </button>
+                                            <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenuButton">
+                                                <form class="comment" action="{{ path('comment.delete', {id: comment.id} ) }}" class="d-inline-block">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ comment.id) }}">
+                                                        <button type="submit" class="dropdown-item">Delete</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
                             {% endif %}
                             <h5 class="card-title">
                                 {{ comment.author.username }}
                             </h5>
                             <p> {{ comment.content }}</p>
-                            <p class="date-comment">{{ comment.createdAt|date("d/m/Y \\a\\t h:i:s", false) }}</p>
+                            <p class="date-comment">{{ comment.createdAt|date("d/m/Y \\a\\t H:i:s", false) }}</p>
                         </div>
                     </div>
                 </div>
