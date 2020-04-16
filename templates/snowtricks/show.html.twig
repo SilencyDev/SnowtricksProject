@@ -19,6 +19,10 @@
             <div class="md-4">
                 <p>{{ snowtrick.description }}</p>
             </div>
+            <div class="d-flex">
+                <p class="ml-auto p-2">Posted: {{ snowtrick.createdAt|date("d/m/Y \\a\\t h:i:s", false) }}</p>
+                <p class="mr-auto p-2">{{ snowtrick.updatedAt is empty ? "" : snowtrick.updatedAt|date(" \\U\\p\\d\\a\\t\\e\\d: d/m/Y \\a\\t h:i:s", false) }}</p>
+            </div>
         </div>
     </div>
     <div class="container mt-4">
@@ -89,9 +93,10 @@
                                 </div>
                             {% endif %}
                             <h5 class="card-title">
-                                <p>{{ comment.author.username }}</p>
+                                {{ comment.author.username }}
                             </h5>
                             <p> {{ comment.content }}</p>
+                            <p class="date-comment">{{ comment.createdAt|date("d/m/Y \\a\\t h:i:s", false) }}</p>
                         </div>
                     </div>
                 </div>

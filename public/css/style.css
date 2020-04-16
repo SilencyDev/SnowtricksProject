@@ -142,3 +142,9 @@ img.main {
 .signature {
   margin: 10px;
 }
+
+.date-comment {
+  margin-bottom:  -10px;
+  text-align: right;
+  font-size: 0.9em;
+}

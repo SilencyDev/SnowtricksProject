@@ -66,12 +66,24 @@ class Snowtrick implements \JsonSerializable
      */
     private $mainpicture;
 
+        /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->videos = new ArrayCollection();
+        $this->createdAt = new \DateTime("now");
+        $this->updatedAt = null;
     }
 
     public function getId(): int
@@ -242,6 +254,33 @@ class Snowtrick implements \JsonSerializable
     {
         $this->mainpicture = $mainpicture;
         $mainpicture->setSnowtrick($this);
+
+        return $this;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(): self
+    {
+        $this->createdAt = new \DateTime("now");
+
+        return $this;
+    }
+
+    public function getUpdatedAt()
+    {
+        if ($this->updatedAt === null) {
+            return null;
+        }
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(): self
+    {
+        $this->updatedAt = new \DateTime("now");
 
         return $this;
     }

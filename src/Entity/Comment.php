@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Boolean;
 
@@ -36,6 +37,16 @@ class Comment
      * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="comments")
      */
     private $snowtrick;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime("now");
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +97,18 @@ class Comment
     public function setSnowtrick(Snowtrick $snowtrick): self
     {
         $this->snowtrick = $snowtrick;
+
+        return $this;
+    }
+    
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(): self
+    {
+        $this->createdAt = new \DateTime("now");
 
         return $this;
     }

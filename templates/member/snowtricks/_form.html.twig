@@ -6,7 +6,12 @@
         }
         }) }}
 {% else %}
-    {{ form_start(form, {'action': path(path, {id: snowtrick.id})}) }}
+    {{ form_start(form, {
+        'attr':{
+            'action' : path(path, {id: snowtrick.id}),
+            'id' : 'form-data'
+    } 
+    }) }}
 {% endif %}
 {{ form_row(form.title) }}
 {{ form_row(form.description) }}

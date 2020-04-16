@@ -252,6 +252,7 @@ class SnowtrickController extends AbstractController
                     $this->em->persist($videoUpload);
                 }
             }
+            $snowtrick->setUpdatedAt();
 
             $this->em->persist($snowtrick);
             $this->em->flush();
@@ -268,7 +269,7 @@ class SnowtrickController extends AbstractController
         return $this->render('member/snowtricks/_form.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView(),
-            'path' => 'member.snowtrick.edit'
+            'path' => 'snowtrick.edit'
         ]);
     }
 

@@ -62,7 +62,6 @@ class SnowtrickType extends AbstractType
 
         $builder
             ->add('validated', CheckboxType::class, [
-                'mapped' => false,
                 'required' => false,
             ]);
     }
