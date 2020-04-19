@@ -34,9 +34,22 @@ class HomeController extends AbstractController
         if ($page < 1) {
             $page = 1;
         }
-
-        return $this->render('pages/loadmore.html.twig', [
+        
+        return $this->render('loadmore/snowtrick.html.twig', [
             'snowtricks' => $snowtrickRepository->findBy(['validated' => true], ['id' => 'DESC'], 3, ($page-1) * 3),
+        ]);
+    }
+
+    /**
+     * @Route("/search/", name="home.search")
+     * @return Response
+     */
+    public function searchAction(SnowtrickRepository $snowtrickRepository, Request $request): Response
+    {
+        $category = (string) $request->get('category');
+        
+        return $this->render('pages/home.html.twig', [
+            'snowtricks' => $snowtrickRepository->findByCategory($category, 3, 0)
         ]);
     }
 }

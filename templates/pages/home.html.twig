@@ -16,12 +16,26 @@
         </a>
     </div>
 </section>
+            <div class="text-center">
+                <a href="{{ path("home.search") }}" class="badge badge-primary py-2 px-2 mx-2 mt-2">
+                        Grab
+                </a>
+                <a href="{{ path("home.search") }}" class="badge badge-info py-2 px-2 mx-2 mt-2">
+                        Rotate
+                </a>
+                <a href="{{ path("home.search") }}" class="badge badge-danger py-2 px-2 mx-2 mt-2">
+                        Slide
+                </a>
+                <a href="{{ path("home.search") }}" class="badge badge-secondary py-2 px-2 mx-2 mt-2">
+                        Flip
+                </a>
+            </div><hr/>
 
 <section id="portfolio">
     <div class="container mt-4">
         <h2>Last Tricks</h2>
         <div class="row flex" id="snowtricks">
-            {{ include('pages/loadmore.html.twig')}}
+            {{ include('loadmore/snowtrick.html.twig')}}
         </div>
         <div>
             <a id="loadMore" class="mb-10">
@@ -34,9 +48,7 @@
     </div>
 </section>
 {% endblock %}
-
 {% block javascripts %}
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         click = 1;
         $("#up").hide();

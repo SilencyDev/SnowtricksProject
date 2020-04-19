@@ -36,6 +36,10 @@ class SnowtrickType extends AbstractType
                'delete_empty' => true,
                'required' => false,
                'mapped' => false,
+            ])
+            ->add('validated', CheckboxType::class, [
+                'required' => false,
+                'data' => false,
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -59,11 +63,6 @@ class SnowtrickType extends AbstractType
                 ]);
             }
         });
-
-        $builder
-            ->add('validated', CheckboxType::class, [
-                'required' => false,
-            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

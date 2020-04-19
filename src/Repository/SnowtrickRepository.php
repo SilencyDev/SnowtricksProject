@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Snowtrick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Security;
 
@@ -26,6 +29,27 @@ class SnowtrickRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.validated = 1');
+    }
+
+    /**
+     * @return Snowtrick[]
+     */
+    public function findbyCategory($category, $limit = null, $offset = null): array
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.categories', 'c')
+            ->andWhere('s.validated = 1')
+            ->setParameters(new ArrayCollection(array(
+                'category'=> $category,
+                'limit'=> $limit,
+                'offset'=> $offset
+                )))
+            ->andWhere('c.name = :category')
+            ->setFirstResult(':offset')
+            ->setMaxResults(':limit')
+            ->orderBy('s.id','DESC')
+            ->getQuery()
+            ->getResult();
     }
 
     /**

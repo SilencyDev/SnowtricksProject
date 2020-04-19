@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 {% block title snowtrick.title %}
 {% block body %}
-    <div class="jumbotron">
+    <div class="jumbotron" id="snowtrick">
         <div class="text-center">
             <h1 class="title">{{ snowtrick.title }}</h1>
         </div>
@@ -19,6 +19,7 @@
             <div class="md-4">
                 <p>{{ snowtrick.description }}</p>
             </div>
+            <div>
             {% for category in snowtrick.categories %}
                 {% if category.name == ("Grab") %}
                     <div class="badge badge-primary">
@@ -42,6 +43,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
+            </div>
             <div class="text-right">
                 Posted: {{ snowtrick.createdAt|date("d/m/Y \\a\\t H:i:s", false) }}</br>
                 {{ snowtrick.updatedAt is empty ? "" : snowtrick.updatedAt|date(" \\U\\p\\d\\a\\t\\e\\d: d/m/Y \\a\\t H:i:s", false) }}
@@ -101,52 +103,59 @@
     </div>
     {% if not app.request.XmlhttpRequest %}
         {% if app.user.username is defined %}
-        <div class="container mb-4 mt-4">
-            {{ include('snowtricks/_form.html.twig') }}
-        </div>
+            <div class="container mb-4 mt-4">
+                {{ include('snowtricks/_form.html.twig') }}
+            </div>
         {% else %}
-        <div class="badge mb-4 mt-4 not-connected-comment mx-auto">
-           <a href={{ path("login") }}>Log in</a> or <a href={{ path("signup") }}>Sign up</a> to leave a comment !
-        </div>
+            <div class="container mb-4 mt-4 not-connected-comment">
+                <a href={{ path("login") }}>Log in</a> or <a href={{ path("signup") }}>Sign up</a> to leave a comment !
+            </div>
         {% endif %}
     {% endif %}
-    <div class="container mb-4 mt-4" id="comments">
-        <div class="add-comment"></div>
-        {% for comment in comments %}
-                <div class="col-xs-12 col-md-8 col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            {% if not app.request.XmlhttpRequest %}
-                                {% if app.user.username is defined %}
-                                    {% if is_granted('ROLE_ADMIN') or comment.author.username is same as (app.user.username) %}
-                                        <div class="dropdown dropleft float-right mr-4">
-                                            <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
-                                            </button>
-                                            <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenuButton">
-                                                <form class="comment" action="{{ path('comment.delete', {id: comment.id} ) }}" class="d-inline-block">
-                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ comment.id) }}">
-                                                        <button type="submit" class="dropdown-item">Delete</button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endif %}
-                            {% endif %}
-                            <h5 class="card-title">
-                                {{ comment.author.username }}
-                            </h5>
-                            <p> {{ comment.content }}</p>
-                            <p class="date-comment">{{ comment.createdAt|date("d/m/Y \\a\\t H:i:s", false) }}</p>
-                        </div>
-                    </div>
-                </div>
-        {% endfor %}
-    </div>
+        <div class="container mb-4 mt-4">
+            <div class="add-comment"></div>
+            <div id="comments">
+                {% include 'loadmore/comment.html.twig' %}
+            </div>
+            <div>
+                <a id="loadMore" class="mb-10">
+                    <button class="btn btn-primary">Load more</button>
+                </a>
+                <a id="up" class="btn text-uppercase float-right mt-n fixed-bottom" href="#snowtrick">
+                    <img src="{{ asset('icons/arrow-up.svg') }}" class="icon-bot">
+                </a>
+            </div>
+        </div>
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('js/delete-picture.js') }}"></script>
     <script src="{{ asset('js/delete-video.js') }}"></script>
     <script src="{{ asset('js/delete-comment.js') }}"></script>
     <script src="{{ asset('js/add-comment.js') }}"></script>
+    <script>
+        click = 1;
+        $("#up").hide();
+        function loadMore(event) {
+            event.preventDefault();
+            click++;
+            const url = "{{ path('comment.loadmore') }}";
+
+            axios.get(url, {
+                params: {
+                    page:click
+                }
+            }
+            ).then(function (response) {
+                $("#comments").append(response.data);
+                if (click >= 2) {
+                    $("#up").show();
+                }
+            });
+        }
+        document.getElementById('loadMore').addEventListener('click', loadMore);
+
+        $('#up').click(function(e) {
+            $("#up").hide();
+        })
+    </script>
 {% endblock %}

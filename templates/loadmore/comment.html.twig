@@ -1,0 +1,30 @@
+{% for comment in comments %}
+    <div class="col-xs-12 col-md-10 col-lg-8 d-flex comment-row">
+            <img src="{{ asset(comment.author.picture.path) }}" class="profile-icon mr-4"></img>
+        <div class="card">
+            <div class="card-body">
+                {% if not app.request.XmlhttpRequest %}
+                    {% if app.user.username is defined %}
+                        {% if is_granted('ROLE_ADMIN') or comment.author.username is same as (app.user.username) %}
+                            <div class="dropdown dropleft float-right mr-4">
+                                <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                                </button>
+                                <div class="dropdown-menu btn-danger" aria-labelledby="dropdownMenuButton">
+                                    <form class="comment" action="{{ path('comment.delete', {id: comment.id} ) }}" class="d-inline-block">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete'~ comment.id) }}">
+                                            <button type="submit" class="dropdown-item">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                <h5 class="card-title">{{ comment.author.username }}</h5>
+                <p> {{ comment.content }}</p>
+                <p class="date-comment">{{ comment.createdAt|date("d/m/Y \\a\\t H:i:s", false) }}</p>
+            </div>
+        </div>
+    </div>
+        <div class="mb-4"></div>
+{% endfor %}
