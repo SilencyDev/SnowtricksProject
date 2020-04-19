@@ -56,6 +56,11 @@ class User implements UserInterface, \Serializable
      */
     private $tokens;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\UserPicture", mappedBy="user", cascade={"persist","remove"}, orphanRemoval=true)
+     */
+    private $picture;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -221,6 +226,24 @@ class User implements UserInterface, \Serializable
             if ($token->getUser() === $this) {
                 $token->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getPicture(): ?UserPicture
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?UserPicture $picture): self
+    {
+        $this->picture = $picture;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = null === $picture ? null : $this;
+        if ($picture->getUser() !== $newUser) {
+            $picture->setUser($newUser);
         }
 
         return $this;

@@ -80,7 +80,7 @@ class SnowtrickController extends AbstractController
             ])
         ]);
 
-        $comments = $commentRepository->findBy([], ['id' => 'DESC']);
+        $comments = $commentRepository->findBy([], ['id' => 'DESC'], 3, 0);
         return $this->render('snowtricks/show.html.twig', [
             'snowtrick' => $snowtrick,
             'comments' => $comments,
@@ -206,6 +206,8 @@ class SnowtrickController extends AbstractController
             $videos = $form->get('videos')->getData();
 
             if ($mainpicture !== NULL) {
+                $this->em->remove($snowtrick->getMainpicture());
+                $this->em->flush();
                 $mainUpload = new Mainpicture;
 
                 $mainUpload->setName($mainpicture->getClientOriginalName());

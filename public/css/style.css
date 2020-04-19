@@ -167,10 +167,26 @@ img.main {
   font-size: 0.9em;
 }
 
+.comment-row {
+  align-items: center;
+}
+
 .not-connected-comment {
-  text-decoration: underline;
   border: solid 2px;
   box-sizing: initial;
   border-radius: 5px 5px 5px 5px;
-  margin-left: 40vw!important;
+  text-align: center;
+  width: fit-content;
+}
+
+.not-connected-comment a {
+  font-weight: bold;
+}
+
+.profile-icon {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
 }

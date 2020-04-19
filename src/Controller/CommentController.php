@@ -104,4 +104,23 @@ class CommentController extends AbstractController
         }
         return new JsonResponse(null, 400);
     }
+
+    /**
+     * @Route("/loadmore/comment", name="comment.loadmore")
+     *
+     * @param CommentRepository 
+     * @param integer $page
+     * @return Response
+     */
+    public function loadMoreAction(CommentRepository $commentRepository, Request $request): Response
+    {
+        $page = (int) $request->get('page', 1);
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        return $this->render('loadmore/comment.html.twig', [
+            'comments' => $commentRepository->findBy(['validated' => true], ['id' => 'DESC'], 3, ($page-1) * 3),
+        ]);
+    }
 }

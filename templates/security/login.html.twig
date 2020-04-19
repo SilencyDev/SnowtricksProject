@@ -4,12 +4,12 @@
     <div class="jumbotron text-center">
         <h1>Log In</h1>
     </div>
+    {% if error %}
+        <div class="container alert alert-danger">
+        {{ error.messageKey }}
+        </div>
+    {% endif %}
     <div class="container mt-4 d-flex justify-content-center">
-        {% if error %}
-            <div class="alert alert-danger">
-            {{ error.messageKey }}
-            </div>
-        {% endif %}
         <form action="{{ path('login') }}" method="post">
             <div class="form-group">
                 <label for="email">Email</label>
