@@ -206,9 +206,12 @@ class SnowtrickController extends AbstractController
             $videos = $form->get('videos')->getData();
 
             if ($mainpicture !== NULL) {
-                unlink($snowtrick->getMainpicture()->getRealPath());
-                $this->em->remove($snowtrick->getMainpicture());
-                $this->em->flush();
+
+                if ($snowtrick->getMainpicture() !== null) {
+                    unlink($snowtrick->getMainpicture()->getRealPath());
+                    $this->em->remove($snowtrick->getMainpicture());
+                    $this->em->flush();
+                }
                 $mainUpload = new Mainpicture;
 
                 $mainUpload->setName($mainpicture->getClientOriginalName());
