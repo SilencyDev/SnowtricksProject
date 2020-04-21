@@ -52,6 +52,7 @@ Class UserController extends AbstractController
             $picture = $form2->get('picture')->getData();
             if ($picture !== NULL) {
                 if ($user->getPicture() !== null) {
+                    unlink($user->getPicture()->getRealPath());
                     $this->em->remove($user->getPicture());
                     $this->em->flush();
                 }
@@ -78,7 +79,7 @@ Class UserController extends AbstractController
         return $this->render('member/index.html.twig',[
             'form' => $form->createView(),
             'form2' => $form2->createView(),
-            'picture' => $user->getPicture()->getPath()
+            'user' => $user
         ]);
     }
 

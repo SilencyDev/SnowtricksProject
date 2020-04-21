@@ -7,6 +7,7 @@ use App\Entity\Snowtrick;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
+use App\Repository\UserPictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,7 +43,6 @@ class CommentController extends AbstractController
      * @Route("/new/{id}", name="comment.new"), methods={"GET","POST"})
      * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Snowtrick
-     * @param Comment
      */
     public function newAction(Security $security, Request $request, Snowtrick $snowtrick)
     {
@@ -94,6 +94,7 @@ class CommentController extends AbstractController
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
         $token = json_decode($request->getContent(), true)['token']??null;
+        dd($token);
         if (in_array("ROLE_ADMIN", $roles) || ($comment->getAuthor()->getUsername() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $comment->getId(), $token)) {
                 $this->em->remove($comment);
@@ -112,7 +113,7 @@ class CommentController extends AbstractController
      * @param integer $page
      * @return Response
      */
-    public function loadMoreAction(CommentRepository $commentRepository, Request $request): Response
+    public function loadMoreAction(CommentRepository $commentRepository, Request $request, UserPictureRepository $userPictureRepository, Security $security): Response
     {
         $page = (int) $request->get('page', 1);
         if ($page < 1) {
@@ -120,7 +121,6 @@ class CommentController extends AbstractController
         }
 
         return $this->render('loadmore/comment.html.twig', [
-            'comments' => $commentRepository->findBy(['validated' => true], ['id' => 'DESC'], 3, ($page-1) * 3),
-        ]);
+            'comments' => $commentRepository->findBy(['validated' => true] ,['id' => 'DESC'] ,3 ,($page-1) * 3)]);
     }
 }

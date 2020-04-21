@@ -1,6 +1,10 @@
 {% for comment in comments %}
     <div class="col-xs-12 col-md-10 col-lg-8 d-flex comment-row">
+        {% if comment.author.picture is not null %}
             <img src="{{ asset(comment.author.picture.path) }}" class="profile-icon mr-4"></img>
+        {% else %}
+            <img src="{{ asset("icons/user.jpg") }}" class="profile-icon mr-4"></img>
+        {% endif %}
         <div class="card">
             <div class="card-body">
                 {% if not app.request.XmlhttpRequest %}
@@ -26,5 +30,5 @@
             </div>
         </div>
     </div>
-        <div class="mb-4"></div>
+    <div class="mb-4"></div>
 {% endfor %}

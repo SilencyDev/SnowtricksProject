@@ -6,12 +6,18 @@
     <div class="jumbotron text-center">
         <h1>My account</h1>
     </div>
-    <div class="container mb-4">
-        {{ include('member/_form_password.html.twig', {form: form, button: 'Edit'}) }}
-    </div>
-    <div class="container mb-4 mt-5 d-flex">
-        <img src="{{ asset(picture) }}" class="profile-icon mx-5 mt-3"></img>
-        {{ include('member/_form_picture.html.twig', {form: form, button: 'Edit'}) }}
+    <div class="container justify-content-center pt-4">
+        <div class="container d-flex justify-content-center">
+            {% if user.picture is not null %}
+                <img src="{{ asset(user.picture.path) }}" class="profile-icon mx-5 mt-3"></img>
+            {% else %}
+                <img src="{{ asset("icons/user.jpg") }}" class="profile-icon mx-5 mt-3"></img>
+            {% endif %}
+            {{ include('member/_form_picture.html.twig', {form: form, button: 'Edit'}) }}
+        </div>
+        <div class="container mt-5 d-flex justify-content-center">
+            {{ include('member/_form_password.html.twig', {form: form, button: 'Edit'}) }}
+        </div>
     </div>
 {% endblock %}
 {% block javascripts %}
