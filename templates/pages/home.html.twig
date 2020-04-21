@@ -16,20 +16,14 @@
         </a>
     </div>
 </section>
-            <div class="text-center">
-                <a href="{{ path("home.search") }}" class="badge badge-primary py-2 px-2 mx-2 mt-2">
-                        Grab
-                </a>
-                <a href="{{ path("home.search") }}" class="badge badge-info py-2 px-2 mx-2 mt-2">
-                        Rotate
-                </a>
-                <a href="{{ path("home.search") }}" class="badge badge-danger py-2 px-2 mx-2 mt-2">
-                        Slide
-                </a>
-                <a href="{{ path("home.search") }}" class="badge badge-secondary py-2 px-2 mx-2 mt-2">
-                        Flip
-                </a>
-            </div><hr/>
+
+<div class="text-center">
+    {% for category in categories %}
+        <a href="{{ path("home.search", {category: category.name}) }}" class="badge badge-primary py-2 px-2 mx-2 mt-2">
+                {{ category.name }}
+        </a>
+    {% endfor %}
+</div><hr/>
 
 <section id="portfolio">
     <div class="container mt-4">

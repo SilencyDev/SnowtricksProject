@@ -67,8 +67,8 @@ class CommentController extends AbstractController
             $this->em->persist($newComment);
             $this->em->flush();
 
-            return $this->render('row/addcomment.html.twig', [
-                'acomment' => $newComment,
+            return $this->render('loadmore/comment.html.twig', [
+                'comment' => $newComment,
                 'form' => $form->createView(),
             ]);
         } else {
@@ -107,7 +107,7 @@ class CommentController extends AbstractController
     }
 
     /**
-     * @Route("/loadmore/comment", name="comment.loadmore")
+     * @Route("/loadmore", name="comment.loadmore")
      *
      * @param CommentRepository 
      * @param integer $page
@@ -120,7 +120,7 @@ class CommentController extends AbstractController
             $page = 1;
         }
 
-        return $this->render('loadmore/comment.html.twig', [
+        return $this->render('loadmore/comments.html.twig', [
             'comments' => $commentRepository->findBy(['validated' => true] ,['id' => 'DESC'] ,3 ,($page-1) * 3)]);
     }
 }
