@@ -8,7 +8,7 @@ $(document).ready(function() {
         //on fait un appel ajax vers l'action symfony qui nous renvoie la vue
         $.get(url, function (data) {
             //on injecte le html dans la modale
-            $('.modal-body').html(data);
+            $('#newSnowtrick .modal-body').html(data);
             //on ouvre la modale
             $('#newSnowtrick').modal('open');
         });
@@ -22,7 +22,7 @@ $(document).ready(function() {
         //on fait un appel ajax vers l'action symfony qui nous renvoie la vue
         $.get(url, function (data) {
             //on injecte le html dans la modale
-            $('.modal-body').html(data);
+            $('#editSnowtrick .modal-body').html(data);
             //on ouvre la modale
             $('#editSnowtrick').modal('open');
         });
@@ -36,7 +36,7 @@ $(document).ready(function() {
             //on fait un appel ajax vers l'action symfony qui nous renvoie la vue
             $.get(url, function (data) {
                 //on injecte le html dans la modale
-                $('.modal-body').html(data);
+                $('#newCategory .modal-body').html(data);
                 //on ouvre la modale
                 $('#newCategory').modal('open');
             });
@@ -50,7 +50,7 @@ $(document).ready(function() {
             //on fait un appel ajax vers l'action symfony qui nous renvoie la vue
             $.get(url, function (data) {
                 //on injecte le html dans la modale
-                $('.modal-body').html(data);
+                $('#editCategory .modal-body').html(data);
                 //on ouvre la modale
                 $('#editCategory').modal('open');
             });
