@@ -4,7 +4,6 @@ namespace App\EventSubscriber;
 
 use App\Entity\Snowtrick;
 use App\Entity\User;
-use App\Entity\UserPicture;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;

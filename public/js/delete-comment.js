@@ -1,6 +1,5 @@
 $("#comments").on("submit", "form.comment", function(event) {
     event.preventDefault();
-    console.log("test");
     const that = this;
     const url = this.action;
     let token = this.querySelector('input[name="_token"]');
