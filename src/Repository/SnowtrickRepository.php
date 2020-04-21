@@ -34,20 +34,18 @@ class SnowtrickRepository extends ServiceEntityRepository
     /**
      * @return Snowtrick[]
      */
-    public function findbyCategory($category, $limit = null, $offset = null): array
+    public function findbyCategory(string $category, ?int $limit = null, ?int $offset = null): array
     {
         return $this->createQueryBuilder('s')
             ->join('s.categories', 'c')
-            ->andWhere('s.validated = 1')
-            ->setParameters(new ArrayCollection(array(
-                'category'=> $category,
-                'limit'=> $limit,
-                'offset'=> $offset
-                )))
+            ->where('s.validated = 1')
             ->andWhere('c.name = :category')
-            ->setFirstResult(':offset')
-            ->setMaxResults(':limit')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->orderBy('s.id','DESC')
+            ->setParameters(array(
+                'category'=> $category,
+                ))
             ->getQuery()
             ->getResult();
     }

@@ -8,7 +8,7 @@ $("#comments").on("submit", "form.comment", function(event) {
             token: token.value
         }).then( function (response) {
             console.log(response);
-            if (response.status === 201) {
+            if (response.status === 200) {
                 that.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
             } else {
                 alert("an error occured");

@@ -19,7 +19,6 @@
                 <td id="stitle">{{ snowtrick.title }}</td>
                 <td>
                     <a class="btn btn-info m-1" href="{{ path('snowtrick.show', {id: snowtrick.id}) }}">Link</a>
-                    <button type="button" class="btn btn-secondary modal-trigger-viewS m-1" data-toggle="modal" data-target="{{ path('snowtrick.show', {id: snowtrick.id}) }}">View</button>
                     <button type="button" class="btn btn-warning modal-trigger-editS m-1" data-toggle="modal" data-target="{{ path('snowtrick.edit', {id: snowtrick.id}) }}">Edit</button>
                     <form class="d-inline-block snowtrick m-1" action="{{ path('snowtrick.delete', {id: snowtrick.id}) }}">
                         <input type="hidden" name="_method" value="DELETE">
@@ -45,7 +44,6 @@
 
     {{ include('modal/newsnowtrick.html.twig') }}
     {{ include('modal/editsnowtrick.html.twig') }}
-    {{ include('modal/showsnowtrick.html.twig') }}
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('js/trigger-modal.js') }}"></script>

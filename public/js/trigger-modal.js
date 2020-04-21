@@ -28,20 +28,6 @@ $(document).ready(function() {
         });
     })
 
-    $('.modal-trigger-viewS').click(function () {
-        //On initialise les modales materialize
-        $('#showSnowtrick').modal();
-        //On récupère l'url depuis la propriété "Data-target" de la balise html a
-        url = $(this).attr('data-target');
-        //on fait un appel ajax vers l'action symfony qui nous renvoie la vue
-        $.get(url, function (data) {
-            //on injecte le html dans la modale
-            $('.modal-body').html(data);
-            //on ouvre la modale
-            $('#showSnowtrick').modal('open');
-        });
-    })
-
     $('.modal-trigger-newC').click(function () {
         //On initialise les modales materialize
              $('#newCategory').modal();
