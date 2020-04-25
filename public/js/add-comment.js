@@ -13,7 +13,7 @@ $("#form-data").submit(function (e) {
                 $(data).insertBefore($(".comment-row:first"));
             } else {
                 $("#comments").html(data);
-            };
+            }
         },
-    });
+    })
 });
