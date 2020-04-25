@@ -15,5 +15,5 @@ $("#form-data").submit(function (e) {
                 $("#comments").html(data);
             }
         },
-    })
+    });
 });

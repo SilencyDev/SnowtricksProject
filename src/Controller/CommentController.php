@@ -52,10 +52,8 @@ class CommentController extends AbstractController
 
         if (in_array("ROLE_ADMIN", $roles)) {
             $newComment->setValidated(true);
-        } else {
-            $newComment->setValidated(false);
         }
-
+        
         $form = $this->createForm(CommentType::class, $newComment);
         $form->handleRequest($request);
 

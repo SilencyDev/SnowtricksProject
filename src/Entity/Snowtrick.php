@@ -84,6 +84,7 @@ class Snowtrick implements \JsonSerializable
         $this->videos = new ArrayCollection();
         $this->createdAt = new \DateTime("now");
         $this->updatedAt = null;
+        $this->validated = false;
     }
 
     public function getId(): int

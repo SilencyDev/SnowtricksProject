@@ -107,8 +107,6 @@ class SnowtrickController extends AbstractController
 
         if(in_array("ROLE_ADMIN", $roles)) {
             $snowtrick->setValidated(true);
-        } else {
-            $snowtrick->setValidated(false);
         }
 
         $form = $this->createForm(SnowtrickType::class, $snowtrick);
@@ -200,8 +198,6 @@ class SnowtrickController extends AbstractController
 
         if(in_array("ROLE_ADMIN", $roles) && $form->get('validated')->getData()) {
             $snowtrick->setValidated(true);
-        } else {
-            $snowtrick->setValidated(false);
         }
 
         if ($form->isSubmitted() && $form->isvalid()) {
