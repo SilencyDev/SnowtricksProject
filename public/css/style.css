@@ -15,6 +15,11 @@ a {
   scroll-behavior: smooth;
 }
 
+.mainpicture-show{
+  display: flex;
+  justify-content: center;
+}
+
 .bghome {
 margin: 0;
 padding: 0;
@@ -189,4 +194,8 @@ img.main {
   position: relative;
   overflow: hidden;
   border-radius: 50%;
+}
+
+.dropdown-menu {
+  background-color: #e9383f;
 }
