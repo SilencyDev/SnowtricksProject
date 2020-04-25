@@ -44,7 +44,7 @@ class SnowtrickController extends AbstractController
      * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @return Response
      */
-    public function indexMemberAction(Security $security)
+    public function myTricksAction(Security $security)
     {
         /** @var User $currentUser */
         $currentUser = $security->getUser();
@@ -58,7 +58,7 @@ class SnowtrickController extends AbstractController
      * @IsGranted ({"ROLE_ADMIN"})
      * @return Response
      */
-    public function indexAdminAction()
+    public function trickManagerAction()
     {
         $snowtricks = $this->snowtrickRepository->findAllVisibleDesc();
         $snowtricksToValidate = $this->snowtrickRepository->findAllInvisible();
@@ -70,7 +70,7 @@ class SnowtrickController extends AbstractController
      * @param Snowtrick
      * @return Response
      */
-    public function show(Snowtrick $snowtrick, CommentRepository $commentRepository): Response
+    public function indexAction(Snowtrick $snowtrick, CommentRepository $commentRepository): Response
     {   
         $newComment = new Comment();
 
@@ -294,55 +294,6 @@ class SnowtrickController extends AbstractController
         if(in_array("ROLE_ADMIN", $roles) || ($snowtrick->getAuthor() == $username) ) {
             if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $token)) {
                 $this->entityManager->remove($snowtrick);
-                $this->entityManager->flush();
-
-                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
-            }
-        }
-        return new JsonResponse(null, 400);
-    }
-
-    /**
-     * @Route("/picture/{id}", name="picture.delete")
-     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
-     * @param Picture
-     * @param Request
-     * @return Response
-     */
-    public function deletePictureAction(Picture $picture, Request $request, Security $security)
-    {
-
-        $roles = $security->getUser()->getRoles();
-        $username = $security->getUser()->getUsername();
-        $token = json_decode($request->getContent(), true)['token']??null;
-        if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick()->getAuthor() == $username)) {
-            if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
-                $this->entityManager->remove($picture);
-                $this->entityManager->flush();
-
-                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
-            }
-        }
-        return new JsonResponse(null, 400);
-    }
-
-    /**
-     * @Route("/mainpicture/{id}", name="mainpicture.delete")
-     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
-     * @param Mainpicture
-     * @param Request
-     * @return Response
-     */
-    public function deleteMainPictureAction(Mainpicture $picture, Request $request, Security $security)
-    {
-
-        $roles = $security->getUser()->getRoles();
-        $username = $security->getUser()->getUsername();
-        $token = json_decode($request->getContent(), true)['token']??null;
-        if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick()->getAuthor() == $username)) {
-            if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
-                unlink($picture->getRealPath());
-                $this->entityManager->remove($picture);
                 $this->entityManager->flush();
 
                 return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //

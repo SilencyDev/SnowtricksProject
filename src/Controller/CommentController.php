@@ -91,13 +91,12 @@ class CommentController extends AbstractController
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
         $token = json_decode($request->getContent(), true)['token']??null;
-        dd($token);
         if (in_array("ROLE_ADMIN", $roles) || ($comment->getAuthor()->getUsername() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $comment->getId(), $token)) {
                 $this->entityManager->remove($comment);
                 $this->entityManager->flush();
 
-                return new JsonResponse(null, 201); // 200 data //
+                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
             }
         }
         return new JsonResponse(null, 400);
@@ -110,7 +109,7 @@ class CommentController extends AbstractController
      * @param integer $page
      * @return Response
      */
-    public function loadMoreAction(CommentRepository $commentRepository, Request $request, UserPictureRepository $userPictureRepository): Response
+    public function loadMoreAction(CommentRepository $commentRepository, Request $request): Response
     {
         $page = (int) $request->get('page', 1);
         if ($page < 1) {
