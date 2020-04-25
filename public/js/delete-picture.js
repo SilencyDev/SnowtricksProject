@@ -2,8 +2,8 @@ function deletePicture(event) {
     event.preventDefault();
     const that = this;
     const url = this.action;
-    let token = this.querySelector('input[name="_token"]');
-    if (confirm('confirm delete action ?')) {
+    let token = this.querySelector("input[name='_token']");
+    if (confirm("confirm delete action ?")) {
         axios.post(url, {
             token: token.value
         }).then( function (response) {
@@ -15,8 +15,8 @@ function deletePicture(event) {
         });
 
     };
-}
+};
 
-document.querySelectorAll('form.picture').forEach( function(form) {
-    form.addEventListener('submit', deletePicture);
-})
+document.querySelectorAll("form.picture").forEach( function(form) {
+    form.addEventListener("submit", deletePicture);
+});

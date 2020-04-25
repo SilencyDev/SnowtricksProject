@@ -267,9 +267,9 @@ class SnowtrickController extends AbstractController
             
             if(in_array("ROLE_ADMIN", $roles)) {
                 return $this->redirectToRoute("snowtrick.manager");
-            } else {
-                return $this->redirectToRoute("snowtrick.mytrick");
             }
+
+            return $this->redirectToRoute("snowtrick.mytrick");
         }
 
         return $this->render('member/snowtricks/_form.html.twig', [
