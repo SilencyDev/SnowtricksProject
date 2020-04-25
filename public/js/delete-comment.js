@@ -13,5 +13,5 @@ $("#comments").on("submit", "form.comment", function(event) {
                 alert("an error occured");
             }
         });
-    };
+    }
 });

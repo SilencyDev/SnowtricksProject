@@ -32,11 +32,11 @@ class CommentController extends AbstractController
      */
     private $commentRepository;
 
-    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, EntityManagerInterface $em)
+    public function __construct(SnowtrickRepository $snowtrickRepository, CommentRepository $commentRepository, EntityManagerInterface $entityManager)
     {
         $this->snowtrickRepository = $snowtrickRepository;
         $this->commentRepository = $commentRepository;
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -64,8 +64,8 @@ class CommentController extends AbstractController
             $newComment->setAuthor($security->getUser());
             $newComment->setSnowtrick($snowtrick);
 
-            $this->em->persist($newComment);
-            $this->em->flush();
+            $this->entityManager->persist($newComment);
+            $this->entityManager->flush();
 
             return $this->render('loadmore/comment.html.twig', [
                 'comment' => $newComment,
@@ -94,8 +94,8 @@ class CommentController extends AbstractController
         dd($token);
         if (in_array("ROLE_ADMIN", $roles) || ($comment->getAuthor()->getUsername() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $comment->getId(), $token)) {
-                $this->em->remove($comment);
-                $this->em->flush();
+                $this->entityManager->remove($comment);
+                $this->entityManager->flush();
 
                 return new JsonResponse(null, 201); // 200 data //
             }
