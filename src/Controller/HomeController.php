@@ -15,7 +15,7 @@ class HomeController extends AbstractController
      * @Route("/", name="home")
      * @return Response
      */
-    public function indexAction(SnowtrickRepository $snowtrickRepository, Request $request, CategoryRepository $categoryRepository): Response
+    public function indexAction(SnowtrickRepository $snowtrickRepository, CategoryRepository $categoryRepository): Response
     {
         return $this->render('pages/home.html.twig', [
             'snowtricks' => $snowtrickRepository->findBy(['validated' => true], ['id' => 'DESC'], 3, 0),

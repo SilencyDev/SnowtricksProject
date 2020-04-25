@@ -3,7 +3,6 @@ $("#comments").on("submit", "form.comment", function(event) {
     const that = this;
     const url = this.action;
     let token = this.querySelector("input[name='_token']");
-    console.log(token);
     if (confirm("confirm delete action ?")) {
         axios.post(url, {
             token: token.value

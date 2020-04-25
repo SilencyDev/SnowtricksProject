@@ -28,7 +28,7 @@ Class UserController extends AbstractController
     /**
      * @Route("/profile", name="user.profile")
      */
-    public function indexAction(Request $request, UserPasswordEncoderInterface $userPasswordEncoderInterface, Security $security)
+    public function indexAction(Request $request, UserPasswordEncoderInterface $userPasswordEncoder, Security $security)
     {
          /** @var User $user */
          $user = $security->getUser();
@@ -41,7 +41,7 @@ Class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
-                $userPasswordEncoderInterface->encodePassword(
+                $userPasswordEncoder->encodePassword(
                     $user,
                     $form->get('password')->getData()
                 )
@@ -86,7 +86,7 @@ Class UserController extends AbstractController
     /**
      * @Route("/edit/password", name="user.edit.password")
      */
-    public function editPassword(Request $request, UserPasswordEncoderInterface $userPasswordEncoderInterface, Security $security)
+    public function editPassword(Request $request, UserPasswordEncoderInterface $userPasswordEncoder, Security $security)
     {
         /** @var User $user */
         $user = $security->getUser();
@@ -96,7 +96,7 @@ Class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
-                $userPasswordEncoderInterface->encodePassword(
+                $userPasswordEncoder->encodePassword(
                     $user,
                     $form->get('password')->getData()
                 )

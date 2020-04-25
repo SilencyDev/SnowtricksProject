@@ -50,7 +50,9 @@ class SnowtrickController extends AbstractController
         $currentUser = $security->getUser();
         $snowtricks = $currentUser->getSnowtricks();
 
-        return $this->render('member/snowtricks/index.html.twig', compact("snowtricks"));
+        return $this->render('member/snowtricks/index.html.twig', [
+            "snowtricks" => $snowtricks,
+        ]);
     }
 
     /**
@@ -62,7 +64,10 @@ class SnowtrickController extends AbstractController
     {
         $snowtricks = $this->snowtrickRepository->findAllVisibleDesc();
         $snowtricksToValidate = $this->snowtrickRepository->findAllInvisible();
-        return $this->render('admin/snowtricks/index.html.twig', compact("snowtricks","snowtricksToValidate"));
+        return $this->render('admin/snowtricks/index.html.twig', [
+            "snowtricks" => $snowtricks,
+            "snowtricksToValidate" => $snowtricksToValidate,
+        ]);
     }
 
     /**
