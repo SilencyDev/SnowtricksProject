@@ -33,10 +33,10 @@ class SnowtrickController extends AbstractController
     private $snowtrickRepository;
 
 
-    public function __construct(SnowtrickRepository $snowtrickRepository, EntityManagerInterface $em)
+    public function __construct(SnowtrickRepository $snowtrickRepository, EntityManagerInterface $entityManager)
     {
         $this->snowtrickRepository = $snowtrickRepository;
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -81,7 +81,7 @@ class SnowtrickController extends AbstractController
         ]);
 
         $comments = $commentRepository->findBy([], ['id' => 'DESC'], 3, 0);
-        return $this->render('snowtricks/show.html.twig', [
+        return $this->render('snowtrick/index.html.twig', [
             'snowtrick' => $snowtrick,
             'comments' => $comments,
             'form' => $form->createView(),
@@ -129,7 +129,7 @@ class SnowtrickController extends AbstractController
                 $mainUpload->setRealPath($mainpicture->getRealPath());
 
                 $snowtrick->setMainpicture($mainUpload);
-                $this->em->persist($mainUpload);
+                $this->entityManager->persist($mainUpload);
             }
 
             if ($videos !== null) {
@@ -139,7 +139,7 @@ class SnowtrickController extends AbstractController
                     $videoUpload->setUrl($video);
 
                     $snowtrick->addVideo($videoUpload);
-                    $this->em->persist($videoUpload);
+                    $this->entityManager->persist($videoUpload);
                 }
             }
 
@@ -159,14 +159,14 @@ class SnowtrickController extends AbstractController
                     $upload->setRealPath($picture->getRealPath());
 
                     $snowtrick->addPicture($upload);
-                    $this->em->persist($upload);
+                    $this->entityManager->persist($upload);
                 }
             }
 
             $snowtrick->setAuthor($security->getUser());
 
-            $this->em->persist($snowtrick);
-            $this->em->flush();
+            $this->entityManager->persist($snowtrick);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Created with success!');
 
@@ -209,8 +209,8 @@ class SnowtrickController extends AbstractController
 
                 if ($snowtrick->getMainpicture() !== null) {
                     unlink($snowtrick->getMainpicture()->getRealPath());
-                    $this->em->remove($snowtrick->getMainpicture());
-                    $this->em->flush();
+                    $this->entityManager->remove($snowtrick->getMainpicture());
+                    $this->entityManager->flush();
                 }
                 $mainUpload = new Mainpicture;
 
@@ -225,7 +225,7 @@ class SnowtrickController extends AbstractController
                 $mainUpload->setRealPath($mainpicture->getRealPath());
     
                 $snowtrick->setMainpicture($mainUpload);
-                $this->em->persist($mainUpload);
+                $this->entityManager->persist($mainUpload);
             }
 
             if ($pictures !== null) {
@@ -244,7 +244,7 @@ class SnowtrickController extends AbstractController
                     $upload->setRealPath($picture->getRealPath());
 
                     $snowtrick->addPicture($upload);
-                    $this->em->persist($upload);
+                    $this->entityManager->persist($upload);
                 }
             }
 
@@ -255,13 +255,13 @@ class SnowtrickController extends AbstractController
                     $videoUpload->setUrl($video);
 
                     $snowtrick->addVideo($videoUpload);
-                    $this->em->persist($videoUpload);
+                    $this->entityManager->persist($videoUpload);
                 }
             }
             $snowtrick->setUpdatedAt();
 
-            $this->em->persist($snowtrick);
-            $this->em->flush();
+            $this->entityManager->persist($snowtrick);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Edited with success!');
             
@@ -293,8 +293,8 @@ class SnowtrickController extends AbstractController
         $token = json_decode($request->getContent(), true)['token']??null;
         if(in_array("ROLE_ADMIN", $roles) || ($snowtrick->getAuthor() == $username) ) {
             if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $token)) {
-                $this->em->remove($snowtrick);
-                $this->em->flush();
+                $this->entityManager->remove($snowtrick);
+                $this->entityManager->flush();
 
                 return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
             }
@@ -317,8 +317,8 @@ class SnowtrickController extends AbstractController
         $token = json_decode($request->getContent(), true)['token']??null;
         if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick()->getAuthor() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
-                $this->em->remove($picture);
-                $this->em->flush();
+                $this->entityManager->remove($picture);
+                $this->entityManager->flush();
 
                 return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
             }
@@ -342,34 +342,10 @@ class SnowtrickController extends AbstractController
         if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick()->getAuthor() == $username)) {
             if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
                 unlink($picture->getRealPath());
-                $this->em->remove($picture);
-                $this->em->flush();
+                $this->entityManager->remove($picture);
+                $this->entityManager->flush();
 
                 return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
-            }
-        }
-        return new JsonResponse(null, 400);
-    }
-
-    /**
-     * @Route("/video/delete/{id}", name="video.delete")
-     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
-     * @param Video
-     * @param Request
-     * @return Response
-     */
-    public function deleteVideoAction(Video $video, Request $request, Security $security)
-    {
-
-        $roles = $security->getUser()->getRoles();
-        $username = $security->getUser()->getUsername();
-        $token = json_decode($request->getContent(), true)['token']??null;
-        if (in_array("ROLE_ADMIN", $roles) || ($video->getSnowtrick()->getAuthor() == $username)) {
-            if ($this->isCsrfTokenValid('delete' . $video->getId(), $token)) {
-                $this->em->remove($video);
-                $this->em->flush();
-
-                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data // 204 null
             }
         }
         return new JsonResponse(null, 400);

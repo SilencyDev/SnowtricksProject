@@ -15,7 +15,7 @@ function deleteVideo(event) {
         });
 
     };
-};
+}
 document.querySelectorAll("form.video").forEach( function(form) {
     form.addEventListener("submit", deleteVideo);
 });

@@ -15,7 +15,7 @@ function deletePicture(event) {
         });
 
     };
-};
+}
 
 document.querySelectorAll("form.picture").forEach( function(form) {
     form.addEventListener("submit", deletePicture);

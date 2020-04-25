@@ -20,13 +20,13 @@ use Symfony\Component\Security\Core\Security;
  */
 Class UserController extends AbstractController
 {
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
-     * @Route("/", name="user.index")
+     * @Route("/profile", name="user.profile")
      */
     public function indexAction(Request $request, UserPasswordEncoderInterface $userPasswordEncoderInterface, Security $security)
     {
@@ -46,15 +46,15 @@ Class UserController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
-            $this->em->flush();
+            $this->entityManager->flush();
         }
         if ($form2->isSubmitted() && $form2->isValid()) {
             $picture = $form2->get('picture')->getData();
             if ($picture !== NULL) {
                 if ($user->getPicture() !== null) {
                     unlink($user->getPicture()->getRealPath());
-                    $this->em->remove($user->getPicture());
-                    $this->em->flush();
+                    $this->entityManager->remove($user->getPicture());
+                    $this->entityManager->flush();
                 }
                 $upload = new UserPicture;
 
@@ -69,14 +69,14 @@ Class UserController extends AbstractController
                 $upload->setRealPath($picture->getRealPath());
 
                 $user->setPicture($upload);
-                $this->em->persist($user);
+                $this->entityManager->persist($user);
 
-                $this->em->flush();
+                $this->entityManager->flush();
             }
         }
 
 
-        return $this->render('member/index.html.twig',[
+        return $this->render('member/profile/index.html.twig',[
             'form' => $form->createView(),
             'form2' => $form2->createView(),
             'user' => $user
@@ -84,9 +84,9 @@ Class UserController extends AbstractController
     }
 
     /**
-     * @Route("/changepassword", name="user.changepassword")
+     * @Route("/edit/password", name="user.edit.password")
      */
-    public function changePassword(Request $request, UserPasswordEncoderInterface $userPasswordEncoderInterface, Security $security)
+    public function editPassword(Request $request, UserPasswordEncoderInterface $userPasswordEncoderInterface, Security $security)
     {
         /** @var User $user */
         $user = $security->getUser();
@@ -103,13 +103,13 @@ Class UserController extends AbstractController
             );
         }
 
-        return $this->render('member/index.html.twig');
+        return $this->render('member/profile/index.html.twig');
     }
 
     /**
-     * @Route("/changepicture", name="user.changepicture")
+     * @Route("/edit/picture", name="user.edit.picture")
      */
-    public function changePicture(Request $request, Security $security)
+    public function editPicture(Request $request, Security $security)
     {
         /** @var User $user */
         $user = $security->getUser();
@@ -133,11 +133,11 @@ Class UserController extends AbstractController
             $upload->setRealPath($picture->getRealPath());
 
             $user->setPicture($upload);
-            $this->em->persist($upload);
+            $this->entityManager->persist($upload);
 
-            $this->em->flush();
+            $this->entityManager->flush();
         }
 
-        return $this->render('member/index.html.twig');
+        return $this->render('member/profile/index.html.twig');
     }
 }

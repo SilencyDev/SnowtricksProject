@@ -114,7 +114,7 @@
     {% if not app.request.XmlhttpRequest %}
         {% if app.user.username is defined %}
             <div class="container mb-4 mt-4">
-                {{ include('snowtricks/_form.html.twig') }}
+                {{ include('member/comments/_form.html.twig') }}
             </div>
         {% else %}
             <div class="container mb-4 mt-4 not-connected-comment">
