@@ -71,14 +71,11 @@ class CommentController extends AbstractController
                 'comment' => $newComment,
                 'form' => $form->createView(),
             ]);
-        } else {
-            $this->addFlash('warning', 'Error');
-
-            return $this->render('snowtricks/_form.html.twig', [
-                'form' => $form->createView(),
-                'path' => 'member.comment.new'
-            ]);
         }
+        return $this->render('snowtricks/_form.html.twig', [
+            'form' => $form->createView(),
+            'path' => 'member.comment.new'
+        ]);
     }
 
     /**
@@ -113,7 +110,7 @@ class CommentController extends AbstractController
      * @param integer $page
      * @return Response
      */
-    public function loadMoreAction(CommentRepository $commentRepository, Request $request, UserPictureRepository $userPictureRepository, Security $security): Response
+    public function loadMoreAction(CommentRepository $commentRepository, Request $request, UserPictureRepository $userPictureRepository): Response
     {
         $page = (int) $request->get('page', 1);
         if ($page < 1) {
