@@ -19,8 +19,19 @@
 
 <div class="text-center">
     {% for category in categories %}
-        <a href="{{ path("home.search", {category: category.name}) }}" class="badge badge-primary py-2 px-2 mx-2 mt-2">
-                {{ category.name }}
+        <a href="{{ path("home.search", {category: category.name}) }}"
+            {% if category.name == ("Grab") %}
+                class= "badge badge-primary py-2 px-2 mx-2 mt-2">
+            {% elseif category.name == ("Rotate") %}
+                    class= "badge badge-info py-2 px-2 mx-2 mt-2">
+            {% elseif category.name == ("Slide") %}
+                    class= "badge badge-danger py-2 px-2 mx-2 mt-2">
+            {% elseif category.name == ("Flip") %}
+                class= "badge badge-secondary py-2 px-2 mx-2 mt-2">
+            {% else %}
+                class= "badge badge-warning py-2 px-2 mx-2 mt-2">
+            {% endif %}
+            {{ category.name }}
         </a>
     {% endfor %}
 </div><hr/>

@@ -327,6 +327,31 @@ class SnowtrickController extends AbstractController
     }
 
     /**
+     * @Route("/mainpicture/{id}", name="mainpicture.delete")
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
+     * @param Mainpicture
+     * @param Request
+     * @return Response
+     */
+    public function deleteMainPictureAction(Mainpicture $picture, Request $request, Security $security)
+    {
+
+        $roles = $security->getUser()->getRoles();
+        $username = $security->getUser()->getUsername();
+        $token = json_decode($request->getContent(), true)['token']??null;
+        if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick()->getAuthor() == $username)) {
+            if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
+                unlink($picture->getRealPath());
+                $this->em->remove($picture);
+                $this->em->flush();
+
+                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
+            }
+        }
+        return new JsonResponse(null, 400);
+    }
+
+    /**
      * @Route("/video/delete/{id}", name="video.delete")
      * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
      * @param Video

@@ -5,9 +5,26 @@
         <div class="text-center">
             <h1 class="title">{{ snowtrick.title }}</h1>
         </div>
-        <div class="container mt-4">
+        <div class="container mt-4 mainpicture-show">
             {% if snowtrick.mainpicture != NULL %}
+                <div class="ib">
+                    {% if app.user.username is defined %}
+                        {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
+                            <div class="dropdown dropleft float-right">
+                                <button  type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{ asset('icons/dots.svg') }}" height="15px" class="mx-auto mb-1">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <form class="picture" action="{{ path('mainpicture.delete', {id: snowtrick.mainpicture.id} ) }}" class="d-inline-block">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ snowtrick.mainpicture.id) }}">
+                                        <button type="submit" class="dropdown-item">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 <img src="{{ asset(snowtrick.mainpicture.path) }}" class="rounded mx-auto d-block main" style="max-width: 100%;">
+                </div>
             {% endif %}
         </div>
         <div class="signature">
@@ -21,27 +38,20 @@
             </div>
             <div>
             {% for category in snowtrick.categories %}
-                {% if category.name == ("Grab") %}
-                    <div class="badge badge-primary">
-                            {{ category.name }}
-                    </div>
-                {% elseif category.name == ("Rotate") %}
-                    <div class="badge badge-info">
-                            {{ category.name }}
-                    </div>
-                {% elseif category.name == ("Slide") %}
-                    <div class="badge badge-danger">
-                            {{ category.name }}
-                    </div>
-                {% elseif category.name == ("Flip") %}
-                    <div class="badge badge-secondary">
-                            {{ category.name }}
-                    </div>
-                {% else %}
-                    <div class="badge badge-warning">
-                            {{ category.name }}
-                    </div>
-                {% endif %}
+                <a href="{{ path("home.search", {category: category.name}) }}"
+                    {% if category.name == ("Grab") %}
+                        class= "badge badge-primary">
+                    {% elseif category.name == ("Rotate") %}
+                            class= "badge badge-info">
+                    {% elseif category.name == ("Slide") %}
+                            class= "badge badge-danger">
+                    {% elseif category.name == ("Flip") %}
+                        class= "badge badge-secondary">
+                    {% else %}
+                        class= "badge badge-warning">
+                    {% endif %}
+                    {{ category.name }}
+                </a>
             {% endfor %}
             </div>
             <div class="text-right">
