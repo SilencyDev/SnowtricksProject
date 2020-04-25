@@ -16,11 +16,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ResetPasswordController extends AbstractController
 {
-    private $em;
+    private $entityManager;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -39,8 +39,8 @@ class ResetPasswordController extends AbstractController
                 $token = new Token($user);
                 $user->addToken($token);
 
-                $this->em->persist($user);
-                $this->em->flush();
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
 
                 $message = (new \Swift_Message('Snowtricks - Password reset'))
                     ->setFrom('kvn.macquet.mailer@gmail.com')
@@ -67,11 +67,11 @@ class ResetPasswordController extends AbstractController
      * @Route("/resetpassword/{value}", name="resetpassword")
      * @param Request $request
      * @param Token $token
-     * @param UserPasswordEncoderInterface $userPasswordEncoderInterface
+     * @param UserPasswordEncoderInterface $userPasswordEncoder
      * @param TokenRepository $tokenRepository
      * @return Response
      */
-    public function resetPassword(Request $request, ?Token $token = null, TokenRepository $tokenRepository, UserPasswordEncoderInterface $userPasswordEncoderInterface)
+    public function resetPassword(Request $request, ?Token $token = null, TokenRepository $tokenRepository, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         if ($token === null) {
             $this->addFlash('warning', 'Token invalid');
@@ -79,8 +79,8 @@ class ResetPasswordController extends AbstractController
         }
 
         if (!$token->isValid()) {
-            $this->em->remove($token);
-            $this->em->flush();
+            $this->entityManager->remove($token);
+            $this->entityManager->flush();
 
             $this->addFlash('warning', 'Token invalid');
             return $this->redirectToRoute('home');
@@ -93,7 +93,7 @@ class ResetPasswordController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
-                $userPasswordEncoderInterface->encodePassword(
+                $userPasswordEncoder->encodePassword(
                     $user,
                     $form->get('password')->getData()
                 )
@@ -106,7 +106,7 @@ class ResetPasswordController extends AbstractController
                 $this->em->remove($atoken);
             }
 
-            $this->em->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Password have been changed successfully');
 

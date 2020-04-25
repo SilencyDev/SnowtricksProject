@@ -9,7 +9,11 @@ $("#form-data").submit(function (e) {
         processData: false,  // indique à jQuery de ne pas traiter les données
         contentType: false,  // indique à jQuery de ne pas configurer le contentType
         success(data) {
-            $(data).insertBefore($(".comment-row:first"));
+            if($("#comments div").hasClass("comment-row")) {
+                $(data).insertBefore($(".comment-row:first"));
+            } else {
+                $("#comments").html(data);
+            };
         },
     });
 });

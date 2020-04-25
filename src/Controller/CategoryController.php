@@ -11,15 +11,17 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/category")
  */
 class CategoryController extends AbstractController
 {
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -45,8 +47,8 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($category);
-            $this->em->flush();
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
             
             $this->addFlash('success', 'Added with success!');
 
@@ -73,8 +75,8 @@ class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $category->setName($form->get('name')->getData());
-            $this->em->persist($category);
-            $this->em->flush();
+            $this->entityManager->persist($category);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Edited with success!');
 
@@ -88,18 +90,25 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="category.delete", methods={"DELETE"})
-     * @IsGranted ({"ROLE_ADMIN"})
+     * @Route("/delete/{id}", name="category.delete")
+     * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
+     * @param Category
+     * @param Request
+     * @return Response
      */
-    public function deleteAction(Request $request, Category $category): Response
+    public function deleteCategoryAction(Category $category, Request $request, Security $security)
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($category);
-            $entityManager->flush();
-            $this->addFlash('success', 'Deleted with success!');
-        }
 
-        return $this->redirectToRoute('category.index');
+        $roles = $security->getUser()->getRoles();
+        $token = json_decode($request->getContent(), true)['token']??null;
+        if (in_array("ROLE_ADMIN", $roles)) {
+            if ($this->isCsrfTokenValid('delete' . $category->getId(), $token)) {
+                $this->entityManager->remove($category);
+                $this->entityManager->flush();
+
+                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
+            }
+        }
+        return new JsonResponse(null, 400);
     }
 }

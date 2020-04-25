@@ -9,14 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
     /**
      * @Route("/login", name="login")
@@ -34,7 +33,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/signup", name="signup", methods={"GET","POST"})
      */
-    public function signup(Request $request, UserPasswordEncoderInterface $userPasswordEncoderInterface)
+    public function signup(Request $request, UserPasswordEncoderInterface $userPasswordEncoder)
     {
         $user = new User;
 
@@ -42,12 +41,12 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $encodedPassword = $userPasswordEncoderInterface->encodePassword($user, $user->getPassword());
+            $encodedPassword = $userPasswordEncoder->encodePassword($user, $user->getPassword());
             
             $user->setPassword($encodedPassword);
-            $this->em->persist($user);
+            $this->entityManager->persist($user);
             $this->addFlash('success', 'Account created with success !');
-            $this->em->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute("login");
         }

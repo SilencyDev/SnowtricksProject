@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Video;
+use App\Entity\Mainpicture;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,9 +13,9 @@ use Symfony\Component\Security\Core\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @Route("/video")
+ * @Route("/mainpicture")
  */
-class VideoController extends AbstractController
+class MainpictureController extends AbstractController
 {
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -23,24 +23,25 @@ class VideoController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="video.delete")
+     * @Route("/delete/{id}", name="mainpicture.delete")
      * @IsGranted ({"ROLE_ADMIN", "ROLE_MEMBER"})
-     * @param Video
+     * @param Mainpicture
      * @param Request
      * @return Response
      */
-    public function deleteVideoAction(Video $video, Request $request, Security $security)
+    public function deleteMainPictureAction(Mainpicture $picture, Request $request, Security $security)
     {
 
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
         $token = json_decode($request->getContent(), true)['token']??null;
-        if (in_array("ROLE_ADMIN", $roles) || ($video->getSnowtrick()->getAuthor() == $username)) {
-            if ($this->isCsrfTokenValid('delete' . $video->getId(), $token)) {
-                $this->entityManager->remove($video);
+        if (in_array("ROLE_ADMIN", $roles) || ($picture->getSnowtrick()->getAuthor() == $username)) {
+            if ($this->isCsrfTokenValid('delete' . $picture->getId(), $token)) {
+                unlink($picture->getRealPath());
+                $this->entityManager->remove($picture);
                 $this->entityManager->flush();
 
-                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data // 204 null
+                return new JsonResponse(array('message' => 'Deleted with success!'), 201); // 200 data //
             }
         }
         return new JsonResponse(null, 400);
