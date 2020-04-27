@@ -62,11 +62,6 @@ class Snowtrick implements \JsonSerializable
     private $pictures;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Picture", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
-     */
-    private $mainpicture;
-
-        /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -219,6 +214,25 @@ class Snowtrick implements \JsonSerializable
         return $this->pictures;
     }
 
+    public function getMainPicture(): ?Picture
+    {
+        $main = $this->pictures->filter(function(Picture $picture) {
+                return $picture->getIsMainPicture();
+        })->first();
+
+        return $main === false ? null : $main;
+    }
+
+    /**
+     * @return Collection|Picture[]
+     */
+    public function getMediaPictures()
+    {
+        return $this->pictures->filter(function(Picture $picture) {
+                return $picture->getIsMainPicture() === false;
+        });
+    }
+
     public function addPicture(Picture $picture): self
     {
         if (!$this->pictures->contains($picture)) {
@@ -236,14 +250,6 @@ class Snowtrick implements \JsonSerializable
         }
 
         return $this;
-    }
-
-    /**
-     * Get the value of mainpicture
-     */
-    public function getMainpicture()
-    {
-        return $this->mainpicture;
     }
 
     /**
