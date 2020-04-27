@@ -62,7 +62,7 @@ class Snowtrick implements \JsonSerializable
     private $pictures;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Mainpicture", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Picture", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $mainpicture;
 
@@ -251,7 +251,7 @@ class Snowtrick implements \JsonSerializable
      *
      * @return  self
      */
-    public function setMainpicture(Mainpicture $mainpicture)
+    public function setMainpicture(Picture $mainpicture)
     {
         $this->mainpicture = $mainpicture;
         $mainpicture->setSnowtrick($this);

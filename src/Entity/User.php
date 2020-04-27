@@ -57,7 +57,7 @@ class User implements UserInterface, \Serializable
     private $tokens;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\UserPicture", mappedBy="user", cascade={"persist","remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\Picture", mappedBy="user", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $picture;
 
@@ -231,12 +231,12 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getPicture(): ?UserPicture
+    public function getPicture(): ?Picture
     {
         return $this->picture;
     }
 
-    public function setPicture(?UserPicture $picture): self
+    public function setPicture(?Picture $picture): self
     {
         $this->picture = $picture;
 
