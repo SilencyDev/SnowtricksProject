@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\UserPicture;
+use App\Entity\Picture;
 use App\Form\UserPasswordType;
 use App\Form\UserPictureType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -56,7 +56,7 @@ Class UserController extends AbstractController
                     $this->entityManager->remove($user->getPicture());
                     $this->entityManager->flush();
                 }
-                $upload = new UserPicture;
+                $upload = new Picture;
 
                 $upload->setName($picture->getClientOriginalName());
 
@@ -120,7 +120,7 @@ Class UserController extends AbstractController
         $picture = $form->get('picture')->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $upload = new UserPicture;
+            $upload = new Picture;
 
             $upload->setName($picture->getClientOriginalName());
 

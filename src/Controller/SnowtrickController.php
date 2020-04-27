@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\Mainpicture;
 use App\Entity\Picture;
 use App\Entity\Snowtrick;
 use App\Entity\User;
@@ -119,7 +118,7 @@ class SnowtrickController extends AbstractController
             $videos = $form->get('videos')->getData();
 
             if ($mainpicture !== null) {
-                $mainUpload = new Mainpicture;
+                $mainUpload = new Picture;
 
                 $mainUpload->setName($mainpicture->getClientOriginalName());
 
@@ -213,7 +212,7 @@ class SnowtrickController extends AbstractController
                     $this->entityManager->remove($snowtrick->getMainpicture());
                     $this->entityManager->flush();
                 }
-                $mainUpload = new Mainpicture;
+                $mainUpload = new Picture;
 
                 $mainUpload->setName($mainpicture->getClientOriginalName());
     

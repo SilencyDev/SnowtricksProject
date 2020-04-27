@@ -13,7 +13,16 @@
             {% else %}
                 <img src="{{ asset("icons/user.jpg") }}" class="profile-icon mx-5 mt-3"></img>
             {% endif %}
-            {{ include('member/profile/_form_picture.html.twig', {form: form, button: 'Edit'}) }}
+            <div>
+                {{ include('member/profile/_form_picture.html.twig', {form: form, button: 'Edit'}) }}
+                {% if user.picture is not null %}
+                    <form class="d-inline-block mt-1" action="{{ path('userpicture.delete', {id: user.picture.id}) }}" onsubmit="">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete'~ user.picture.id) }}">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
         <div class="container mt-5 d-flex justify-content-center">
             {{ include('member/profile/_form_password.html.twig', {form: form, button: 'Edit'}) }}

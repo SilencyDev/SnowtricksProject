@@ -35,6 +35,11 @@ class Picture
      */
     private $snowtrick;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="picture")
+     */
+    private $user;
+
     public function __construct()
     {
         $this->id = uniqid();
@@ -105,6 +110,26 @@ class Picture
     public function setRealPath($realPath)
     {
         $this->realPath = $realPath;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }
