@@ -120,6 +120,7 @@ class SnowtrickController extends AbstractController
             if ($mainpicture !== null) {
                 $mainUpload = new Picture;
 
+                $mainUpload->setIsMainPicture(true);
                 $mainUpload->setName($mainpicture->getClientOriginalName());
 
                 $mainpicture = $mainpicture->move(
@@ -214,6 +215,7 @@ class SnowtrickController extends AbstractController
                 }
                 $mainUpload = new Picture;
 
+                $mainUpload->setIsMainPicture(true);
                 $mainUpload->setName($mainpicture->getClientOriginalName());
     
                 $mainpicture = $mainpicture->move(
@@ -271,7 +273,6 @@ class SnowtrickController extends AbstractController
 
             return $this->redirectToRoute("snowtrick.mytrick");
         }
-
         return $this->render('member/snowtricks/_form.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView(),

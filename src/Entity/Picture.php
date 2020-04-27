@@ -31,6 +31,11 @@ class Picture
     private $name;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isMainPicture = false;
+
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Snowtrick", inversedBy="pictures")
      */
     private $snowtrick;
@@ -130,6 +135,26 @@ class Picture
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of isMainPicture
+     */ 
+    public function getIsMainPicture()
+    {
+        return $this->isMainPicture;
+    }
+
+    /**
+     * Set the value of isMainPicture
+     *
+     * @return  self
+     */ 
+    public function setIsMainPicture($isMainPicture)
+    {
+        $this->isMainPicture = $isMainPicture;
 
         return $this;
     }

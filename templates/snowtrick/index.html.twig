@@ -6,7 +6,7 @@
             <h1 class="title">{{ snowtrick.title }}</h1>
         </div>
         <div class="container mt-4 mainpicture-show">
-            {% if snowtrick.mainpicture != NULL %}
+            {% if snowtrick.getMainPicture != NULL %}
                 <div class="ib">
                     {% if app.user.username is defined %}
                         {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
@@ -67,7 +67,7 @@
             </button>
         </div>
         <div class="collapse mt-4" id="collapseShow" style="overflow-x: scroll; white-space: nowrap;">
-            {% for picture in snowtrick.pictures %}
+            {% for picture in snowtrick.getMediaPictures %}
                 <div class="ib">
                     {% if app.user.username is defined %}
                         {% if is_granted('ROLE_ADMIN') or snowtrick.author is same as (app.user.username) %}
