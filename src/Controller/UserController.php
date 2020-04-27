@@ -120,6 +120,11 @@ Class UserController extends AbstractController
         $picture = $form->get('picture')->getData();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($user->getPicture() !== null) {
+                unlink($user->getPicture()->getRealPath());
+                $this->entityManager->remove($user->getPicture());
+                $this->entityManager->flush();
+            }
             $upload = new Picture;
 
             $upload->setName($picture->getClientOriginalName());
