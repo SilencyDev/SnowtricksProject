@@ -1,4 +1,19 @@
-{{ form_start(form, {'action': path('category.new')}) }}
+{% if category is not defined %}
+    {{ form_start(form, {
+        'attr':{
+            'action': path(path),
+            'id' : 'form-data'
+        }
+        }) }}
+{% else %}
+    {{ form_start(form, {
+        'attr':{
+            'action' : path(path, {id: category.id}),
+            'id' : 'form-data'
+    } 
+    }) }}
+{% endif %}
+    {{ form_errors(form) }}
     {{ form_row(form.name) }}
     <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

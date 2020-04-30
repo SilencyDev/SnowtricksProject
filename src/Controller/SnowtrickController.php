@@ -179,7 +179,7 @@ class SnowtrickController extends AbstractController
         return $this->render('member/snowtricks/_form.html.twig', [
             'form' => $form->createView(),
             'path' => 'snowtrick.new',
-        ]);
+        ], new Response("",400));
     }
 
     /**
@@ -270,14 +270,13 @@ class SnowtrickController extends AbstractController
             if(in_array("ROLE_ADMIN", $roles)) {
                 return $this->redirectToRoute("snowtrick.manager");
             }
-
             return $this->redirectToRoute("snowtrick.mytrick");
         }
         return $this->render('member/snowtricks/_form.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView(),
             'path' => 'snowtrick.edit'
-        ]);
+        ], new Response("",400));
     }
 
     /**
