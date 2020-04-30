@@ -48,6 +48,7 @@ Class UserController extends AbstractController
             );
             $this->entityManager->flush();
         }
+
         if ($form2->isSubmitted() && $form2->isValid()) {
             $picture = $form2->get('picture')->getData();
             if ($picture !== NULL) {
@@ -101,46 +102,6 @@ Class UserController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
-        }
-
-        return $this->render('member/profile/index.html.twig');
-    }
-
-    /**
-     * @Route("/edit/picture", name="user.edit.picture")
-     */
-    public function editPicture(Request $request, Security $security)
-    {
-        /** @var User $user */
-        $user = $security->getUser();
-
-        $form = $this->createForm(UserPictureType::class, $user);
-        $form->handleRequest($request);
-
-        $picture = $form->get('picture')->getData();
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($user->getPicture() !== null) {
-                unlink($user->getPicture()->getRealPath());
-                $this->entityManager->remove($user->getPicture());
-                $this->entityManager->flush();
-            }
-            $upload = new Picture;
-
-            $upload->setName($picture->getClientOriginalName());
-
-            $picture = $picture->move(
-            $this->getParameter('uploads_directory'),
-            $upload->getId() . '.' . $picture->guessExtension()
-            );
-
-            $upload->setPath('uploads/' . $upload->getId() . '.' . $picture->guessExtension());
-            $upload->setRealPath($picture->getRealPath());
-
-            $user->setPicture($upload);
-            $this->entityManager->persist($upload);
-
-            $this->entityManager->flush();
         }
 
         return $this->render('member/profile/index.html.twig');
