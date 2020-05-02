@@ -84,7 +84,7 @@ class SnowtrickController extends AbstractController
             ])
         ]);
 
-        $comments = $commentRepository->findBy([], ['id' => 'DESC'], 3, 0);
+        $comments = $commentRepository->findBySnowtrick($snowtrick->getId(), 3, 0);
         return $this->render('snowtrick/index.html.twig', [
             'snowtrick' => $snowtrick,
             'comments' => $comments,
