@@ -1,3 +1,5 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4fddffbc3e4342b0868fece3dbb5827d)](https://www.codacy.com/manual/SilencyDev/SnowtricksProject?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SilencyDev/SnowtricksProject&amp;utm_campaign=Badge_Grade)
+
 # SnowtrickProject
 
 Snowtrick App
