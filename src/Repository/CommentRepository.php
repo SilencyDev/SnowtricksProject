@@ -31,6 +31,24 @@ class CommentRepository extends ServiceEntityRepository
     /**
      * @return Comment[]
      */
+    public function findbySnowtrick(int $snowtrickId, ?int $limit = null, ?int $offset = null): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.snowtrick', 's')
+            ->where('s.validated = 1')
+            ->andWhere('c.snowtrick = :snowtrickId')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->orderBy('s.id','DESC')
+            ->setParameters(array(
+                'snowtrickId'=> $snowtrickId,
+                ))
+            ->getQuery()
+            ->getResult();
+    }
+    /**
+     * @return Comment[]
+     */
     public function findAllInvisible(): array
     {
         return $this->createQueryBuilder('c')

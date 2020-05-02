@@ -1,3 +1,4 @@
+/* html page */
 body {
    min-height: 100px!important;
    margin-bottom: 50px!important;
@@ -7,19 +8,36 @@ body {
 a {
   color: #73C0E6;
 }
-#up {
-    z-index: 1500;
+
+h1 {
+  font-size: 7vh;
+}
+
+h1,h2,h3,h4,h5,h6,td,th {
+  color: #343a40;
+}
+
+h1.title {
+  margin-bottom: 2vh;
+}
+
+p {
+  white-space: pre-line;
+  white-space: pre-wrap;
+  color: #343a40;
+}
+
+footer {
+  height: 50px;
+  background-color: white;
 }
 
 * {
   scroll-behavior: smooth;
 }
+/* end html */
 
-.mainpicture-show{
-  display: flex;
-  justify-content: center;
-}
-
+/* Medias */
 .bghome {
 margin: 0;
 padding: 0;
@@ -35,17 +53,23 @@ flex-wrap:wrap;
 flex-direction: column;
 }
 
+.mainpicture-show{
+  display: flex;
+  justify-content: center;
+}
+
 .deletemedia {
     position: absolute;
     padding: 1em;
     z-index: 1100;
 }
 
-.ib {
-    display: inline-block;
-    position: sticky;
+img.main {
+  box-shadow: 0px 0px 40px #fff;
 }
+/* end Medias */
 
+/* Dropdown button */
 .dropdown {
   position: absolute;
   right: 0;
@@ -67,14 +91,19 @@ flex-direction: column;
   background-color: #4b9bc4;
 }
 
-p {
-  white-space: pre-line;
-  white-space: pre-wrap;
-  color: #343a40;
+.dropdown-menu {
+  background-color: #e9383f;
 }
+/* end Dropdown */
 
-.mt-n {
-  margin-top: -7vh;
+/* Icons */
+.profile-icon {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .icon-menu {
@@ -103,30 +132,9 @@ p {
   height: 35px;
   background-color: white;
 }
+/* end Icons */
 
-h1 {
-  font-size: 7vh;
-}
-
-h1,h2,h3,h4,h5,h6,td,th {
-  color: #343a40;
-}
-
-h1.title {
-  margin-bottom: 2vh;
-}
-
-footer {
-  height: 50px;
-  background-color: white;
-}
-
-.jumbotron {
-  background-color: #73C0E6;
-  color: white;
-  box-shadow: 0px 0px 20px 0px #000;
-}
-
+/* Buttons */
 .btn-primary {
   background-color: #4b9bc4;
   border-color: #4b9bc4;
@@ -158,14 +166,12 @@ footer {
   background-color: #888888;
 }
 
-img.main {
-  box-shadow: 0px 0px 40px #fff;
+#up {
+  z-index: 1500;
 }
+/* end Buttons */
 
-.signature {
-  margin: 10px;
-}
-
+/* Comments */
 .date-comment {
   margin-bottom:  -10px;
   text-align: right;
@@ -187,15 +193,23 @@ img.main {
 .not-connected-comment a {
   font-weight: bold;
 }
+/* end Comments */
 
-.profile-icon {
-  width: 60px;
-  height: 60px;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
+/* Other */
+.jumbotron {
+  background-color: #73C0E6;
+  color: white;
+  box-shadow: 0px 0px 20px 0px #000;
+}
+.signature {
+  margin: 10px;
 }
 
-.dropdown-menu {
-  background-color: #e9383f;
+.ib {
+  display: inline-block;
+  position: sticky;
 }
+.mt-n {
+  margin-top: -7vh;
+}
+/* end Other */

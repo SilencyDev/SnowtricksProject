@@ -9,9 +9,9 @@
     <div class="container justify-content-center pt-4">
         <div class="container d-flex justify-content-center">
             {% if user.picture is not null %}
-                <img src="{{ asset(user.picture.path) }}" class="profile-icon mx-5 mt-3"></img>
+                <img src="{{ asset(user.picture.path) }}" class="profile-icon mr-4 mt-3"></img>
             {% else %}
-                <img src="{{ asset("icons/user.jpg") }}" class="profile-icon mx-5 mt-3"></img>
+                <img src="{{ asset("icons/user.jpg") }}" class="profile-icon mr-4 mt-3"></img>
             {% endif %}
             <div>
                 {{ include('member/profile/_form_picture.html.twig', {form: form, button: 'Edit'}) }}
