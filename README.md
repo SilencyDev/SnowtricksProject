@@ -2,7 +2,6 @@
 
 Snowtrick App
 
-
 ## Install
 1.  Clone or download the project via the command below
 ```
