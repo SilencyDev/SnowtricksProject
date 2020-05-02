@@ -10,9 +10,11 @@ Snowtrick App
     git clone https://github.com/SilencyDev/SnowtricksProject
 ```
 2.  Go to the .env file to add your database and email settings
-3.  Download Composer and install it via the command below [Composer](https://getcomposer.org/download/) :
+3.  Download Composer and install/update it via the command below [Composer](https://getcomposer.org/download/) :
 ```
     composer install
+
+    composer update
 ```
 4.  Create the database :
 ```
