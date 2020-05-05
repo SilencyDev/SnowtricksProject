@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SnowtrickRepository")
@@ -43,21 +44,25 @@ class Snowtrick
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="snowtricks")
+     * @Assert\Valid()
      */
     private $categories;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="snowtrick", cascade={"remove"})
+     * @Assert\Valid()
      */
     private $comments;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $videos;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="snowtrick", cascade={"persist","remove"}, orphanRemoval=true)
+     * @Assert\Valid()
      */
     private $pictures;
 

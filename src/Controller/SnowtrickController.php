@@ -137,12 +137,15 @@ class SnowtrickController extends AbstractController
 
             if ($videos !== null) {
                 foreach ($videos as $video) {
-                    $videoUpload = new Video;
-
-                    $videoUpload->setUrl($video);
-
-                    $snowtrick->addVideo($videoUpload);
-                    $this->entityManager->persist($videoUpload);
+                    if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $video, $match)) {
+                        $videoUpload = new Video;
+                        
+                        $videoId = $match[1];
+                        $videoUpload->setUrl('https://www.youtube.com/embed/' . $videoId);
+                        
+                        $snowtrick->addVideo($videoUpload);
+                        $this->entityManager->persist($videoUpload);
+                    }
                 }
             }
 
@@ -252,12 +255,15 @@ class SnowtrickController extends AbstractController
 
             if ($videos !== null) {
                 foreach ($videos as $video) {
-                    $videoUpload = new Video;
+                    if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $video, $match)) {
+                        $videoUpload = new Video;
 
-                    $videoUpload->setUrl($video);
-
-                    $snowtrick->addVideo($videoUpload);
-                    $this->entityManager->persist($videoUpload);
+                        $videoId = $match[1];
+                        $videoUpload->setUrl('https://www.youtube.com/embed/' . $videoId);
+                        
+                        $snowtrick->addVideo($videoUpload);
+                        $this->entityManager->persist($videoUpload);
+                    }
                 }
             }
             $snowtrick->setUpdatedAt();
@@ -272,6 +278,7 @@ class SnowtrickController extends AbstractController
             }
             return $this->redirectToRoute("snowtrick.mytrick");
         }
+
         return $this->render('member/snowtricks/_form.html.twig', [
             'snowtrick' => $snowtrick,
             'form' => $form->createView(),

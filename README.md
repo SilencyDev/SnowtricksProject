@@ -24,4 +24,5 @@ Snowtrick App
 ```
     php bin/console doctrine:migrations:migrate
 ```
-6.  The project is ready-to-use !
+6.  Register and edit the database user->roles with ["ROLE_ADMIN"]
+7.  The project is ready-to-use !

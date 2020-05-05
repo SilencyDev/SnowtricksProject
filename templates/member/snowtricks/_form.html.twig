@@ -17,7 +17,7 @@
 {{ form_row(form.title) }}
 {{ form_row(form.description) }}
 {{ form_row(form.categories) }}
-    <p>Videos</p>
+    <p>Videos (Other than youtube links will be ignored)</p>
     <ul id="videos-fields-list"
         data-prototype="{{ form_widget(form.videos.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"
@@ -32,7 +32,7 @@
 
     <button type="button"
         class="add-another-collection-widget btn btn-secondary mb-4"
-        data-list-selector="#videos-fields-list">Add a embed Youtube Url</button>
+        data-list-selector="#videos-fields-list">Add a Youtube url</button>
 {{ form_row(form.mainpicture) }}
 {{ form_row(form.pictures) }}
 {% if is_granted('ROLE_ADMIN') %}

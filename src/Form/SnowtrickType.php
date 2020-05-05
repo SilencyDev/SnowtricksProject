@@ -9,7 +9,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use App\Form\Type\CustomUrlType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -29,7 +30,7 @@ class SnowtrickType extends AbstractType
                 'expanded' => true,
             ])
            ->add('videos', CollectionType::class, [
-               'entry_type' => TextType::class,
+               'entry_type' => UrlType::class,
                'label' => false,
                'allow_add' => true,
                'prototype' => true,
