@@ -7,7 +7,6 @@ use App\Entity\Snowtrick;
 use App\Form\CommentType;
 use App\Repository\SnowtrickRepository;
 use App\Repository\CommentRepository;
-use App\Repository\UserPictureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

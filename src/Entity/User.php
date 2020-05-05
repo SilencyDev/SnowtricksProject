@@ -6,9 +6,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ *  fields={"email"},
+ *  message="E-mail already used !"
+ * )
+ * @UniqueEntity(
+ *  fields={"username"},
+ *  message="Pseudo already used !"
+ * )
  */
 class User implements UserInterface, \Serializable
 {
@@ -21,6 +31,8 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Assert\NotBlank(message="Please insert an username")
+     * @Assert\Length(max=100, maxMessage="Your username must not exceed 100 caracteres !")
      */
     private $username;
 
@@ -37,6 +49,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Email(message="Please insert a valid Email")
      */
     private $email;
 

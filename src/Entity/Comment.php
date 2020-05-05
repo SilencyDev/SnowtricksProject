@@ -2,9 +2,8 @@
 
 namespace App\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
@@ -20,6 +19,7 @@ class Comment
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="This comment can't be empty !")
      */
     private $content;
 
