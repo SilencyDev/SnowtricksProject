@@ -35,6 +35,7 @@ class Snowtrick
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -199,6 +200,16 @@ class Snowtrick
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setSnowtrick($this);
+        }
+
+        return $this;
     }
 
     public function setComments(Comment $comments) :self

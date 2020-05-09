@@ -2,26 +2,25 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Comment;
 use App\Entity\Snowtrick;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class CommentTest extends KernelTestCase
+class SnowtrickTest extends KernelTestCase
 {
-    public function getEntity() :Comment
+    public function getEntity() :Snowtrick
     {
-        return (new Comment())
+        return (new Snowtrick())
             ->setAuthor(new User)
-            ->setContent('1')
-            ->setSnowtrick(new Snowtrick)
+            ->setDescription('Lorem ipsum')
+            ->setTitle("A test")
             ;
     }
 
-    public function assertHasError(Comment $comment, int $number = 0) 
+    public function assertHasError(Snowtrick $snowtrick, int $number = 0) 
     {
         self::bootKernel();
-        $error = self::$container->get('validator')->validate($comment);
+        $error = self::$container->get('validator')->validate($snowtrick);
         $this->assertCount($number, $error);
     }
 
@@ -32,6 +31,6 @@ class CommentTest extends KernelTestCase
 
     public function testUnvalidEntity()
     {
-        $this->assertHasError($this->getEntity()->setContent(""), 1);
+        $this->assertHasError($this->getEntity()->setDescription(""), 1);
     }
 }

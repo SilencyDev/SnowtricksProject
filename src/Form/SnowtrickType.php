@@ -48,7 +48,7 @@ class SnowtrickType extends AbstractType
             $form = $event->getForm();
 
             if ($trick || null === $trick->getMainpicture()) {
-                $form->add('mainfile', FileType::class, [
+                $form->add('mainFile', FileType::class, [
                     'label' => 'Upload a main picture',
                     'required' => false,
                 ]);
