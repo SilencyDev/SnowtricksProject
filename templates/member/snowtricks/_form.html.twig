@@ -33,7 +33,7 @@
     <button type="button"
         class="add-another-collection-widget btn btn-secondary mb-4"
         data-list-selector="#videos-fields-list">Add a Youtube url</button>
-{{ form_row(form.mainfile) }}
+{{ form_row(form.mainFile) }}
 {{ form_row(form.file) }}
 {% if is_granted('ROLE_ADMIN') %}
     {{ form_row(form.validated) }}

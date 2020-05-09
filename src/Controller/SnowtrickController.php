@@ -114,7 +114,7 @@ class SnowtrickController extends AbstractController
         if ($form->isSubmitted() && $form->isvalid()) {
 
             $pictures = $form->get('file')->getData();
-            $mainpicture = $form->get('mainfile')->getData();
+            $mainpicture = $form->get('mainFile')->getData();
             $videos = $form->get('videos')->getData();
 
             if ($mainpicture !== null) {
@@ -206,7 +206,7 @@ class SnowtrickController extends AbstractController
         if ($form->isSubmitted() && $form->isvalid()) {
 
             $pictures = $form->get('file')->getData();
-            $mainpicture = $form->get('mainfile')->getData();
+            $mainpicture = $form->get('mainFile')->getData();
             $videos = $form->get('videos')->getData();
 
             if ($mainpicture !== NULL) {

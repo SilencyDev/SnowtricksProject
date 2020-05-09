@@ -32,8 +32,10 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
-     * @Assert\NotBlank(message="Please insert an username")
-     * @Assert\Length(max=100, maxMessage="Your username must not exceed 100 caracteres !")
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      max=100,
+     *      maxMessage="Your username must not exceed 100 caracteres !")
      */
     private $username;
 
@@ -50,7 +52,7 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Assert\Email(message="Please insert a valid Email")
+     * @Assert\Email(message="Please insert a valid email")
      */
     private $email;
 
