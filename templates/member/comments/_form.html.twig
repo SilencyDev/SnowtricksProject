@@ -1,14 +1,15 @@
 {{ form_start(form, {
-        'attr':{
-            'action': path(path, {id: snowtrick.id}),
-            'id' : 'form-data'
-        }
-        }) }}
+    'attr':{
+        'action': path(path, {id: snowtrick.id}),
+        'id' : 'form-data'
+    }
+}) }}
 {{ form_errors(form) }}
 {{ form_row(form._token) }}
 {{ form_row(form.content, {
     'attr':{
-        'class':"comment-content"
+        'class': 'comment-content',
+        'novalidate': 'novalidate'
     }
 }) }}
 <button class="btn btn-primary" action="{{ path(path, {id: snowtrick.id}) }}" id="addComment">{{ button|default('Leave a comment') }}</button>

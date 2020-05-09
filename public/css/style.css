@@ -59,6 +59,11 @@ footer {
   flex-direction: column;
 }
 
+.media-size {
+  overflow-x: scroll !important;
+  white-space: nowrap !important;
+}
+
 .mainpicture-show {
   display: flex;
   justify-content: center;

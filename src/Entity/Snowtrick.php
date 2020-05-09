@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,6 +25,11 @@ class Snowtrick
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 50,
+     * )
      */
     private $title;
 
@@ -75,6 +81,24 @@ class Snowtrick
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @Assert\All({
+     *      @Assert\Image(
+     *           mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg", "image/webp"},
+     *           mimeTypesMessage = "The file must be in GIF/JPG/JPEG or PNG format", 
+     *           )
+     * })
+     */
+    private $file;
+
+    /**
+     * @Assert\Image(
+     * mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg", "image/webp"},
+     * mimeTypesMessage = "The file must be in GIF/JPG/JPEG or PNG format", 
+     * )
+     */
+    private $mainFile;
 
     public function __construct()
     {
@@ -293,6 +317,46 @@ class Snowtrick
     public function setUpdatedAt(): self
     {
         $this->updatedAt = new \DateTime("now");
+
+        return $this;
+    }
+
+    /**
+     * Get mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg"},
+     */ 
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg"},
+     *
+     * @return  self
+     */ 
+    public function setFile($file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg", "image/webp"},
+     */ 
+    public function getMainFile()
+    {
+        return $this->mainFile;
+    }
+
+    /**
+     * Set mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg", "image/webp"},
+     *
+     * @return  self
+     */ 
+    public function setMainFile( $mainFile): self
+    {
+        $this->mainFile = $mainFile;
 
         return $this;
     }
