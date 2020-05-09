@@ -30,7 +30,7 @@ class SnowtrickType extends AbstractType
                 'expanded' => true,
             ])
            ->add('videos', CollectionType::class, [
-               'entry_type' => UrlType::class,
+               'entry_type' => CustomUrlType::class,
                'label' => false,
                'allow_add' => true,
                'prototype' => true,
@@ -48,16 +48,14 @@ class SnowtrickType extends AbstractType
             $form = $event->getForm();
 
             if ($trick || null === $trick->getMainpicture()) {
-                $form->add('mainpicture', FileType::class, [
-                    'mapped' => false,
+                $form->add('mainfile', FileType::class, [
                     'label' => 'Upload a main picture',
                     'required' => false,
                 ]);
             }
 
             if ($trick || null === $trick->getPictures()) {
-                $form->add('pictures', FileType::class, [
-                    'mapped' => false,
+                $form->add('file', FileType::class, [
                     'label' => 'Upload a picture',
                     'multiple' => true,
                     'required' => false,

@@ -1,4 +1,8 @@
-{{ form_start(form2) }}
-    {{ form_row(form2.picture) }}
-    <button class="btn btn-primary">{{ button_label|default('Update my profile picture') }}</button>
+{{ form_start(form2, {
+        'attr':{
+            'novalidate': 'novalidate'
+        }
+    }) }}
+{{ form_row(form2.avatar) }}
+<button class="btn btn-primary">{{ button_label|default('Update my profile picture') }}</button>
 {{ form_end(form2) }}

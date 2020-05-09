@@ -14,6 +14,7 @@ $("#form-data").submit(function (e) {
             } else {
                 $("#comments").html(data);
             }
+            $("textarea[name='comment[content]']").val('');
         },
     });
 });

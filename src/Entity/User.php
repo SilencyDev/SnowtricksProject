@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -73,6 +74,15 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToOne(targetEntity="App\Entity\Picture", mappedBy="user", cascade={"persist","remove"}, orphanRemoval=true)
      */
     private $picture;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Image(
+     * mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg", "image/webp"},
+     * maxSize="2M",
+     * )
+     */
+    private $avatar;
 
     public function __construct()
     {
@@ -258,6 +268,26 @@ class User implements UserInterface, \Serializable
         if ($picture->getUser() !== $newUser) {
             $picture->setUser($newUser);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg"},
+     */ 
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * Set mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg"},
+     *
+     * @return  self
+     */ 
+    public function setAvatar(UploadedFile $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

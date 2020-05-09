@@ -50,7 +50,7 @@ Class UserController extends AbstractController
         }
 
         if ($form2->isSubmitted() && $form2->isValid()) {
-            $picture = $form2->get('picture')->getData();
+            $picture = $form2->get('avatar')->getData();
             if ($picture !== NULL) {
                 if ($user->getPicture() !== null) {
                     unlink($user->getPicture()->getRealPath());

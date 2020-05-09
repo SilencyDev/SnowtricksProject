@@ -2,18 +2,18 @@
     {{ form_start(form, {
         'attr':{
             'action': path(path),
-            'id' : 'form-data'
+            'id': 'form-data',
+            'novalidate': 'novalidate'
         }
-        }) }}
+    }) }}
 {% else %}
     {{ form_start(form, {
         'attr':{
             'action' : path(path, {id: snowtrick.id}),
             'id' : 'form-data'
-    } 
+        } 
     }) }}
 {% endif %}
-{{ form_errors(form) }}
 {{ form_row(form.title) }}
 {{ form_row(form.description) }}
 {{ form_row(form.categories) }}
@@ -33,8 +33,8 @@
     <button type="button"
         class="add-another-collection-widget btn btn-secondary mb-4"
         data-list-selector="#videos-fields-list">Add a Youtube url</button>
-{{ form_row(form.mainpicture) }}
-{{ form_row(form.pictures) }}
+{{ form_row(form.mainfile) }}
+{{ form_row(form.file) }}
 {% if is_granted('ROLE_ADMIN') %}
     {{ form_row(form.validated) }}
 {% endif %}

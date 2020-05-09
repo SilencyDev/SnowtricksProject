@@ -1,31 +1,31 @@
-$("#newSnowtrick .modal-body").on("change", "#snowtrick_pictures",function(){
+$("#newSnowtrick .modal-body").on("change", "#snowtrick_file",function(){
     if ($(this).val()) {
     var filename = $(this).val().split("\\");
     filename = filename[filename.length-1];
-    $("label[for='snowtrick_pictures'].custom-file-label").text(filename);
+    $("label[for='snowtrick_file'].custom-file-label").text(filename);
     }
 });
 
-$("#newSnowtrick .modal-body").on("change", "#snowtrick_mainpicture",function(){
+$("#newSnowtrick .modal-body").on("change", "#snowtrick_mainfile",function(){
     if ($(this).val()) {
     var filename = $(this).val().split("\\");
     filename = filename[filename.length-1];
-    $("label[for='snowtrick_mainpicture'].custom-file-label").text(filename);
+    $("label[for='snowtrick_mainfile'].custom-file-label").text(filename);
     }
 });
 
-$("#editSnowtrick .modal-body").on("change", "#snowtrick_pictures",function(){
+$("#editSnowtrick .modal-body").on("change", "#snowtrick_file",function(){
     if ($(this).val()) {
     var filename = $(this).val().split("\\");
     filename = filename[filename.length-1];
-    $("label[for='snowtrick_pictures'].custom-file-label").text(filename);
+    $("label[for='snowtrick_file'].custom-file-label").text(filename);
     }
 });
 
-$("#editSnowtrick .modal-body").on("change", "#snowtrick_mainpicture",function(){
+$("#editSnowtrick .modal-body").on("change", "#snowtrick_mainfile",function(){
     if ($(this).val()) {
     var filename = $(this).val().split("\\");
     filename = filename[filename.length-1];
-    $("label[for='snowtrick_mainpicture'].custom-file-label").text(filename);
+    $("label[for='snowtrick_mainfile'].custom-file-label").text(filename);
     }
 });
