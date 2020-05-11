@@ -78,7 +78,6 @@ class User implements UserInterface, \Serializable
     private $picture;
 
     /**
-     * @Assert\NotBlank()
      * @Assert\Image(
      * mimeTypes= {"image/gif", "image/png", "image/jpeg", "image/jpg", "image/webp"},
      * maxSize="2M",

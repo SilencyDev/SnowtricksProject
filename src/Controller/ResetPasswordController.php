@@ -103,7 +103,7 @@ class ResetPasswordController extends AbstractController
             ]);
 
             foreach ($tokens as $atoken) {
-                $this->em->remove($atoken);
+                $this->entityManager->remove($atoken);
             }
 
             $this->entityManager->flush();
