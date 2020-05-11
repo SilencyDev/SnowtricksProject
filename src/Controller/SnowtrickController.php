@@ -298,7 +298,7 @@ class SnowtrickController extends AbstractController
         $roles = $security->getUser()->getRoles();
         $username = $security->getUser()->getUsername();
         $token = json_decode($request->getContent(), true)['token']??null;
-        if(in_array("ROLE_ADMIN", $roles) || ($snowtrick->getAuthor() == $username) ) {
+        if(in_array("ROLE_ADMIN", $roles) || ($snowtrick->getAuthor()->getUsername() == $username) ) {
             if($this->isCsrfTokenValid('delete' . $snowtrick->getId(), $token)) {
                 $this->entityManager->remove($snowtrick);
                 $this->entityManager->flush();
